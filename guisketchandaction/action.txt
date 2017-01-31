@@ -1,0 +1,7 @@
+quit game
+help
+rotate left
+rotate right
+place peice
+	place follower
+end turn
