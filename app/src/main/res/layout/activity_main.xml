@@ -51,18 +51,22 @@
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="&lt;----"
+                android:text="Cancel"
                 android:id="@+id/rotateLeft"
                 android:layout_gravity="center"
                 android:background="#3baa44" />
 
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="fill_parent" />
+
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="---->"
+                android:text="End Turn"
                 android:id="@+id/rotateRight"
                 android:layout_gravity="center"
                 android:background="#3baa44" />
@@ -161,7 +165,7 @@
 
         <Space
             android:layout_width="fill_parent"
-            android:layout_height="25dp" />
+            android:layout_height="15dp" />
 
         <Button
             android:layout_width="wrap_content"
@@ -173,7 +177,7 @@
 
         <Space
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="10dp" />
 
         <Button
             android:layout_width="wrap_content"
