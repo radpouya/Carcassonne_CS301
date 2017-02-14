@@ -3,25 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.roux19.carcassonne.MainActivity"
-    android:orientation="horizontal">
+    tools:context="com.example.roux19.carcassonne.MainActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/gameBoard"
-        android:layout_weight=".25"
-        android:src="@drawable/manytile"
-        android:background="#000000" />
+    <SurfaceView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/surfaceView"
+        android:layout_weight=".25" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:id="@+id/sideBar"
         android:layout_weight=".75"
         android:weightSum="1"
-        android:background="#4553ba">
+        android:background="#4553ba"
+        android:orientation="vertical">
 
         <Space
             android:layout_width="fill_parent"
