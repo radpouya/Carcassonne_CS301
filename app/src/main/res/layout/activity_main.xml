@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.roux19.carcassonne.MainActivity">
 
-    <SurfaceView
+    <com.example.roux19.carcassonne.GameBoard
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/surfaceView"
+        android:id="@+id/gameBoard"
         android:layout_weight=".25" />
 
     <LinearLayout
@@ -24,12 +24,17 @@
             android:layout_width="fill_parent"
             android:layout_height="31dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/currentTile"
+        <com.example.roux19.carcassonne.CurrTile
+
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:transformPivotX="100dp"
+            android:transformPivotY="100dp"
+            android:rotation="0"
+            android:id="@+id/curTile"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/onetile" />
+            android:foregroundTint="#f40e0e"
+            android:foregroundTintMode="screen" />
 
         <Space
             android:layout_width="fill_parent"
@@ -49,11 +54,13 @@
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Cancel"
+                android:layout_height="40dp"
+                android:text="&lt;---"
                 android:id="@+id/rotateLeft"
                 android:layout_gravity="center"
-                android:background="#3baa44" />
+                android:background="#3baa44"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
 
             <Space
                 android:layout_width="20dp"
@@ -62,11 +69,13 @@
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="End Turn"
+                android:layout_height="40dp"
+                android:text="--->"
                 android:id="@+id/rotateRight"
                 android:layout_gravity="center"
-                android:background="#3baa44" />
+                android:background="#3baa44"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
 
             <Space
                 android:layout_width="20px"
@@ -165,24 +174,28 @@
             android:layout_height="15dp" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:text="Quit"
             android:id="@+id/quitButton"
             android:layout_gravity="center"
-            android:background="#3baa44" />
+            android:background="#3baa44"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="20dp" />
 
         <Space
             android:layout_width="fill_parent"
             android:layout_height="10dp" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:text="help"
             android:id="@+id/helpButton"
             android:layout_gravity="center"
-            android:background="#3baa44" />
+            android:background="#3baa44"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="20dp" />
 
         <Space
             android:layout_width="fill_parent"
