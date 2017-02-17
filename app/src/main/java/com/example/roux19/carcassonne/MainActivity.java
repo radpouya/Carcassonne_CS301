@@ -11,6 +11,13 @@ import android.widget.Button;
 
 /**
  * @author Pouya Rad, Malcolm Roux, Sean Tan, Jake Galves
+ *
+ * (10 pts) made the rotate left button work
+ *  (5pts) also made rotate right button work
+ * (10 pts) touching the current tile highlights it
+ *  (5pts) touching it again unhighlights it
+ * (20 pts) touching the game board places the current tile in a grid with the appropriate rotation
+ * (disscussed with Nuxol over email)
  */
 public class MainActivity extends AppCompatActivity {
 
