@@ -16,7 +16,7 @@ import android.view.View;
 import java.util.jar.Attributes;
 
 /**
- * Created by galves19 on 2/15/2017.
+ * @author Pouya Rad, Malcolm Roux, Sean Tan, Jake Galves
  */
 public class CurrTile extends SurfaceView implements View.OnTouchListener
 {

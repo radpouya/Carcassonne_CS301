@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by galves19 on 2/15/2017.
+ * @author Pouya Rad, Malcolm Roux, Sean Tan, Jake Galves
  */
 public class GameBoard extends SurfaceView implements View.OnTouchListener
 {

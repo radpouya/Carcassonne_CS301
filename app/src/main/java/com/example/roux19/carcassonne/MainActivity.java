@@ -9,7 +9,9 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 
-
+/**
+ * @author Pouya Rad, Malcolm Roux, Sean Tan, Jake Galves
+ */
 public class MainActivity extends AppCompatActivity {
 
     //initialize widgets
