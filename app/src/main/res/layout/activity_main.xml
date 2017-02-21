@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.roux19.carcassonne.MainActivity">
+    tools:context=".carcassonne.MainActivity">
 
-    <com.example.roux19.carcassonne.GameBoard
+    <com.example.roux19.carcassonne.carcassonne.GameBoard
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/gameBoard"
@@ -24,7 +24,7 @@
             android:layout_width="fill_parent"
             android:layout_height="31dp" />
 
-        <com.example.roux19.carcassonne.CurrTile
+        <com.example.roux19.carcassonne.carcassonne.CurrTile
 
             android:layout_width="200dp"
             android:layout_height="200dp"

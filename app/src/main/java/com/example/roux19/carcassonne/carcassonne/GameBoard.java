@@ -1,16 +1,17 @@
-package com.example.roux19.carcassonne;
+package com.example.roux19.carcassonne.carcassonne;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+
+import com.example.roux19.carcassonne.carcassonne.CurrTile;
+import com.example.roux19.carcassonne.carcassonne.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package com.example.roux19.carcassonne;
+package com.example.roux19.carcassonne.carcassonne;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.R.drawable;
 import android.view.View;
+
+import com.example.roux19.carcassonne.R;
 
 import java.util.jar.Attributes;
 
