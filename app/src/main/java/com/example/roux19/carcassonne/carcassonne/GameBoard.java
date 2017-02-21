@@ -65,7 +65,24 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
             canvas.drawBitmap(drawnTiles.get(i), null, new RectF(xCors.get(i),yCors.get(i),xCors.get(i)+200,yCors.get(i)+200),null);
         }
     }
+/**
+    @Override
+    public boolean onTouch( View v, MotionEvent e)
+    {
 
+        switch (e.getAction())
+        {
+            case MotionEvent.ACTION_MOVE:
+                return false;
+            case MotionEvent.ACTION_UP:
+                return placePeice(v,e);
+            case MotionEvent.ACTION_DOWN:
+                return false;
+        }
+
+        return false;
+    }
+*/
     /**
      * onTouch
      * adds appropriate bitmap to bitmap array
@@ -74,7 +91,6 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
      * @param event
      * @return
      */
-    @Override
     public boolean onTouch(View v, MotionEvent event)
     {
         Random rand = new Random(); //who cares
