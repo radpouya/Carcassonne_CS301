@@ -13,50 +13,34 @@ public class Area {
 
     private int ownership; //int corresponds to player number in game framework (-1 if no owner)
 
-    private ArrayList<Integer> occupiedZones =
+    private ArrayList<Integer> occZones = new ArrayList<Integer>(); //occ means occupied
 
-    public Area( char initType, int initPoints, int initOwnership)
+    public Area( char initType, int initPoints, int initOwnership, ArrayList<Integer> initOccZones)
     {
 
         type = initType;
         points = initPoints;
         ownership = initOwnership;
 
+        for( int i = 0; i < initOccZones.size(); i++)
+        {
+            occZones.add(new Integer(initOccZones.get(i)));
+        }
+
     }
 
-    public Area( Area area, boolean origCall)
+    public Area( Area area )
     {
+
         type = area.type;
         points = area.points;
         ownership = area.ownership;
 
-        if ( origCall )
+        for( int i = 0; i < area.occZones.size(); i++)
         {
-            ArrayList<Area> tempConnected = new ArrayList<Area>();
-
-            tempConnected.add(this);
-
-            for( int i = 0; i < area.connectedAreas.size(); i++)
-            {
-                tempConnected.add(new Area(area.connectedAreas.get(i), false));
-            }
-
-            for( int i = 0; i < tempConnected.size(); i++)
-            {
-                for (int j = 0; j < tempConnected.size(); j++)
-                {
-                    if( i != j )
-                    {
-                        tempConnected.get(i).connectedAreas.add(tempConnected.get(j));
-                    }
-                }
-            }
+            occZones.add(new Integer(area.occZones.get(i)));
         }
     }
 
-    public void mergeAreas( Area areaToMerge )
-    {
-        //merge the areas
-    }
 
 }

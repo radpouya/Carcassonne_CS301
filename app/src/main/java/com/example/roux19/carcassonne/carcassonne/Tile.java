@@ -11,10 +11,10 @@ import java.util.ArrayList;
 public class Tile {
 
     //different types of terrain
-    public char farm = 'f';
-    public char road = 'r';
-    public char castle = 'c';
-    public char empty = 'n'; //rare but sometimes the middle zone is not used
+    public static char farm = 'f';
+    public static char road = 'r';
+    public static char castle = 'c';
+    public static char empty = 'n'; //rare but sometimes the middle zone is not used
 
     private Bitmap tilePic; //appropriately rotated pic of tile
     private char[] zones = new char[13]; //stores the terrain on tile
@@ -35,7 +35,7 @@ public class Tile {
 
         for( int i = 0; i<initTileAreas.size(); i++)
         {
-            tileAreas.add( new Area(initTileAreas.get(i), true));
+            tileAreas.add( new Area(initTileAreas.get(i)));
         }
     }
 
@@ -50,7 +50,7 @@ public class Tile {
 
         for( int i = 0; i<tile.tileAreas.size(); i++)
         {
-            tileAreas.add( new Area(tile.tileAreas.get(i), true));
+            tileAreas.add( new Area(tile.tileAreas.get(i)));
         }
     }
 }
