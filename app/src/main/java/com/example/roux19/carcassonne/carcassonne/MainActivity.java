@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         currTile.setOnTouchListener(currTile);
         gameBoard.setOnTouchListener(gameBoard);
 
+
+
         //initialize tiles
         TILES[0] = BitmapFactory.decodeResource(getResources(), R.drawable.one);
         TILES[1] = BitmapFactory.decodeResource(getResources(), R.drawable.two);

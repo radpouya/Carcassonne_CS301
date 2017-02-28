@@ -10,21 +10,29 @@ import java.util.ArrayList;
  */
 public class CarcassonneState extends GameState
 {
+    public static final char PIECE_PHASE = 'p';
+    public static final char FOLLOWER_PHASE = 'f';
 
     //game state variables
-    private Tile[][] board;
-    private Tile currTile;
-    private int plyrTurn;
-    private int tileRemaining;
-    private ArrayList<Integer> scores;
+    private Tile[][] board; //array of all placed tiles
+    private Tile currTile; //reference to the current tile
+    private int plyrTurn; //keeps track of whomes's turn it is
+    private int tileRemaining; //amount of tiles to be placed before game ends
+    private ArrayList<Integer> scores = new ArrayList<Integer>(); //score of each player
+    private ArrayList<Integer> remainingFollowers = new ArrayList<Integer>(); //remaining followers for each player
+    private int xCurrTile; //if curTile is already placed then saves xCor in board, -1 if not placed
+    private int yCurrTile; //same as xCurrTile but with y coordinate
+    private char turnPhase;
 
     /**
      * CarcassonneState
      * creates deep copy with all parameters of the game state
      * @param
      */
-    public CarcassonneState( Tile[][] initBoard, int initPlyrTurn, int initTileRemaining,
-                             Tile initCurrTile, ArrayList<Integer> initScores)
+    public CarcassonneState( Tile[][] initBoard, int initTileRemaining, int initPlyrTurn,
+                             Tile initCurrTile, ArrayList<Integer> initScores,
+                             ArrayList<Integer> initRemainingFollowers,
+                             int initXCurrTile, int initYCurrTile, char initTurnPhase)
     {
         for( int i = 0; i < initBoard.length; i++)
         {
@@ -37,8 +45,13 @@ public class CarcassonneState extends GameState
         for( int i = 0; i < scores.size(); i++)
         {
             scores.add(initScores.get(i));
+            remainingFollowers.add(initRemainingFollowers.get(i));
         }
 
+        xCurrTile = initXCurrTile;
+        yCurrTile = initYCurrTile;
+
+        turnPhase = initTurnPhase;
         plyrTurn = initPlyrTurn;
         tileRemaining = initTileRemaining;
         currTile = new Tile(initCurrTile);
@@ -62,9 +75,13 @@ public class CarcassonneState extends GameState
         for( int i = 0; i < scores.size(); i++)
         {
             scores.add(initState.getScores().get(i));
+            remainingFollowers.add(initState.getRemainingFollowers().get(i));
         }
 
+        xCurrTile = initState.getxCurrTile();
+        yCurrTile = initState.getyCurrTile();
 
+        turnPhase = initState.getTurnPhase();
         plyrTurn = initState.getPlyrTurn();
         tileRemaining = initState.getTileRemaining();
         currTile = new Tile(initState.getCurrTile());
@@ -80,7 +97,15 @@ public class CarcassonneState extends GameState
 
     public int getTileRemaining(){ return tileRemaining; }
 
+    public char getTurnPhase(){ return turnPhase; }
+
+    public ArrayList<Integer> getRemainingFollowers() { return remainingFollowers; }
+
     public ArrayList<Integer> getScores(){ return scores; }
+
+    public int getxCurrTile() { return xCurrTile; }
+
+    public int getyCurrTile() { return yCurrTile; }
 
     //setters
     public void setBoard( Tile[][] newBoard ){ board = newBoard; }
@@ -91,5 +116,13 @@ public class CarcassonneState extends GameState
 
     public void setTileRemaining( int newTileRemaining ){ tileRemaining = newTileRemaining; }
 
+    public void setRemainingFollowers( ArrayList<Integer> newRemainingFollowers) { remainingFollowers = newRemainingFollowers; }
+
     public void setScores( ArrayList<Integer> newScores ){ scores = newScores; }
+
+    public void setxCurrTile(int xCurrTile) { this.xCurrTile = xCurrTile; }
+
+    public void setyCurrTile(int yCurrTile) { this.yCurrTile = yCurrTile; }
+
+    public void setTurnPhase(char turnPhase) { this.turnPhase = turnPhase; }
 }
