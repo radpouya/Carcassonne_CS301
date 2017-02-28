@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class CarcassonneMainActivity extends GameMainActivity
 {
 
-    private static final int PORT_NUMBER = 2234;
+    private static final int PORT_NUMBER = 3420;
 
     private ArrayList<Tile> tileDeck = new ArrayList<Tile>();
 
@@ -56,14 +56,14 @@ public class CarcassonneMainActivity extends GameMainActivity
         // - from 1 to 2 players
         // - name of game is "Counter Game"
         // - port number as defined above
-        GameConfig defaultConfig = new GameConfig(playerTypes, 1, 2, "Carcassonne",
+        GameConfig defaultConfig = new GameConfig(playerTypes, 1, 5, "Carcassonne",
                 PORT_NUMBER);
 
         // Add the default players to the configuration
         defaultConfig.addPlayer("Nux", 0); // player 1: a human player
         defaultConfig.addPlayer("Schmidt", 1); // player 2: a computer player
-        defaultConfig.addPlayer("Vegdahl", 2); // player 3: a computer player
-        defaultConfig.addPlayer("Epp", 3); // player 4: a computer player
+        defaultConfig.addPlayer("Vegdahl", 1); // player 3: a computer player
+        defaultConfig.addPlayer("Epp", 1); // player 4: a computer player
 
         // Set the default remote-player setup:
         // - player name: "Remote Player"

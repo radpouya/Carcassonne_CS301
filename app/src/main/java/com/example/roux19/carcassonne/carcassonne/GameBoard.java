@@ -11,7 +11,6 @@ import android.view.SurfaceView;
 import android.view.View;
 
 import com.example.roux19.carcassonne.carcassonne.CurrTile;
-import com.example.roux19.carcassonne.carcassonne.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -115,7 +114,6 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
         Bitmap draw = Bitmap.createBitmap(currTile.getCurrTile(), 0,0, currTile.getCurrTile().getWidth(), currTile.getCurrTile().getHeight(), mat, true);
 
         drawnTiles.add(draw); //add bitmap to array
-        currTile.setCurrTile(MainActivity.TILES[rand.nextInt(4)]); //change current tile to random tile
         currTile.invalidate(); //redraw curTile
         this.invalidate(); //draw me like one of your french girls
 
