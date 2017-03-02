@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -66,6 +67,7 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
         for( int i = 0; i<drawnTiles.size(); i++)
         {
             canvas.drawBitmap(drawnTiles.get(i), null, new RectF(xCors.get(i),yCors.get(i),xCors.get(i)+200,yCors.get(i)+200),null);
+
         }
     }
 
@@ -99,9 +101,10 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
                     curY = e.getY();
                     v.scrollBy((int) (mx - curX), (int) (my - curY));
                     isMove = false;
+                    return false;
                 }
                 else {
-                    placePiece( v, e);
+                    return placePiece( v, e);
                 }
         }
 
@@ -120,9 +123,18 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
     {
         Random rand = new Random(); //who cares
 
+        int touchX = (int)(event.getX()+v.getScrollX());
+        int touchY = (int)(event.getY()+v.getScrollY());
+
+        int placeX = 0;
+        int placeY = 0;
+
+        if (touchX<0) { placeX = -200;}
+        if (touchY<0) { placeY = -200;}
+
         //set coordinates
-        xCors.add((Integer)((int)event.getX()-(int)event.getX()%200)); //round down to nearest 200
-        yCors.add((Integer)((int)event.getY()-(int)event.getY()%200)); //round down to nearest 200
+        xCors.add((Integer)(touchX-touchX%200+placeX)); //round down to nearest 200
+        yCors.add((Integer)(touchY-touchY%200+placeY)); //round down to nearest 200
 
         /**
          * External Citation
