@@ -41,6 +41,7 @@ public class Tile {
 
     public Tile( Tile tile)
     {
+        if( tile == null ){ return; }
         this.tilePic = Bitmap.createBitmap(tile.tilePic,0,0,tile.tilePic.getHeight(),tile.tilePic.getWidth());
         for( int i = 0; i<13; i++)
         {

@@ -25,6 +25,10 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
     private ArrayList<Integer> xCors = new ArrayList<Integer>(); //array of x coordinates
     private ArrayList<Integer> yCors = new ArrayList<Integer>(); //array of y coordinates
 
+    private float mx, my, origX, origY; //temp
+
+    boolean isMove = false;
+
     CurrTile currTile; //reference to current tile
 
     public GameBoard(Context context)
@@ -64,24 +68,46 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
             canvas.drawBitmap(drawnTiles.get(i), null, new RectF(xCors.get(i),yCors.get(i),xCors.get(i)+200,yCors.get(i)+200),null);
         }
     }
-/**
+
     @Override
     public boolean onTouch( View v, MotionEvent e)
     {
 
+        float curX, curY;
+
+
+
         switch (e.getAction())
         {
-            case MotionEvent.ACTION_MOVE:
-                return false;
-            case MotionEvent.ACTION_UP:
-                return placePeice(v,e);
             case MotionEvent.ACTION_DOWN:
-                return false;
+                mx = e.getX();
+                my = e.getY();
+                origX = e.getX();
+                origY = e.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if ( Math.abs(e.getX()-origX) > 50 || Math.abs(e.getY()-origY) > 50 ) { isMove = true; }
+                curX = e.getX();
+                curY = e.getY();
+                v.scrollBy((int)(mx-curX), (int)(my-curY));
+                mx = curX;
+                my = curY;
+                break;
+            case MotionEvent.ACTION_UP:
+                if (isMove) {
+                    curX = e.getX();
+                    curY = e.getY();
+                    v.scrollBy((int) (mx - curX), (int) (my - curY));
+                    isMove = false;
+                }
+                else {
+                    placePiece( v, e);
+                }
         }
 
-        return false;
+        return true;
     }
-*/
+
     /**
      * onTouch
      * adds appropriate bitmap to bitmap array
@@ -90,7 +116,7 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
      * @param event
      * @return
      */
-    public boolean onTouch(View v, MotionEvent event)
+    public boolean placePiece(View v, MotionEvent event)
     {
         Random rand = new Random(); //who cares
 
@@ -103,7 +129,7 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
          *  Date: 2/16/17
          *  Problem: rotate a bitmap to make another bitmap
          *  Resource: stackoverflow.com/questions/3440690/rotating-a-bitmap-using-matrix
-         *  Solution: make a matrix, rotate the matrix, make a bitmap copy using the matrix
+         *  Solution: make a matrix, rotate the matrix, make a bitmap copy using the matrix*
          */
         Matrix mat = new Matrix();
 
@@ -120,4 +146,5 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
 
         return false; //yeah, really a toss up between true and false... true makes it like draw continuously, like bad
     }
+
 }

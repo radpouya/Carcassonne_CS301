@@ -38,7 +38,9 @@ public class CarcassonneState extends GameState
         {
             for ( int j = 0; j < initBoard[0].length; j++)
             {
-                board[i][j] = new Tile(initBoard[i][j]);
+                if ( initBoard[i][j] != null) {
+                    board[i][j] = new Tile(initBoard[i][j]);
+                }
             }
         }
 

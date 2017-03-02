@@ -1,4 +1,4 @@
-/**
+
 
 package com.example.roux19.carcassonne.carcassonne;
 
@@ -20,7 +20,7 @@ import com.example.roux19.carcassonne.R;
  *  (5pts) touching it again unhighlights it
  * (20 pts) touching the game board places the current tile in a grid with the appropriate rotation
  * (disscussed with Nuxol over email)
-
+**/
 public class MainActivity extends AppCompatActivity {
 
     //initialize widgets
@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
          * rotates the current tile when the rotate right button is pressed
          * uses previous rotation to find new rotation
          * @param v
+         *
+         */
 
         @Override
         public void onClick(View v)
@@ -85,11 +87,13 @@ public class MainActivity extends AppCompatActivity {
     //listener to rotate left
     private class RotateLeft implements View.OnClickListener
     {
+        /**
 
          * onClick
          * rotates the current tile when the rotate left button is pressed
          * uses previous rotation to find new rotation
          * @param v
+         */
 
         @Override
         public void onClick(View v)
@@ -99,4 +103,3 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-*/

@@ -5,6 +5,7 @@ import com.example.roux19.carcassonne.game.LocalGame;
 import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by roux19 on 2/27/2017.
@@ -24,11 +25,24 @@ public class CarcassonneLocalGame extends LocalGame
         {
             tileDeck.add(new Tile(initTileDeck.get(i)));
         }
+
+        this.gameState = new CarcassonneState(new Tile[128][128], 64, 0, this.randTile(), null, null, -1, -1, CarcassonneState.PIECE_PHASE);
     }
 
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
 
+    }
+
+    private Tile randTile()
+    {
+        /**
+        Random r = new Random();
+        int i = r.nextInt(tileDeck.size());
+
+        return tileDeck.get(i);
+         */
+        return null;
     }
 
     @Override
