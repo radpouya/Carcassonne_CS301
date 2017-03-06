@@ -20,4 +20,12 @@ public class PlacePieceAction extends GameAction {
     }
 
     //getters
+
+    public int getxCor() {
+        return xCor;
+    }
+
+    public int getyCor() {
+        return yCor;
+    }
 }

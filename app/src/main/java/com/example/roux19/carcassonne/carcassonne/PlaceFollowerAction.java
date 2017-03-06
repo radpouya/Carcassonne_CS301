@@ -17,4 +17,8 @@ public class PlaceFollowerAction extends GameAction
 
         zone = initZone;
     }
+
+    public int getZone() {
+        return zone;
+    }
 }

@@ -13,14 +13,17 @@ public class Area {
 
     private int ownership; //int corresponds to player number in game framework (-1 if no owner)
 
+    private Follower follower;
+
     private ArrayList<Integer> occZones = new ArrayList<Integer>(); //occ means occupied
 
-    public Area( char initType, int initPoints, int initOwnership, ArrayList<Integer> initOccZones)
+    public Area( char initType, int initPoints, int initOwnership, ArrayList<Integer> initOccZones, Follower initFollower)
     {
 
         type = initType;
         points = initPoints;
         ownership = initOwnership;
+        follower = new Follower(initFollower);
 
         for( int i = 0; i < initOccZones.size(); i++)
         {
@@ -35,6 +38,7 @@ public class Area {
         type = area.type;
         points = area.points;
         ownership = area.ownership;
+        follower = new Follower(area.follower);
 
         for( int i = 0; i < area.occZones.size(); i++)
         {
@@ -42,5 +46,15 @@ public class Area {
         }
     }
 
+    public ArrayList<Integer> getOccZones() {
+        return occZones;
+    }
 
+    public Follower getFollower() {
+        return follower;
+    }
+
+    public void setFollower(Follower follower) {
+        this.follower = follower;
+    }
 }

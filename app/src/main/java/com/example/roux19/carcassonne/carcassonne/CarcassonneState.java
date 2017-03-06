@@ -12,6 +12,7 @@ public class CarcassonneState extends GameState
 {
     public static final char PIECE_PHASE = 'p';
     public static final char FOLLOWER_PHASE = 'f';
+    public static final char END_TURN_PHASE = 'e';
 
     //game state variables
     private Tile[][] board; //array of all placed tiles

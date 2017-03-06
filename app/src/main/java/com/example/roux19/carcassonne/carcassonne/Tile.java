@@ -3,6 +3,8 @@ package com.example.roux19.carcassonne.carcassonne;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.example.roux19.carcassonne.game.infoMsg.GameState;
+
 import java.util.ArrayList;
 
 /**
@@ -21,8 +23,7 @@ public class Tile {
 
     private ArrayList<Area> tileAreas = new ArrayList<Area>();
 
-    //-1 if no followers on tile, 0-12 corresponding to zone of follower
-    private int follower;
+
 
     public Tile( Bitmap initTilePic, char[] initZones, int initFollower, ArrayList<Area> initTileAreas )
     {
@@ -31,8 +32,6 @@ public class Tile {
         {
             this.zones[i] = initZones[i];
         }
-        this.follower = initFollower;
-
         for( int i = 0; i<initTileAreas.size(); i++)
         {
             tileAreas.add( new Area(initTileAreas.get(i)));
@@ -47,11 +46,128 @@ public class Tile {
         {
             this.zones[i] = tile.zones[i];
         }
-        this.follower = tile.follower;
 
         for( int i = 0; i<tile.tileAreas.size(); i++)
         {
             tileAreas.add( new Area(tile.tileAreas.get(i)));
         }
+    }
+
+    public boolean isPlaceable(int indexOfArea, int xCor, int yCor, CarcassonneState gameState, ArrayList<Area> touchedAreas){
+        Area targetArea = tileAreas.get(indexOfArea);
+
+        for( int i = 0; i < touchedAreas.size(); i++ )
+        {
+            if ( targetArea ==  touchedAreas.get(i) ) return true;
+        }
+
+        if ( this.getTileAreas().get(indexOfArea).getFollower() != null ) return false;
+
+        Tile roamTile;
+        int roamTileAreaIndex;
+
+        for( int i = 0; i < targetArea.getOccZones().size(); i++ ){
+            if ( targetArea.getOccZones().get(i) == 0 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()-1];
+                roamTileAreaIndex = getAreaIndexFromZone( 4 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),gameState.getyCurrTile()-1,gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 1 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()-1][gameState.getyCurrTile()];
+                roamTileAreaIndex = getAreaIndexFromZone( 9 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()-1,gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 2 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()-1][gameState.getyCurrTile()];
+                roamTileAreaIndex = getAreaIndexFromZone( 8 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()-1,gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 3 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()-1][gameState.getyCurrTile()];
+                roamTileAreaIndex = getAreaIndexFromZone( 7 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()-1,gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 4 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()+1];
+                roamTileAreaIndex = getAreaIndexFromZone( 0 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),gameState.getyCurrTile()+1,gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 5 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()+1];
+                roamTileAreaIndex = getAreaIndexFromZone( 11 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),gameState.getyCurrTile()+1,gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 6 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()+1];
+                roamTileAreaIndex = getAreaIndexFromZone( 10 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),gameState.getyCurrTile()+1,gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 7 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()+1][gameState.getyCurrTile()];
+                roamTileAreaIndex = getAreaIndexFromZone( 3 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()+1,gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 8 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()+1][gameState.getyCurrTile()];
+                roamTileAreaIndex = getAreaIndexFromZone( 2 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()+1,gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 9 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()+1][gameState.getyCurrTile()];
+                roamTileAreaIndex = getAreaIndexFromZone( 1 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),gameState.getyCurrTile()-1,gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 10 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()-1];
+                roamTileAreaIndex = getAreaIndexFromZone( 6 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),gameState.getyCurrTile()-1,gameState,touchedAreas) ) return false;
+            }
+            else if ( targetArea.getOccZones().get(i) == 11 )
+            {
+                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()-1];
+                roamTileAreaIndex = getAreaIndexFromZone( 5 );
+                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),gameState.getyCurrTile()-1,gameState,touchedAreas) ) return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public int getAreaIndexFromZone( int zoneIndex ) {
+
+        for( int i = 0; i < this.getTileAreas().size(); i++ ) {
+
+            for( int j = 0; j < this.getTileAreas().get(i).getOccZones().size(); i++) {
+
+                if( zoneIndex == this.getTileAreas().get(i).getOccZones().get(j) ) {
+
+                    return i;
+
+                }
+
+            }
+
+        }
+
+        return -1;
+    }
+
+    public char[] getZones() { return zones; }
+
+
+    public ArrayList<Area> getTileAreas() {
+        return tileAreas;
     }
 }
