@@ -1,5 +1,7 @@
 package com.example.roux19.carcassonne.carcassonne;
 
+import com.example.roux19.carcassonne.game.GamePlayer;
+
 /**
  * Created by roux19 on 3/5/2017.
  */

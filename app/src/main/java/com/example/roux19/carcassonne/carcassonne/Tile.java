@@ -2,6 +2,7 @@ package com.example.roux19.carcassonne.carcassonne;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 import com.example.roux19.carcassonne.game.infoMsg.GameState;
 
@@ -162,6 +163,40 @@ public class Tile {
         }
 
         return -1;
+    }
+
+    public void rotateTile( boolean isClockwise ) {
+
+        Matrix mat = new Matrix();
+
+        int rotateDirection = 1;
+        if (isClockwise) rotateDirection = -1;
+
+        mat.postRotate(90*rotateDirection);
+
+        Bitmap draw = Bitmap.createBitmap(this.tilePic, 0,0, this.tilePic.getWidth(), this.tilePic.getHeight(), mat, true);
+
+        int[] newZones = new int[13];
+
+        int rotateScalar = 3;
+        if(isClockwise) rotateScalar = 9;
+
+        for( int i = 0; i<12; i++) {
+            newZones[i] = zones[(i+rotateScalar)%12];
+        }
+
+        newZones[12] = zones[12];
+
+        for( int i = 0; i<tileAreas.size(); i++)
+        {
+            for( int j = 0; j<tileAreas.get(i).getOccZones().size(); j++)
+            {
+                if( tileAreas.get(i).getOccZones().get(j) != 12 )
+                {
+                    tileAreas.get(i).getOccZones().set(j, (tileAreas.get(i).getOccZones().get(j) + rotateScalar) % 12);
+                }
+            }
+        }
     }
 
     public char[] getZones() { return zones; }

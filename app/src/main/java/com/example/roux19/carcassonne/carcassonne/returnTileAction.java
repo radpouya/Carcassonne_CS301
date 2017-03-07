@@ -6,10 +6,10 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 /**
  * Created by roux19 on 2/27/2017.
  */
-public class ReturnTileAction  extends GameAction
+public class returnTileAction  extends GameAction
 {
 
-    public ReturnTileAction(GamePlayer player)
+    public returnTileAction(GamePlayer player)
     {
         super(player);
     }

@@ -61,23 +61,31 @@ public class CarcassonneLocalGame extends LocalGame
     protected boolean makeMove(GameAction action)
     {
         if ( action instanceof PlacePieceAction ){
+
+            //retrieve action
             PlacePieceAction ppa = (PlacePieceAction)action;
 
+            //check correct turn phase
             if(gameState.getTurnPhase() != CarcassonneState.PIECE_PHASE) return false;
 
+            //check to make sure requested square is empty
             if(gameState.getBoard()[ppa.getxCor()][ppa.getyCor()]!= null) return false;
 
+            //get references to tiles above, below, left and right
             Tile topTile = gameState.getBoard()[ppa.getxCor()][ppa.getyCor() + 1];
             Tile botTile = gameState.getBoard()[ppa.getxCor()][ppa.getyCor() - 1];
             Tile leftTile = gameState.getBoard()[ppa.getxCor() - 1][ppa.getyCor()];
             Tile rightTile = gameState.getBoard()[ppa.getxCor() + 1][ppa.getyCor()];
 
+            //check to make sure tile borders at least one tile
             if(topTile == null && botTile == null && leftTile == null && rightTile == null)
             {
                 return false;
             }
-            if(leftTile != null)
+
+            if(leftTile != null) //if left tile exists
             {
+                //make sure zones line up
                 if(leftTile.getZones()[9] != gameState.getCurrTile().getZones()[1])
                 {
                     return false;
@@ -93,8 +101,9 @@ public class CarcassonneLocalGame extends LocalGame
                 }
 
             }
-            if(rightTile != null)
+            if(rightTile != null) //if right tile exists
             {
+                //make sure zones line up
                 if(rightTile.getZones()[1] != gameState.getCurrTile().getZones()[9])
                 {
                     return false;
@@ -110,8 +119,9 @@ public class CarcassonneLocalGame extends LocalGame
                 }
 
             }
-            if(topTile != null)
+            if(topTile != null) //if top tile exists
             {
+                //make sure zones line up
                 if(topTile.getZones()[4] != gameState.getCurrTile().getZones()[0])
                 {
                     return false;
@@ -127,8 +137,9 @@ public class CarcassonneLocalGame extends LocalGame
                 }
 
             }
-            if(botTile != null)
+            if(botTile != null) //if bot tile exists
             {
+                //make sure zones line up
                 if(botTile.getZones()[0] != gameState.getCurrTile().getZones()[4])
                 {
                     return false;
@@ -145,12 +156,15 @@ public class CarcassonneLocalGame extends LocalGame
 
             }
 
+            //place da tile
             gameState.getBoard()[ppa.getxCor()][ppa.getyCor()] = new Tile(gameState.getCurrTile());
+            //set coordinates of tile
             gameState.setxCurrTile(ppa.getxCor());
             gameState.setxCurrTile(ppa.getxCor());
+            //enter next phase
             gameState.setTurnPhase(CarcassonneState.FOLLOWER_PHASE);
 
-
+            //action completed
             return true;
 
         }
@@ -168,29 +182,59 @@ public class CarcassonneLocalGame extends LocalGame
                 return false;
             }
 
-            //gameState.getCurrTile().getTileAreas().get(indexOfTargetArea).setFollower( new Follower(pfa.getZone(), pfa.getPlayer()));
-            //problems
+            gameState.getCurrTile().getTileAreas().get(indexOfTargetArea).setFollower( new Follower(pfa.getZone(), gameState.getPlyrTurn()));
             gameState.setTurnPhase(CarcassonneState.END_TURN_PHASE);
 
-        }
-        else if ( action instanceof ReturnTileAction ) {
+            return true;
 
-            ReturnTileAction pfa = (ReturnTileAction) action;
+        }
+        else if ( action instanceof returnTileAction ) {
+
+            returnTileAction rta = (returnTileAction) action;
 
             if(gameState.getTurnPhase() != CarcassonneState.FOLLOWER_PHASE) return false;
 
             gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()] = null;
 
-            //unfinneshed
+            gameState.setTurnPhase(CarcassonneState.PIECE_PHASE);
+
+            return true;
 
         }
         else if ( action instanceof ReturnFollowerAction ) {
 
+            ReturnFollowerAction rfa = (ReturnFollowerAction) action;
+
+            if(gameState.getTurnPhase() != CarcassonneState.END_TURN_PHASE) return false;
+
+            for( int i = 0; i < gameState.getCurrTile().getTileAreas().size(); i++) {
+                gameState.getCurrTile().getTileAreas().get(i).setFollower(null);
+            }
+
+            gameState.setTurnPhase(CarcassonneState.FOLLOWER_PHASE);
+
+            return true;
         }
         else if ( action instanceof EndTurnAction ) {
 
+            EndTurnAction eta = (EndTurnAction) action;
+
+            if(gameState.getTurnPhase() != CarcassonneState.END_TURN_PHASE) return false;
+
+            gameState.setPlyrTurn((gameState.getPlyrTurn()+1)%this.players.length);
+            gameState.setTurnPhase(CarcassonneState.PIECE_PHASE);
+
+            return true;
         }
-        else if ( action instanceof RotateAction ) {
+        else if ( action instanceof rotateAction ) {
+
+            rotateAction ra = (rotateAction) action;
+
+            if( gameState.getTurnPhase() != CarcassonneState.PIECE_PHASE) return false;
+
+            gameState.getCurrTile().rotateTile( ra.isClockwise() );
+
+            return true;
 
         }
 
