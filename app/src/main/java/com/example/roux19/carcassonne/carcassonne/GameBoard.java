@@ -72,6 +72,11 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
     }
 
     @Override
+    /**
+     * onTouch
+     * allows the user to scroll on the surface view to move around the map and place pieces
+     * @param v, e
+     */
     public boolean onTouch( View v, MotionEvent e)
     {
 
@@ -149,7 +154,8 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
 
         mat.postRotate(rotation);
 
-        Bitmap draw = Bitmap.createBitmap(currTile.getCurrTile(), 0,0, currTile.getCurrTile().getWidth(), currTile.getCurrTile().getHeight(), mat, true);
+        Bitmap draw = Bitmap.createBitmap(currTile.getCurrTile(), 0,0,
+                currTile.getCurrTile().getWidth(), currTile.getCurrTile().getHeight(), mat, true);
 
         drawnTiles.add(draw); //add bitmap to array
         currTile.invalidate(); //redraw curTile

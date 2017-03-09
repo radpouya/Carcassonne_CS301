@@ -10,14 +10,14 @@ public class PlaceFollowerAction extends GameAction
 {
 
     private int zone;
-
+    //allows followe to be palced into a zone
     public PlaceFollowerAction(int initZone, GamePlayer player )
     {
         super(player);
 
         zone = initZone;
     }
-
+    //getters
     public int getZone() {
         return zone;
     }

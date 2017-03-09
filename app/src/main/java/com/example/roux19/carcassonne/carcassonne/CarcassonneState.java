@@ -119,7 +119,8 @@ public class CarcassonneState extends GameState
 
     public void setTileRemaining( int newTileRemaining ){ tileRemaining = newTileRemaining; }
 
-    public void setRemainingFollowers( ArrayList<Integer> newRemainingFollowers) { remainingFollowers = newRemainingFollowers; }
+    public void setRemainingFollowers( ArrayList<Integer> newRemainingFollowers)
+    { remainingFollowers = newRemainingFollowers; }
 
     public void setScores( ArrayList<Integer> newScores ){ scores = newScores; }
 

@@ -10,7 +10,7 @@ public class PlacePieceAction extends GameAction {
 
     private int xCor;
     private int yCor;
-
+    //allowed piece to be placed
     public PlacePieceAction(int initXCor, int initYCor, GamePlayer initPlayer)
     {
         super(initPlayer);

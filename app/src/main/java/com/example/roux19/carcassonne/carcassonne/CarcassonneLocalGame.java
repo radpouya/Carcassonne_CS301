@@ -168,27 +168,31 @@ public class CarcassonneLocalGame extends LocalGame
             return true;
 
         }
+        //allows you to enter follower phase and place a follower
         else if ( action instanceof PlaceFollowerAction ) {
 
             PlaceFollowerAction pfa = (PlaceFollowerAction)action;
 
             if(gameState.getTurnPhase() != CarcassonneState.FOLLOWER_PHASE) return false;
-
+            //place a follower
             int indexOfTargetArea = gameState.getCurrTile().getAreaIndexFromZone( pfa.getZone() );
-
+            //tells you where a placeable follower is allowed
             ArrayList<Area> areas = new ArrayList<Area>();
-            if( !gameState.getCurrTile().isPlaceable(indexOfTargetArea, gameState.getxCurrTile(), gameState.getyCurrTile(), gameState, areas) )
+            if( !gameState.getCurrTile().isPlaceable(indexOfTargetArea, gameState.getxCurrTile(),
+                    gameState.getyCurrTile(), gameState, areas) )
             {
                 return false;
             }
-
-            gameState.getCurrTile().getTileAreas().get(indexOfTargetArea).setFollower( new Follower(pfa.getZone(), gameState.getPlyrTurn()));
+            //allows you to enter the end turn phase
+            gameState.getCurrTile().getTileAreas().get(indexOfTargetArea).setFollower
+                    ( new Follower(pfa.getZone(), gameState.getPlyrTurn()));
             gameState.setTurnPhase(CarcassonneState.END_TURN_PHASE);
 
             return true;
 
-        }
-        else if ( action instanceof returnTileAction ) {
+        } //allows you to undo the tile follower phase and go back into the piece phase to replace
+        // your piece
+            else if ( action instanceof returnTileAction ) {
 
             returnTileAction rta = (returnTileAction) action;
 
@@ -200,7 +204,8 @@ public class CarcassonneLocalGame extends LocalGame
 
             return true;
 
-        }
+        } //allows you to undo the end turn phase and go back into the follower phase to replace
+        // your follower
         else if ( action instanceof ReturnFollowerAction ) {
 
             ReturnFollowerAction rfa = (ReturnFollowerAction) action;
@@ -214,7 +219,8 @@ public class CarcassonneLocalGame extends LocalGame
             gameState.setTurnPhase(CarcassonneState.FOLLOWER_PHASE);
 
             return true;
-        }
+        }//tells state if a player has entered the end turn phase and ended their turn and  player
+        // turn index +1
         else if ( action instanceof EndTurnAction ) {
 
             EndTurnAction eta = (EndTurnAction) action;
@@ -225,7 +231,7 @@ public class CarcassonneLocalGame extends LocalGame
             gameState.setTurnPhase(CarcassonneState.PIECE_PHASE);
 
             return true;
-        }
+        }//allows player whose turn it is to rotate a tile
         else if ( action instanceof rotateAction ) {
 
             rotateAction ra = (rotateAction) action;
