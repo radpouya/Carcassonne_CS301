@@ -122,7 +122,7 @@ public class FlashSurfaceView extends SurfaceView {
          * run method for the Runnable
          */
         public void run() {
-            // create two Runnables--one each for flashing and unflashing
+            // create tile2 Runnables--one each for flashing and unflashing
             Runnable newRunner1 = new Runnable() {
                 public void run() {
                     if (flashDraw != null) {

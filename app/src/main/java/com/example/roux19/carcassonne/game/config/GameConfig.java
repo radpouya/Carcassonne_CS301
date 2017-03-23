@@ -79,7 +79,7 @@ public class GameConfig {
 	/**
 	 * this specifies the minimum number of players required for a legal game.
 	 * For example, tic-tac-toe would have a minimum (and maximum, see below) of
-	 * two players.
+	 * tile2 players.
 	 */
 	private int minPlayers;
 

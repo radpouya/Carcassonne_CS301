@@ -13,7 +13,7 @@ import java.util.Queue;
 
 /**
  * A Game object that is used as a proxy for the real game that is on another
- * machine on the network.  Each ProxyGame is associated with exactly one
+ * machine on the network.  Each ProxyGame is associated with exactly tile0
  * Player object.  Whenever a message is sent to the ProxyGame object,
  * it serializes the message and sends it across the network; when
  * the ProxyGame object receives a message from the network, it
@@ -132,7 +132,7 @@ public class ProxyGame implements Game {
 
 	/**
 	 * Starts the game. In this context, we know that the array will
-	 * contain exactly one player.
+	 * contain exactly tile0 player.
 	 */
 	public void start(GamePlayer[] players) {
 		Log.i("ProxyGame", "start() called");

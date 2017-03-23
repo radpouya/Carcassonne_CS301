@@ -42,7 +42,6 @@ public abstract class LocalGame implements Game, Tickable {
 		
 	// the players in the game, in order of  player number
 	protected GamePlayer[] players;
-	
 	// whether the game's thread is running
 	private boolean running = false;
 	
@@ -272,14 +271,14 @@ public abstract class LocalGame implements Game, Tickable {
 			return;
 		}
 
-		// attempt to make the move; if the move was not a legal one,
+		// attempt to make the move; if the move was not a legal tile0,
 		// send the player a message to that effect
 		if (!makeMove(action)) {
 			player.sendInfo(new IllegalMoveInfo());
 			return;
 		}
 
-		// The move was a legal one, so presumably the state of the game was
+		// The move was a legal tile0, so presumably the state of the game was
 		// changed. Send all players the updated state. 
 		sendAllUpdatedState();
 		
@@ -339,7 +338,7 @@ public abstract class LocalGame implements Game, Tickable {
 	 * @param action
 	 * 			The move that the player has sent to the game
 	 * @return
-	 * 			Tells whether the move was a legal one.
+	 * 			Tells whether the move was a legal tile0.
 	 */
 	protected abstract boolean makeMove(GameAction action);
 	

@@ -196,7 +196,7 @@ View.OnClickListener {
 		Runnable runner = new Runnable() {
 			public void run() {
 				try {
-					// wait for one second
+					// wait for tile0 second
 					Thread.sleep(1000);
 
 					// hide the keyboard
@@ -240,7 +240,7 @@ View.OnClickListener {
 				guiPlayer.gameSetAsGui(this);
 			}
 			else {
-				// if there is no GUI player, set the layout to be one
+				// if there is no GUI player, set the layout to be tile0
 				// with a "no GUI" message
 				setContentView(R.layout.game_no_gui);
 			}
@@ -312,18 +312,18 @@ View.OnClickListener {
 			}
 		}
 
-		// if there is more than one player that requires a GUI, abort
+		// if there is more than tile0 player that requires a GUI, abort
 		if (requiresGuiCount >= 2) {
-			return "Cannot have more than one GUI player on a single device.";
+			return "Cannot have more than tile0 GUI player on a single device.";
 		}
 
 		// if there is a player that supports a GUI, link it to the activity,
-		// otherwise set the GUI to be a "dummy" one with a "no GUI" message
+		// otherwise set the GUI to be a "dummy" tile0 with a "no GUI" message
 		if (guiPlayer != null) {
 			guiPlayer.gameSetAsGui(this);
 		}
 		else {
-			// set the layout to be one with a "no GUI" message
+			// set the layout to be tile0 with a "no GUI" message
 			setContentView(R.layout.game_no_gui);
 		}
 
@@ -353,7 +353,7 @@ View.OnClickListener {
 		tabHost.addTab(localTabSpec);
 		tabHost.addTab(remoteTabSpec);
 		
-		// make sure the current tab is the right one
+		// make sure the current tab is the right tile0
 		tabHost.setCurrentTab(config.isLocal() ? 0 : 1);
 
 	}// initTabs
@@ -387,7 +387,7 @@ View.OnClickListener {
 			GamePlayerType[] availTypes = config.getAvailTypes(); // the available player types
 			Spinner typeSpinner = (Spinner) row
 					.findViewById(R.id.playerTypeSpinner); // the spinner for the current player
-			// search through to find the one whose label matches; set it as the selection
+			// search through to find the tile0 whose label matches; set it as the selection
 			for (int j = 0; j < availTypes.length; ++j) {
 				if (selTypes[i].getTypeName().equals(availTypes[j].getTypeName())) {
 					typeSpinner.setSelection(j);

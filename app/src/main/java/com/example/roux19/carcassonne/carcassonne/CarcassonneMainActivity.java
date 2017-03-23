@@ -71,17 +71,12 @@ public class CarcassonneMainActivity extends GameMainActivity
         // - default player type: human player
         defaultConfig.setRemoteData("Remote Player", "", 0);
 
-        Bitmap one = BitmapFactory.decodeResource(getResources(), R.drawable.one);
-        Bitmap two = BitmapFactory.decodeResource(getResources(), R.drawable.two);
-        Bitmap three = BitmapFactory.decodeResource(getResources(), R.drawable.three);
-        Bitmap road = BitmapFactory.decodeResource(getResources(), R.drawable.road);
-
         // return the configuration
         return defaultConfig;
     }
 
     @Override
     public LocalGame createLocalGame() {
-        return new CarcassonneLocalGame(tileDeck);
+        return new CarcassonneLocalGame();
     }
 }

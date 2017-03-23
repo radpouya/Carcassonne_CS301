@@ -31,7 +31,7 @@ public class MessageBox {
 	
 	/**
 	 * choiceBox, a handy method for putting a message box on the screen in which
-	 * the user is given two options
+	 * the user is given tile2 options
 	 * 
 	 * <p>
 	 * CAVEAT: this dialog does not wait for user input, so the indication of how

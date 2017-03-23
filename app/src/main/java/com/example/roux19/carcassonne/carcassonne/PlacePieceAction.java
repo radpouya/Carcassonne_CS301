@@ -5,12 +5,22 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 
 /**
  * Created by roux19 on 2/27/2017.
+ *
+ * place a peice action
  */
 public class PlacePieceAction extends GameAction {
 
+    //board coordinates
     private int xCor;
     private int yCor;
-    //allowed piece to be placed
+
+    /**
+     * PlacePeiceAction
+     * creates a place peice action
+     * @param initXCor
+     * @param initYCor
+     * @param initPlayer
+     */
     public PlacePieceAction(int initXCor, int initYCor, GamePlayer initPlayer)
     {
         super(initPlayer);

@@ -7,7 +7,7 @@ package com.example.roux19.carcassonne.game.util;
  * clock, 24-second clock in a basketball simultation).<P>
  * 
  * Each LocalGame, HumanPlayer and ComputerPlayer has a GameTimer created
- * for it when the object is created. If one of these entities needs to have
+ * for it when the object is created. If tile0 of these entities needs to have
  * a "tick" at regular intervals, the will typically execute code such as:
  * <PRE>
  *   // set timer to go off every 100 milliseconds

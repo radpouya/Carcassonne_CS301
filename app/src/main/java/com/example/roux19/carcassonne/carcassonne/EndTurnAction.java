@@ -5,6 +5,8 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 
 /**
  * Created by roux19 on 2/27/2017.
+ *
+ * send when someone wants to end the turn
  */
 public class EndTurnAction extends GameAction
 {

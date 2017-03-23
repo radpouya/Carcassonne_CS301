@@ -5,51 +5,40 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.R.drawable;
 import android.view.View;
 
 import com.example.roux19.carcassonne.R;
-
-import java.util.jar.Attributes;
+import com.example.roux19.carcassonne.game.GameMainActivity;
 
 /**
  * @author Pouya Rad, Malcolm Roux, Sean Tan, Jake Galves
+ *
+ * Used to draw top right cur tile
  */
-public class CurrTile extends SurfaceView implements View.OnTouchListener
+public class CurrTile extends SurfaceView
 {
 
-    boolean isHighlighted = false; //keeps track of if the tile should be highlighted
-    public Bitmap currentTile = BitmapFactory.decodeResource(getResources(), R.drawable.one); //get our first bitmap
-    Paint highlightColor = new Paint(); //our hilight color
+    private CarcassonneState gameState; //game state fed by gui player
+    private GameMainActivity myActivity; //activity fed by gui player
 
     public CurrTile(Context context)
     {
         super(context);
-        highlightColor.setColor(0x7FFF0000); //set our highlight color (transparent red)
         setWillNotDraw(false);
     }
 
     public CurrTile(Context context, AttributeSet attrs)
     {
         super(context,attrs);
-        highlightColor.setColor(0x7FFF0000); //set our highlight color (transparent red)
         setWillNotDraw(false);
     }
 
-    public void setCurrTile(Bitmap tile)
-    {
-        currentTile = tile;
-    } //set the current tile ok
-
-    public Bitmap getCurrTile()
-    {
-        return currentTile;
-    } //give the current tile
 
     /**
      * onDraw
@@ -59,26 +48,33 @@ public class CurrTile extends SurfaceView implements View.OnTouchListener
     @Override
     public void onDraw(Canvas canvas)
     {
-        canvas.drawColor(Color.BLACK); //pretty sure this does nothing usefull
-        canvas.drawBitmap(currentTile, null, new RectF(0,0,400,400),null); //draw the current bitmap
-        if(isHighlighted) canvas.drawRect(0,0,400,400,highlightColor); //draw highlight overlay if appropriate
+        if( gameState == null ) return; //gotta have a game state
 
+        //rotate the tile appropraitle
+        /**
+         External Citation (see GameBoard)
+         Date: 16 February 2017
+         Problem: Rotate a bitmap
+         Resource: http://stackoverflow.com/questions/8722359/scale-rotate-bitmap-using-
+         matrix-in-android
+         Solution: Used ammended example code
+         */
+        Bitmap toBeDrawn = BitmapFactory.decodeResource(myActivity.getResources(), gameState.getCurrTile().getBitmapRes() );
+        Matrix mat = new Matrix();
+        float rotation = gameState.getCurrTile().getRotation();
+        mat.postRotate(rotation);
+        toBeDrawn = Bitmap.createBitmap(toBeDrawn,0,0,toBeDrawn.getWidth(),toBeDrawn.getHeight(),mat,true);
 
+        //draw da tile
+        canvas.drawBitmap(toBeDrawn, null, new RectF(0,0,400,400),null);
     }
 
-    /**
-     * onTouch
-     * highlights the tile when you touch it
-     * also dehighlights
-     * @param v
-     * @param event
-     * @return
-     */
-    @Override
-    public boolean onTouch( View v, MotionEvent event )
-    {
-        isHighlighted = !isHighlighted; //wow malcolm is soooooooo smart
-        this.invalidate(); //draw me
-        return false;
+    //setters
+    public void setState(CarcassonneState newGameState) {
+        this.gameState = newGameState;
+    }
+
+    public void setMyActivity(GameMainActivity myActivity) {
+        this.myActivity = myActivity;
     }
 }

@@ -1,48 +1,104 @@
 package com.example.roux19.carcassonne.carcassonne;
 
+import android.graphics.BitmapFactory;
+
+import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GamePlayer;
 import com.example.roux19.carcassonne.game.LocalGame;
 import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
  * Created by roux19 on 2/27/2017.
+ *
+ * central hub of the game
+ * receives actions and determines legality
+ * modifies master gamestate
+ * sends updated game states to plaeyers
  */
 public class CarcassonneLocalGame extends LocalGame
 {
 
-    private CarcassonneState gameState;
+    private CarcassonneState gameState; //master state of the game
 
-    private ArrayList<Tile> tileDeck = new ArrayList<Tile>();
+    private ArrayList<Tile> tileDeck = new ArrayList<Tile>(); //list of possible tiles of the game
 
-    public CarcassonneLocalGame( ArrayList<Tile> initTileDeck )
+    public CarcassonneLocalGame( )
     {
         super();
 
-        for( int i = 0; i < initTileDeck.size(); i++)
+        //hard coded initializers for the tile deck
+        for( int i = 0; i < 4; i++ )
         {
-            tileDeck.add(new Tile(initTileDeck.get(i)));
+            if ( i == 0 )
+            {
+                char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'c', 'c', 'r'};
+                int[] tempAreaProp = {0, 1, 2, 3, 3, 3, 3, 3, 2, 1, 0, 0, 2};
+                tileDeck.add( new Tile( R.drawable.tile0, tempZones, tempAreaProp, 0));
+            }
+            else if ( i == 1 )
+            {
+                char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'c', 'c', 'r'};
+                int[] tempAreaProp = {0, 1, 2, 3, 3, 2, 1, 1, 1, 1, 0, 0, 2};
+                tileDeck.add( new Tile( R.drawable.tile1, tempZones, tempAreaProp, 0));
+            }
+            else if ( i == 2 )
+            {
+                char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'f', 'f', 'f', 'f', 'f', 'c', 'c', 'f'};
+                int[] tempAreaProp = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1};
+                tileDeck.add( new Tile( R.drawable.tile2, tempZones, tempAreaProp, 0));
+            }
+            else if ( i == 3 )
+            {
+                char[] tempZones = {'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'n'};
+                int[] tempAreaProp = {0, 1, 2, 3, 3, 3, 3, 3, 2, 1, 0, 0, 2};
+                tileDeck.add( new Tile( R.drawable.tile3, tempZones, tempAreaProp, 0));
+            }
         }
 
-        this.gameState = new CarcassonneState(new Tile[128][128], 64, 0, this.randTile(), null, null, -1, -1, CarcassonneState.PIECE_PHASE);
+        this.gameState = new CarcassonneState( ); //makes inital game state
+        this.gameState.setCurrTile(randTile()); //sets the current tile to a rand tile
+        this.gameState.getBoard()[5][5] = randTile(); //places starting tile
+    }
+
+    @Override
+    public void start( GamePlayer[] players )
+    {
+        super.start(players);
+        gameState.addPlayers(players); //so that the game state knows how many players there are
+        // only needed to initialize arrays of scores and follower counts
     }
 
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
+        // if there is no state to send, ignore
+        if (gameState == null) {
+            return;
+        }
+        CarcassonneState stateForPlayer = new CarcassonneState(gameState); // copy of state
 
+        // send the modified copy of the state to the player
+        p.sendInfo(stateForPlayer);
     }
 
+    /**
+     * choses a random tile
+     * @return
+     */
     private Tile randTile()
     {
-        /**
-        Random r = new Random();
-        int i = r.nextInt(tileDeck.size());
 
-        return tileDeck.get(i);
-         */
-        return null;
+        Random r = new Random();
+        int i = r.nextInt(tileDeck.size()); //select a random tile
+
+        return new Tile(tileDeck.get(i)); //copies it
+        // (note) if we want the tile deck to diminish and not use repeats of the same tile
+        // we could not copy it and keep track of if it is used within the tile class
+        // we could not select the used tiles in this selection process
+
     }
 
     @Override
@@ -72,12 +128,12 @@ public class CarcassonneLocalGame extends LocalGame
             if(gameState.getBoard()[ppa.getxCor()][ppa.getyCor()]!= null) return false;
 
             //get references to tiles above, below, left and right
-            Tile topTile = gameState.getBoard()[ppa.getxCor()][ppa.getyCor() + 1];
-            Tile botTile = gameState.getBoard()[ppa.getxCor()][ppa.getyCor() - 1];
+            Tile topTile = gameState.getBoard()[ppa.getxCor()][ppa.getyCor() - 1];
+            Tile botTile = gameState.getBoard()[ppa.getxCor()][ppa.getyCor() + 1];
             Tile leftTile = gameState.getBoard()[ppa.getxCor() - 1][ppa.getyCor()];
             Tile rightTile = gameState.getBoard()[ppa.getxCor() + 1][ppa.getyCor()];
 
-            //check to make sure tile borders at least one tile
+            //check to make sure tile borders at least tile0 tile
             if(topTile == null && botTile == null && leftTile == null && rightTile == null)
             {
                 return false;
@@ -160,7 +216,7 @@ public class CarcassonneLocalGame extends LocalGame
             gameState.getBoard()[ppa.getxCor()][ppa.getyCor()] = new Tile(gameState.getCurrTile());
             //set coordinates of tile
             gameState.setxCurrTile(ppa.getxCor());
-            gameState.setxCurrTile(ppa.getxCor());
+            gameState.setyCurrTile(ppa.getyCor());
             //enter next phase
             gameState.setTurnPhase(CarcassonneState.FOLLOWER_PHASE);
 
@@ -173,33 +229,49 @@ public class CarcassonneLocalGame extends LocalGame
 
             PlaceFollowerAction pfa = (PlaceFollowerAction)action;
 
+            //if the tile zone is not used then return false
+            if( gameState.getCurrTile().getZones()[pfa.getZone()] == Tile.EMPTY) return false;
+
+            //if we are in ther correct phase
             if(gameState.getTurnPhase() != CarcassonneState.FOLLOWER_PHASE) return false;
-            //place a follower
+
+            //get the index of the area we are placing on within the tile
             int indexOfTargetArea = gameState.getCurrTile().getAreaIndexFromZone( pfa.getZone() );
-            //tells you where a placeable follower is allowed
-            ArrayList<Area> areas = new ArrayList<Area>();
+
+            //tells whether there is a follower conntedted to the area we are placing on (aka illegal move)
+            ArrayList<Area> areas = new ArrayList<Area>(); //empty list for recursive algorithim
             if( !gameState.getCurrTile().isPlaceable(indexOfTargetArea, gameState.getxCurrTile(),
                     gameState.getyCurrTile(), gameState, areas) )
             {
                 return false;
             }
+            //please look at method comments to understand
+
+            //places the follower in the area
+            gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()].getTileAreas()
+                    .get(indexOfTargetArea).setFollower( new Follower(pfa.getZone(), gameState.getPlyrTurn()));
+            //decrements remaining followers
+            gameState.getRemainingFollowers().set( getPlayerIdx(pfa.getPlayer()),
+                    gameState.getRemainingFollowers().get( getPlayerIdx(pfa.getPlayer()))-1);
             //allows you to enter the end turn phase
-            gameState.getCurrTile().getTileAreas().get(indexOfTargetArea).setFollower
-                    ( new Follower(pfa.getZone(), gameState.getPlyrTurn()));
             gameState.setTurnPhase(CarcassonneState.END_TURN_PHASE);
 
             return true;
 
-        } //allows you to undo the tile follower phase and go back into the piece phase to replace
+        } //allows you to undo the peice phase and go back into the piece phase to replace
         // your piece
             else if ( action instanceof returnTileAction ) {
 
+            //grab action
             returnTileAction rta = (returnTileAction) action;
 
+            //make sure correct state
             if(gameState.getTurnPhase() != CarcassonneState.FOLLOWER_PHASE) return false;
 
+            //erase the placed tile
             gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()] = null;
 
+            //return to the place a peice phase
             gameState.setTurnPhase(CarcassonneState.PIECE_PHASE);
 
             return true;
@@ -208,14 +280,23 @@ public class CarcassonneLocalGame extends LocalGame
         // your follower
         else if ( action instanceof ReturnFollowerAction ) {
 
+            //grab action
             ReturnFollowerAction rfa = (ReturnFollowerAction) action;
 
+            //ensure correct phase
             if(gameState.getTurnPhase() != CarcassonneState.END_TURN_PHASE) return false;
 
+            //set all the areas within the tile to have no follower
             for( int i = 0; i < gameState.getCurrTile().getTileAreas().size(); i++) {
-                gameState.getCurrTile().getTileAreas().get(i).setFollower(null);
+                gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()]
+                        .getTileAreas().get(i).setFollower(null);
             }
 
+            //increment remaining followers
+            gameState.getRemainingFollowers().set( getPlayerIdx(rfa.getPlayer()),
+                    gameState.getRemainingFollowers().get( getPlayerIdx(rfa.getPlayer()))+1);
+
+            //return to follower phase
             gameState.setTurnPhase(CarcassonneState.FOLLOWER_PHASE);
 
             return true;
@@ -223,21 +304,30 @@ public class CarcassonneLocalGame extends LocalGame
         // turn index +1
         else if ( action instanceof EndTurnAction ) {
 
+            //grab action
             EndTurnAction eta = (EndTurnAction) action;
 
-            if(gameState.getTurnPhase() != CarcassonneState.END_TURN_PHASE) return false;
+            //the only state you are not allowed to end the turn in is the peice phase
+            if(gameState.getTurnPhase() == CarcassonneState.PIECE_PHASE) return false;
 
+            //go to next player's turn, loop around if necessary
             gameState.setPlyrTurn((gameState.getPlyrTurn()+1)%this.players.length);
+            //get another tile
+            gameState.setCurrTile(this.randTile());
+            //go to starting phase of next turn
             gameState.setTurnPhase(CarcassonneState.PIECE_PHASE);
 
             return true;
         }//allows player whose turn it is to rotate a tile
         else if ( action instanceof rotateAction ) {
 
+            //grab action
             rotateAction ra = (rotateAction) action;
 
+            //if we are in the placr peice phase
             if( gameState.getTurnPhase() != CarcassonneState.PIECE_PHASE) return false;
 
+            //rotate the tile, please look at meathod algorithim
             gameState.getCurrTile().rotateTile( ra.isClockwise() );
 
             return true;

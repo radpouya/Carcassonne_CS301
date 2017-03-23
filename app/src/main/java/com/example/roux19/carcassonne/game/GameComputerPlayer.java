@@ -82,7 +82,7 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
 	}
 
 	/**
-	 * Sets this player to be the one connected to the GUI.
+	 * Sets this player to be the tile0 connected to the GUI.
 	 * Should only be called if the supportsGUI method returns
 	 * true.
 	 * 
@@ -96,7 +96,7 @@ public abstract class GameComputerPlayer implements GamePlayer, Tickable {
 	
 	/**
 	 * Subclass-behavior for setting this player to be the
-	 * one associated with the GUI. Typically, changes the
+	 * tile0 associated with the GUI. Typically, changes the
 	 * current screen to have a new layout, and sets up
 	 * listeners, animators, etc.
 	 * 

@@ -5,12 +5,22 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 
 /**
  * Created by roux19 on 2/27/2017.
+ *
+ * rotate action
+ * we know the naming convention is off
+ * refactoring makes comminting impossible
  */
 public class rotateAction extends GameAction
 {
 
-    private boolean isClockwise;
+    private boolean isClockwise; //keeps track of direction
 
+    /**
+     * rotateAction
+     *
+     * @param initIsClockWise
+     * @param player
+     */
     public rotateAction(boolean initIsClockWise, GamePlayer player)
     {
         super(player);

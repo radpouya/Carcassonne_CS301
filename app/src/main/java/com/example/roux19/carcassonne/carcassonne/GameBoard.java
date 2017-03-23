@@ -2,35 +2,27 @@ package com.example.roux19.carcassonne.carcassonne;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.view.View;
 
-import com.example.roux19.carcassonne.carcassonne.CurrTile;
-
-import java.util.ArrayList;
-import java.util.Random;
+import com.example.roux19.carcassonne.R;
+import com.example.roux19.carcassonne.game.GameMainActivity;
 
 /**
  * @author Pouya Rad, Malcolm Roux, Sean Tan, Jake Galves
+ *
+ * used to draw the board
  */
-public class GameBoard extends SurfaceView implements View.OnTouchListener
+public class GameBoard extends SurfaceView
 {
-    //arrays correspond to eachothers indexes
-    private ArrayList<Bitmap> drawnTiles = new ArrayList<Bitmap>(); //array of bitmaps
-    private ArrayList<Integer> xCors = new ArrayList<Integer>(); //array of x coordinates
-    private ArrayList<Integer> yCors = new ArrayList<Integer>(); //array of y coordinates
 
-    private float mx, my, origX, origY; //temp
-
-    boolean isMove = false;
-
-    CurrTile currTile; //reference to current tile
+    CarcassonneState gameState; //reference to gui player game state
+    GameMainActivity myActivity; //reference to gui activity
 
     public GameBoard(Context context)
     {
@@ -44,125 +36,125 @@ public class GameBoard extends SurfaceView implements View.OnTouchListener
         setWillNotDraw(false);
     }
 
-    /**
-     * setCurrTile
-     * sets reference to CurrTile
-     * @param foo
-     */
-    public void setCurrTile(CurrTile foo)
-    {
-        this.currTile = foo;
-    }
+
 
     /**
      * onDraw
      * called to draw view
-     * draws all bitmaps in array
+     * draws all tiles of the game board
+     *
      * @param canvas
      */
     @Override
     public void onDraw(Canvas canvas)
     {
+        if(gameState == null )  return; //gotta have something
+
         //iterate thorugh and draw bitmaps based on x and y coordinates
-        for( int i = 0; i<drawnTiles.size(); i++)
+        for( int i = 0; i<gameState.getBoard().length; i++)
         {
-            canvas.drawBitmap(drawnTiles.get(i), null, new RectF(xCors.get(i),yCors.get(i),xCors.get(i)+200,yCors.get(i)+200),null);
+            for( int j = 0; j<gameState.getBoard()[0].length; j++)
+            {
+                //cant draw a nothing
+                if(gameState.getBoard()[i][j] != null) {
+                    //rotate blah blah blah
+                    /**
+                     External Citation
+                     Date: 16 February 2017
+                     Problem: Rotate a bitmap
+                     Resource: http://stackoverflow.com/questions/8722359/scale-rotate-bitmap-using-
+                     matrix-in-android
+                     Solution: Used ammended example code
+                     */
+                    Bitmap toBeDrawn = BitmapFactory.decodeResource(myActivity.getResources(), gameState.getBoard()[i][j].getBitmapRes());
+                    Matrix mat = new Matrix();
+                    float rotation = gameState.getBoard()[i][j].getRotation();
+                    mat.postRotate(rotation);
+                    toBeDrawn = Bitmap.createBitmap(toBeDrawn,0,0,toBeDrawn.getWidth(),toBeDrawn.getHeight(),mat,true);
+
+                    //draw it
+                    canvas.drawBitmap(toBeDrawn, null, new RectF(200*i,200*j,200*i+200,200*j+200),null);
+
+                    //draw the possible follower
+                    for( int k = 0; k < gameState.getBoard()[i][j].getTileAreas().size(); k++) {
+                        if ( gameState.getBoard()[i][j].getTileAreas().get(k).getFollower() != null )
+                        {
+                            //keep track of top left and will be adjusted through zones
+                            int xCor = 200*i;
+                            int yCor = 200*j;
+                            //the zone in which the follower is
+                            int fz = gameState.getBoard()[i][j].getTileAreas().get(k).getFollower().getPos();
+                            //adjusting the x y corrdinate based on zone
+                            //(note) we should 1. use a meathod in follower 2. use case notation
+                            if ( fz == 0 ) {
+                                xCor += 40;
+                                yCor += 10;
+                            }
+                            else if ( fz == 1 ) {
+                                xCor += 10;
+                                yCor += 40;
+                            }
+                            else if ( fz == 2 ) {
+                                xCor += 10;
+                                yCor += 90;
+                            }
+                            else if ( fz == 3 ) {
+                                xCor += 10;
+                                yCor += 140;
+                            }
+                            else if ( fz == 4 ) {
+                                xCor += 40;
+                                yCor += 170;
+                            }
+                            else if ( fz == 5 ) {
+                                xCor += 90;
+                                yCor += 170;
+                            }
+                            else if ( fz == 6 ) {
+                                xCor += 140;
+                                yCor += 170;
+                            }
+                            else if ( fz == 7 ) {
+                                xCor += 170;
+                                yCor += 140;
+                            }
+                            else if ( fz == 8 ) {
+                                xCor += 170;
+                                yCor += 90;
+                            }
+                            else if ( fz == 9 ) {
+                                xCor += 170;
+                                yCor += 40;
+                            }
+                            else if ( fz == 10 ) {
+                                xCor += 140;
+                                yCor += 10;
+                            }
+                            else if ( fz == 11 ) {
+                                xCor += 90;
+                                yCor += 10;
+                            }
+                            else if ( fz == 12 ) {
+                                xCor += 90;
+                                yCor += 90;
+                            }
+                            Paint paint = new Paint(0xFF000000);
+                            //draw the follower
+                            canvas.drawRect(xCor, yCor, xCor+20, yCor+20, paint);
+                        }
+                    }
+
+                }
+            }
+
 
         }
     }
 
-    @Override
-    /**
-     * onTouch
-     * allows the user to scroll on the surface view to move around the map and place pieces
-     * @param v, e
-     */
-    public boolean onTouch( View v, MotionEvent e)
-    {
+    //setters
+    public void setState( CarcassonneState newGameState ) { this.gameState = newGameState; }
 
-        float curX, curY;
-
-
-
-        switch (e.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                mx = e.getX();
-                my = e.getY();
-                origX = e.getX();
-                origY = e.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if ( Math.abs(e.getX()-origX) > 50 || Math.abs(e.getY()-origY) > 50 ) { isMove = true; }
-                curX = e.getX();
-                curY = e.getY();
-                v.scrollBy((int)(mx-curX), (int)(my-curY));
-                mx = curX;
-                my = curY;
-                break;
-            case MotionEvent.ACTION_UP:
-                if (isMove) {
-                    curX = e.getX();
-                    curY = e.getY();
-                    v.scrollBy((int) (mx - curX), (int) (my - curY));
-                    isMove = false;
-                    return false;
-                }
-                else {
-                    return placePiece( v, e);
-                }
-        }
-
-        return true;
+    public void setMyActivity(GameMainActivity myActivity) {
+        this.myActivity = myActivity;
     }
-
-    /**
-     * onTouch
-     * adds appropriate bitmap to bitmap array
-     * also adds x and y coordinates based on location of touch
-     * @param v
-     * @param event
-     * @return
-     */
-    public boolean placePiece(View v, MotionEvent event)
-    {
-        Random rand = new Random(); //who cares
-
-        int touchX = (int)(event.getX()+v.getScrollX());
-        int touchY = (int)(event.getY()+v.getScrollY());
-
-        int placeX = 0;
-        int placeY = 0;
-
-        if (touchX<0) { placeX = -200;}
-        if (touchY<0) { placeY = -200;}
-
-        //set coordinates
-        xCors.add((Integer)(touchX-touchX%200+placeX)); //round down to nearest 200
-        yCors.add((Integer)(touchY-touchY%200+placeY)); //round down to nearest 200
-
-        /**
-         * External Citation
-         *  Date: 2/16/17
-         *  Problem: rotate a bitmap to make another bitmap
-         *  Resource: stackoverflow.com/questions/3440690/rotating-a-bitmap-using-matrix
-         *  Solution: make a matrix, rotate the matrix, make a bitmap copy using the matrix*
-         */
-        Matrix mat = new Matrix();
-
-        float rotation = currTile.getRotation();
-
-        mat.postRotate(rotation);
-
-        Bitmap draw = Bitmap.createBitmap(currTile.getCurrTile(), 0,0,
-                currTile.getCurrTile().getWidth(), currTile.getCurrTile().getHeight(), mat, true);
-
-        drawnTiles.add(draw); //add bitmap to array
-        currTile.invalidate(); //redraw curTile
-        this.invalidate(); //draw me like one of your french girls
-
-
-        return false; //yeah, really a toss up between true and false... true makes it like draw continuously, like bad
-    }
-
 }

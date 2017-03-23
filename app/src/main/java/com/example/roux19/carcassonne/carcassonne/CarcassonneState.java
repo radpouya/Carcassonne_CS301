@@ -1,5 +1,6 @@
 package com.example.roux19.carcassonne.carcassonne;
 
+import com.example.roux19.carcassonne.game.GamePlayer;
 import com.example.roux19.carcassonne.game.infoMsg.GameState;
 import com.example.roux19.carcassonne.game.infoMsg.TimerInfo;
 
@@ -7,9 +8,15 @@ import java.util.ArrayList;
 
 /**
  * Created by roux19 on 2/20/2017.
+ *
+ * holds all information of the game
+ * if someone flips a table this will let us recreate it and then some
  */
 public class CarcassonneState extends GameState
 {
+
+    //keep track of what phase of the turn we are in
+    //useful and responsible static final variables
     public static final char PIECE_PHASE = 'p';
     public static final char FOLLOWER_PHASE = 'f';
     public static final char END_TURN_PHASE = 'e';
@@ -27,8 +34,32 @@ public class CarcassonneState extends GameState
 
     /**
      * CarcassonneState
-     * creates deep copy with all parameters of the game state
-     * @param
+     * creates the intial settup of a game state
+     */
+    public CarcassonneState( )
+    {
+        board = new Tile[128][128];
+        currTile = null;
+        plyrTurn = 0;
+        tileRemaining = 50;
+        xCurrTile = 0;
+        yCurrTile = 0;
+        turnPhase = PIECE_PHASE;
+    }
+
+    /**
+     * CarcassoneeState
+     * creastes a full carcassonee state form parameters
+     * i dont think we will ever use this but who cares
+     * @param initBoard
+     * @param initTileRemaining
+     * @param initPlyrTurn
+     * @param initCurrTile
+     * @param initScores
+     * @param initRemainingFollowers
+     * @param initXCurrTile
+     * @param initYCurrTile
+     * @param initTurnPhase
      */
     public CarcassonneState( Tile[][] initBoard, int initTileRemaining, int initPlyrTurn,
                              Tile initCurrTile, ArrayList<Integer> initScores,
@@ -67,18 +98,22 @@ public class CarcassonneState extends GameState
      */
     public CarcassonneState( CarcassonneState initState )
     {
-        for( int i = 0; i < initState.getBoard().length; i++)
-        {
-            for ( int j = 0; j < initState.getBoard()[0].length; j++)
-            {
-                board[i][j] = new Tile(initState.getBoard()[i][j]);
+        if (initState.board != null) {
+            board = new Tile[initState.board.length][initState.board[0].length];
+            for (int i = 0; i < initState.getBoard().length; i++) {
+                for (int j = 0; j < initState.getBoard()[0].length; j++) {
+                    if (initState.board[i][j] != null) {
+                        board[i][j] = new Tile(initState.getBoard()[i][j]);
+                    }
+                }
             }
         }
 
-        for( int i = 0; i < scores.size(); i++)
-        {
-            scores.add(initState.getScores().get(i));
-            remainingFollowers.add(initState.getRemainingFollowers().get(i));
+        if (initState.scores != null) {
+            for (int i = 0; i < initState.scores.size(); i++) {
+                scores.add(initState.getScores().get(i));
+                remainingFollowers.add(initState.getRemainingFollowers().get(i));
+            }
         }
 
         xCurrTile = initState.getxCurrTile();
@@ -87,7 +122,24 @@ public class CarcassonneState extends GameState
         turnPhase = initState.getTurnPhase();
         plyrTurn = initState.getPlyrTurn();
         tileRemaining = initState.getTileRemaining();
-        currTile = new Tile(initState.getCurrTile());
+        if (initState.currTile != null) {
+            currTile = new Tile(initState.getCurrTile());
+        }
+    }
+
+    /**
+     * addPlayers
+     * adds the game state varibles that depend on the number of players
+     * used at the game start
+     * @param players
+     */
+    public void addPlayers(GamePlayer[] players)
+    {
+        for(int i = 0; i < players.length; i++)
+        {
+            scores.add(0);
+            remainingFollowers.add(7);
+        }
     }
 
 

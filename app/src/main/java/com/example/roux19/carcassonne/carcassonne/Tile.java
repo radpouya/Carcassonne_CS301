@@ -19,25 +19,29 @@ public class Tile {
     public static final char CASTLE = 'c';
     public static final char EMPTY = 'n'; //rare but sometimes the middle zone is not used
 
-    private Bitmap tilePic; //appropriately rotated pic of tile
+    private int bitmapRes; //keeps the address of the needed bitmap, does this work with network play???
+    private int rotation; //rotation of tile
     private char[] zones = new char[13]; //stores the terrain on tile
 
-    private ArrayList<Area> tileAreas = new ArrayList<Area>();
+    private ArrayList<Area> tileAreas = new ArrayList<Area>(); //all the areas in the tile
 
 
     /**
-     * draws the tile and breaks down into 13 zones
-     * @param initTilePic
+     * Tile
+     * creates a tile from scratch
+     * idk if we ever need this
+     * @param initBitmapRes
      * @param initZones
-     * @param initFollower
      * @param initTileAreas
+     * @param initRotation
      *
      */
-    public Tile( Bitmap initTilePic, char[] initZones, int initFollower, ArrayList<Area>
-            initTileAreas )
+    public Tile( int initBitmapRes, char[] initZones,  ArrayList<Area>
+            initTileAreas, int initRotation )
     {
-        this.tilePic = Bitmap.createBitmap(initTilePic,0,0,initTilePic.getHeight(),
-                initTilePic.getWidth());
+
+        bitmapRes = initBitmapRes;
+        rotation = initRotation;
         for( int i = 0; i<13; i++)
         {
             this.zones[i] = initZones[i];
@@ -49,14 +53,52 @@ public class Tile {
     }
 
     /**
+     * Tile
+     * creates a tile initially
+     * used to make tiles into tile deck
+     * replaces area arguemnt with area propigation
+     * propigation indexes correspond to zone indexes
+     * propigatoin values correspond to areas indexes
+     * values must go from lowest to highest
+     * @param initBitmapRes
+     * @param initZones
+     * @param initArrayPropigation
+     * @param initRotation
+     */
+    public Tile( int initBitmapRes, char[] initZones, int[] initArrayPropigation, int initRotation )
+    {
+        bitmapRes = initBitmapRes;
+        rotation = initRotation;
+        for( int i = 0; i<13; i++)
+        {
+            this.zones[i] = initZones[i];
+        }
+
+        for( int i = 0; i<13; i++) //loop through all the zones
+        {
+            if (tileAreas.size() == initArrayPropigation[i]) //if we have not created this area yet
+            {
+                int score = 2; //the score is 2 per tile
+                if( initZones[i] == Tile.FARM) score = 1; //unless farm then 1
+                //make a new area and add it, it has this indexes type no owner no tile and no zones yet
+                tileAreas.add(new Area(initZones[i], score, -1, null, null));
+            }
+
+            //add this zone to this areas occupied zones
+            tileAreas.get(initArrayPropigation[i]).getOccZones().add(i);
+        }
+    }
+
+    /**
+     * Tile
      * deep copy of Tile class above
      * @param tile
      */
     public Tile( Tile tile)
     {
         if( tile == null ){ return; }
-        this.tilePic = Bitmap.createBitmap(tile.tilePic,0,0,tile.tilePic.getHeight(),
-                tile.tilePic.getWidth());
+        this.bitmapRes = tile.bitmapRes;
+        this.rotation = tile.rotation;
         for( int i = 0; i<13; i++)
         {
             this.zones[i] = tile.zones[i];
@@ -69,8 +111,10 @@ public class Tile {
     }
 
     /**
-     * Tells the state if a tile is able to be place next to another tile per our algorithm and if
-     * that the zones match to the corresponding partner zones
+     * isPlacable
+     * tells whether a follower can be placed on a specific area
+     * basically searching for a connected follower
+     * uses the index of the area the follower is being placed on
      * @param indexOfArea
      * @param xCor
      * @param yCor
@@ -80,124 +124,172 @@ public class Tile {
      */
     public boolean isPlaceable(int indexOfArea, int xCor, int yCor, CarcassonneState gameState,
                                ArrayList<Area> touchedAreas){
+        // this is the area we are working with
         Area targetArea = tileAreas.get(indexOfArea);
 
+        //if this area has already been touched return true (aka, base case to not double back)
         for( int i = 0; i < touchedAreas.size(); i++ )
         {
             if ( targetArea ==  touchedAreas.get(i) ) return true;
         }
+        //add this area to the touched areas list
+        touchedAreas.add(targetArea);
+        //infinite recursion: fixed
 
+        //if this area has a follower then return false (base case to false)
         if ( this.getTileAreas().get(indexOfArea).getFollower() != null ) return false;
 
-        Tile roamTile;
-        int roamTileAreaIndex;
-        // yes we know this is a lot of IF statements but that was the only way that we could think
+        Tile roamTile; //the tile we will roam to (up, down, left, right)
+        int roamTileAreaIndex; //the index of the are we will roam to within the roam tile
+
+        //yes we know this is a lot of IF statements but that was the only way that we could think
         //of the match the appropriate zones together
+
+        //for all of our zones
         for( int i = 0; i < targetArea.getOccZones().size(); i++ ){
+            //if we are in the 0 zone
             if ( targetArea.getOccZones().get(i) == 0 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()-1];
-                roamTileAreaIndex = getAreaIndexFromZone( 4 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),
-                        gameState.getyCurrTile()-1,gameState,touchedAreas) ) return false;
+                //have our roam be to the top
+                roamTile = gameState.getBoard()[xCor][yCor-1];
+                //if the roam is not false
+                if( roamTile != null ) {
+                    //0 goes to 4 so find the index of area that we are roaming to
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(4);
+                    //recursive call on that area, if it evaluates as false then return false
+                    //if it is true we still gotta search everywhere else
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor - 1, gameState, touchedAreas)) return false;
+                }
             }
+            //find which zone we are in
             else if ( targetArea.getOccZones().get(i) == 1 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()-1][gameState.getyCurrTile()];
-                roamTileAreaIndex = getAreaIndexFromZone( 9 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()-1,
-                        gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+                //roam to the tile this zone borders
+                roamTile = gameState.getBoard()[xCor-1][yCor];
+                //if the roam tile is not null
+                if( roamTile != null ) {
+                    //roam to the area this zone borders
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(9);
+                    //call this meathod on the area this zone borders
+                    //if this is false then we are false
+                    //if this is true we have to finish everything else
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor - 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 2 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()-1][gameState.getyCurrTile()];
-                roamTileAreaIndex = getAreaIndexFromZone( 8 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()-1,
-                        gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor-1][yCor];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(8);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor - 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 3 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()-1][gameState.getyCurrTile()];
-                roamTileAreaIndex = getAreaIndexFromZone( 7 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()-1,
-                        gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor-1][yCor];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(7);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor - 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 4 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()+1];
-                roamTileAreaIndex = getAreaIndexFromZone( 0 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),
-                        gameState.getyCurrTile()+1,gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor][yCor+1];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(0);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor + 1, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 5 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()+1];
-                roamTileAreaIndex = getAreaIndexFromZone( 11 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),
-                        gameState.getyCurrTile()+1,gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor][yCor+1];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(11);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor + 1, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 6 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()+1];
-                roamTileAreaIndex = getAreaIndexFromZone( 10 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),
-                        gameState.getyCurrTile()+1,gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor][yCor+1];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(10);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor + 1, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 7 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()+1][gameState.getyCurrTile()];
-                roamTileAreaIndex = getAreaIndexFromZone( 3 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()+1,
-                        gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor+1][yCor];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(3);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor + 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 8 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()+1][gameState.getyCurrTile()];
-                roamTileAreaIndex = getAreaIndexFromZone( 2 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile()+1,
-                        gameState.getyCurrTile(),gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor+1][yCor];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(2);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor + 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 9 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()+1][gameState.getyCurrTile()];
-                roamTileAreaIndex = getAreaIndexFromZone( 1 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),
-                        gameState.getyCurrTile()-1,gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor+1][yCor];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(1);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor - 1, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 10 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()-1];
-                roamTileAreaIndex = getAreaIndexFromZone( 6 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),
-                        gameState.getyCurrTile()-1,gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor][yCor-1];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(6);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor - 1, gameState, touchedAreas)) return false;
+                }
             }
             else if ( targetArea.getOccZones().get(i) == 11 )
             {
-                roamTile = gameState.getBoard()[gameState.getxCurrTile()][gameState.getyCurrTile()-1];
-                roamTileAreaIndex = getAreaIndexFromZone( 5 );
-                if( !roamTile.isPlaceable(roamTileAreaIndex,gameState.getxCurrTile(),
-                        gameState.getyCurrTile()-1,gameState,touchedAreas) ) return false;
+                roamTile = gameState.getBoard()[xCor][yCor-1];
+                if( roamTile != null ) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(5);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor - 1, gameState, touchedAreas)) return false;
+                }
             }
         }
 
+        //if all of our calls have retrurned true
         return true;
 
     }
 
     /**
-     * gets the zones that are occupied on a tile
+     * getAreaIndexFromZone
+     * get the index of the area which ocupies a given zone
      * @param zoneIndex
      * @return
      */
     public int getAreaIndexFromZone( int zoneIndex ) {
-
+        //through all of the areas in this tile
         for( int i = 0; i < this.getTileAreas().size(); i++ ) {
-
-            for( int j = 0; j < this.getTileAreas().get(i).getOccZones().size(); i++) {
-
+            //through all of the zones in that area
+            for( int j = 0; j < this.getTileAreas().get(i).getOccZones().size(); j++) {
+                //if the area has the zone we are looking at
                 if( zoneIndex == this.getTileAreas().get(i).getOccZones().get(j) ) {
 
-                    return i;
+                    return i; //return the index of that area
 
                 }
 
@@ -205,52 +297,67 @@ public class Tile {
 
         }
 
-        return -1;
+        return -1; //this should never happen...
     }
 
     /**
+     * rotateTile
      * Allows you to rotate a piece plus or minus 90 degrees and keeps the allowed partnered
      * to the zones they had before
      * @param isClockwise
      */
     public void rotateTile( boolean isClockwise ) {
+        //transfering boolean to int...
+        int rotateDirection = -1;
+        if (isClockwise) rotateDirection = 1;
 
-        Matrix mat = new Matrix();
+        //this is a rotation that will be used on a bitmap
+        rotation = rotation+90*rotateDirection;
 
-        int rotateDirection = 1;
-        if (isClockwise) rotateDirection = -1;
+        //create array to house all of the adjusted zones
+        char[] newZones = new char[13];
 
-        mat.postRotate(90*rotateDirection);
-
-        Bitmap draw = Bitmap.createBitmap(this.tilePic, 0,0, this.tilePic.getWidth(),
-                this.tilePic.getHeight(), mat, true);
-
-        int[] newZones = new int[13];
-
-        int rotateScalar = 3;
-        if(isClockwise) rotateScalar = 9;
+        //this will be how much the index of the zones switch
+        //if we are conter clockwise everything goes forward 9 spaces (or backwards 3 spaces
+        // buut negative numbers are bad)
+        int rotateScalar = 9;
+        //if we are clockwise everything goes forward 3 spaces
+        if(isClockwise) rotateScalar = 3;
 
         for( int i = 0; i<12; i++) {
+            //for all the zones 0-11 adjust the index, mod 12 to keep it in the array
             newZones[i] = zones[(i+rotateScalar)%12];
         }
 
+        //zone 12 will always be the same, the joys of being the middle zone
         newZones[12] = zones[12];
+        //transfer zones over
+        zones = newZones;
 
-        for( int i = 0; i<tileAreas.size(); i++)
+        //same concept but we are adjusting the zones within the areas
+        for( int i = 0; i<tileAreas.size(); i++) //all the areas
         {
-            for( int j = 0; j<tileAreas.get(i).getOccZones().size(); j++)
+            for( int j = 0; j<tileAreas.get(i).getOccZones().size(); j++) //all the occupied zones
             {
-                if( tileAreas.get(i).getOccZones().get(j) != 12 )
+                if( tileAreas.get(i).getOccZones().get(j) != 12 ) //if we aren't zone 12
                 {
                     tileAreas.get(i).getOccZones().set(j, (tileAreas.get(i).getOccZones().get(j)
-                            + rotateScalar) % 12);
+                            + rotateScalar) % 12); //get adjusted by the scalar and get back to array bounds
                 }
             }
         }
     }
 
+    //getters
     public char[] getZones() { return zones; }
 
+    public int getRotation() {
+        return rotation;
+    }
+
+    public int getBitmapRes() {
+        return bitmapRes;
+    }
 
     public ArrayList<Area> getTileAreas() {
         return tileAreas;

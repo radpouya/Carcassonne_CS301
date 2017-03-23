@@ -4,7 +4,7 @@ package com.example.roux19.carcassonne.game;
 import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 
 /**
- * To support remote play, this game framework has two types of Games: local
+ * To support remote play, this game framework has tile2 types of Games: local
  * games and remote games that are represented by a proxy. Both types adhere to
  * this common interface.
  * 

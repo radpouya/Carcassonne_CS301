@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * A class that supports two-way passing of objects across the network,
+ * A class that supports tile2-way passing of objects across the network,
  * using serialization.
  * 
  * @author Steven R. Vegdahl
