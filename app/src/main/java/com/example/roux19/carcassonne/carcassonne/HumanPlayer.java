@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GameHumanPlayer;
@@ -27,6 +28,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     //our buttons
     private Button rotateLeftAndCancel;
     private Button rotateRightAndEndTurn;
+    private TextView followerText;
 
     //the state we have
     private CarcassonneState state;
@@ -58,6 +60,28 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             //draw our stuff
             gameBoardView.invalidate();
             currTileView.invalidate();
+
+            //set relevant text in buttons corresponding to state
+            if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE)
+            {
+                rotateLeftAndCancel.setText("<---");
+                rotateRightAndEndTurn.setText("--->");
+            }
+            else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE)
+            {
+                rotateLeftAndCancel.setText("UNDO");
+                rotateRightAndEndTurn.setText("END TURN");
+            }
+            else if (state.getTurnPhase() == CarcassonneState.END_TURN_PHASE)
+            {
+                rotateLeftAndCancel.setText("UNDO");
+                rotateRightAndEndTurn.setText("END TURN");
+            }
+
+            //set relevant follower text
+            int playerFollowers;
+            playerFollowers = state.getRemainingFollowers().get(this.playerNum);
+            followerText.setText("Followers: "+playerFollowers);
         }
     }
 
@@ -73,6 +97,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         gameBoardView = (GameBoard)activity.findViewById(R.id.gameBoard);
         rotateLeftAndCancel = (Button)activity.findViewById(R.id.rotateLeft);
         rotateRightAndEndTurn = (Button)activity.findViewById(R.id.rotateRight);
+        followerText = (TextView)activity.findViewById(R.id.followersText);
 
         //send references to activity (used fo retreiving recourses)
         gameBoardView.setMyActivity(activity);

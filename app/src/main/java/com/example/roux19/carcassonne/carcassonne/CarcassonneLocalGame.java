@@ -54,7 +54,7 @@ public class CarcassonneLocalGame extends LocalGame
             else if ( i == 3 )
             {
                 char[] tempZones = {'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'n'};
-                int[] tempAreaProp = {0, 1, 2, 3, 3, 3, 3, 3, 2, 1, 0, 0, 2};
+                int[] tempAreaProp = {0, 0, 1, 2, 2, 3, 4, 4, 5, 0, 0, 0, -1};
                 tileDeck.add( new Tile( R.drawable.tile3, tempZones, tempAreaProp, 0));
             }
         }

@@ -76,16 +76,19 @@ public class Tile {
 
         for( int i = 0; i<13; i++) //loop through all the zones
         {
-            if (tileAreas.size() == initArrayPropigation[i]) //if we have not created this area yet
-            {
-                int score = 2; //the score is 2 per tile
-                if( initZones[i] == Tile.FARM) score = 1; //unless farm then 1
-                //make a new area and add it, it has this indexes type no owner no tile and no zones yet
-                tileAreas.add(new Area(initZones[i], score, -1, null, null));
-            }
+            //negative 1 means skip this zone (it is an empty zone)
+            if( initArrayPropigation[i] != -1 ) {
+                if (tileAreas.size() == initArrayPropigation[i]) //if we have not created this area yet
+                {
+                    int score = 2; //the score is 2 per tile
+                    if (initZones[i] == Tile.FARM) score = 1; //unless farm then 1
+                    //make a new area and add it, it has this indexes type no owner no tile and no zones yet
+                    tileAreas.add(new Area(initZones[i], score, -1, null, null));
+                }
 
-            //add this zone to this areas occupied zones
-            tileAreas.get(initArrayPropigation[i]).getOccZones().add(i);
+                //add this zone to this areas occupied zones
+                tileAreas.get(initArrayPropigation[i]).getOccZones().add(i);
+            }
         }
     }
 
