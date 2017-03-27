@@ -15,8 +15,6 @@ public class Area {
 
     private int points; //total amount of points to be awarded for this area (can change)
 
-    private int ownership; //int corresponds to player number in game framework (-1 if no owner)
-
     private Follower follower; //null by default, holds a portential follower within the area
 
     private ArrayList<Integer> occZones = new ArrayList<Integer>(); //occ means occupied, the zones
@@ -27,7 +25,6 @@ public class Area {
      * normal constructor for an area, taking in all params
      * @param initType
      * @param initPoints
-     * @param initOwnership
      * @param initOccZones
      * @param initFollower
      */
@@ -36,7 +33,6 @@ public class Area {
 
         type = initType;
         points = initPoints;
-        ownership = initOwnership;
         if (initFollower != null) {
             follower = new Follower(initFollower);
         }
@@ -59,13 +55,209 @@ public class Area {
 
         type = area.type;
         points = area.points;
-        ownership = area.ownership;
         if ( area.follower != null) {
             follower = new Follower(area.follower);
         }
         if( area.occZones != null ) {
             for (int i = 0; i < area.occZones.size(); i++) {
                 occZones.add(new Integer(area.occZones.get(i)));
+            }
+        }
+    }
+
+    public boolean isCompleted( CarcassonneState gameState , int xCor, int yCor, ArrayList<Area> touchedAreas)
+    {
+        //farms are never done
+        if ( this.type == Tile.FARM ) return false;
+
+        //if this area has already been touched return true (aka, base case to not double back)
+        for( int i = 0; i < touchedAreas.size(); i++ )
+        {
+            if ( this ==  touchedAreas.get(i) ) return true;
+        }
+        //add this area to the touched areas list
+        touchedAreas.add(this);
+        //infinite recursion: fixed
+
+        Tile roamTile; //the tile we will roam to (up, down, left, right)
+        int roamTileAreaIndex; //the index of the are we will roam to within the roam tile
+
+        //yes we know this is a lot of IF statements but that was the only way that we could think
+        //of the match the appropriate zones together
+
+        //for all of our zones
+        for( int i = 0; i < this.occZones.size(); i++ ){
+            //if we are in the 0 zone
+            if ( this.occZones.get(i) == 0 )
+            {
+                //have our roam be to the top
+                roamTile = gameState.getBoard()[xCor][yCor-1];
+                //if the roam is not false
+                if( roamTile == null) return false;
+                else {
+                    //0 goes to 4 so find the index of area that we are roaming to
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(4);
+                    //recursive call on that area, if it evaluates as false then return false
+                    //if it is true we still gotta search everywhere else
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor - 1, gameState, touchedAreas)) return false;
+                }
+            }
+            //find which zone we are in
+            else if ( this.occZones.get(i) == 1 )
+            {
+                //roam to the tile this zone borders
+                roamTile = gameState.getBoard()[xCor-1][yCor];
+                //if the roam tile is not null
+                if( roamTile == null) return false;
+                else  {
+                    //roam to the area this zone borders
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(9);
+                    //call this meathod on the area this zone borders
+                    //if this is false then we are false
+                    //if this is true we have to finish everything else
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor - 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 2 )
+            {
+                roamTile = gameState.getBoard()[xCor-1][yCor];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(8);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor - 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 3 )
+            {
+                roamTile = gameState.getBoard()[xCor-1][yCor];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(7);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor - 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 4 )
+            {
+                roamTile = gameState.getBoard()[xCor][yCor+1];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(0);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor + 1, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 5 )
+            {
+                roamTile = gameState.getBoard()[xCor][yCor+1];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(11);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor + 1, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 6 )
+            {
+                roamTile = gameState.getBoard()[xCor][yCor+1];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(10);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor + 1, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 7 )
+            {
+                roamTile = gameState.getBoard()[xCor+1][yCor];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(3);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor + 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 8 )
+            {
+                roamTile = gameState.getBoard()[xCor+1][yCor];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(2);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor + 1,
+                            yCor, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 9 )
+            {
+                roamTile = gameState.getBoard()[xCor+1][yCor];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(1);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor - 1, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 10 )
+            {
+                roamTile = gameState.getBoard()[xCor][yCor-1];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(6);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor - 1, gameState, touchedAreas)) return false;
+                }
+            }
+            else if ( this.occZones.get(i) == 11 )
+            {
+                roamTile = gameState.getBoard()[xCor][yCor-1];
+                if( roamTile == null) return false;
+                else {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(5);
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
+                            yCor - 1, gameState, touchedAreas)) return false;
+                }
+            }
+        }
+
+        //if all of our calls have retrurned true
+        return true;
+    }
+
+    public void score( ArrayList<Area> areasToScore, int numPlayers, CarcassonneState gameState )
+    {
+        int score = 0;
+        for( int i = 0; i < areasToScore.size(); i++)
+        {
+            score += areasToScore.get(i).points;
+        }
+
+        int[] numFollowerPerOwner = new int[numPlayers];
+        for( int i = 0; i < areasToScore.size(); i++ )
+        {
+            if( areasToScore.get(i).getFollower() != null )
+            {
+                numFollowerPerOwner[areasToScore.get(i).getFollower().getOwner()]++;
+            }
+        }
+
+        int highestNumFollowers = 1;
+        for( int i = 0; i < numPlayers; i++ )
+        {
+            if ( numFollowerPerOwner[i] > highestNumFollowers )
+            {
+                highestNumFollowers = numFollowerPerOwner[i];
+            }
+        }
+
+
+        for( int i = 0; i < numPlayers; i++ )
+        {
+            if ( numFollowerPerOwner[i] == highestNumFollowers )
+            {
+                gameState.getScores().set( i, gameState.getScores().get(i) + score );
             }
         }
     }

@@ -41,8 +41,8 @@ public class CarcassonneLocalGame extends LocalGame
             }
             else if ( i == 1 )
             {
-                char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'c', 'c', 'r'};
-                int[] tempAreaProp = {0, 1, 2, 3, 3, 2, 1, 1, 1, 1, 0, 0, 2};
+                char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'c', 'c', 'f'};
+                int[] tempAreaProp = {0, 1, 2, 3, 3, 2, 1, 1, 1, 1, 0, 0, 1};
                 tileDeck.add( new Tile( R.drawable.tile1, tempZones, tempAreaProp, 0));
             }
             else if ( i == 2 )
@@ -235,6 +235,9 @@ public class CarcassonneLocalGame extends LocalGame
             //if we are in ther correct phase
             if(gameState.getTurnPhase() != CarcassonneState.FOLLOWER_PHASE) return false;
 
+            //if this player is out of followers
+            if(gameState.getRemainingFollowers().get( getPlayerIdx(pfa.getPlayer())) < 1) return false;
+
             //get the index of the area we are placing on within the tile
             int indexOfTargetArea = gameState.getCurrTile().getAreaIndexFromZone( pfa.getZone() );
 
@@ -310,12 +313,15 @@ public class CarcassonneLocalGame extends LocalGame
             //the only state you are not allowed to end the turn in is the peice phase
             if(gameState.getTurnPhase() == CarcassonneState.PIECE_PHASE) return false;
 
+            //appropriately score the curr tile
+            gameState.getCurrTile().endTurnScore( gameState, gameState.getxCurrTile(), gameState.getyCurrTile() );
             //go to next player's turn, loop around if necessary
             gameState.setPlyrTurn((gameState.getPlyrTurn()+1)%this.players.length);
             //get another tile
             gameState.setCurrTile(this.randTile());
             //go to starting phase of next turn
             gameState.setTurnPhase(CarcassonneState.PIECE_PHASE);
+
 
             return true;
         }//allows player whose turn it is to rotate a tile

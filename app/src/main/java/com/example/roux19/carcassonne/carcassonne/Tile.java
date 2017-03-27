@@ -337,6 +337,9 @@ public class Tile {
         //transfer zones over
         zones = newZones;
 
+        rotateScalar = 12 - rotateScalar; //we rotate the zones within the areas in the opposite
+        // direction of the tile zones, hard to explain in text
+
         //same concept but we are adjusting the zones within the areas
         for( int i = 0; i<tileAreas.size(); i++) //all the areas
         {
@@ -347,6 +350,18 @@ public class Tile {
                     tileAreas.get(i).getOccZones().set(j, (tileAreas.get(i).getOccZones().get(j)
                             + rotateScalar) % 12); //get adjusted by the scalar and get back to array bounds
                 }
+            }
+        }
+    }
+
+    public void endTurnScore( CarcassonneState gameState, int xCor, int yCor)
+    {
+        for( int i = 0; i < this.tileAreas.size(); i++ )
+        {
+            ArrayList<Area> touchedArea = new ArrayList<Area>();
+            if ( this.tileAreas.get(i).isCompleted( gameState , xCor, yCor, touchedArea ))
+            {
+                this.tileAreas.get(i).score( touchedArea, gameState.getScores().size(), gameState );
             }
         }
     }
