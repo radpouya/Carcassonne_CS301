@@ -249,8 +249,8 @@ public class Tile {
                 roamTile = gameState.getBoard()[xCor+1][yCor];
                 if( roamTile != null ) {
                     roamTileAreaIndex = roamTile.getAreaIndexFromZone(1);
-                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
-                            yCor - 1, gameState, touchedAreas)) return false;
+                    if (!roamTile.isPlaceable(roamTileAreaIndex, xCor+1,
+                            yCor, gameState, touchedAreas)) return false;
                 }
             }
             else if ( targetArea.getOccZones().get(i) == 10 )
@@ -354,13 +354,28 @@ public class Tile {
         }
     }
 
+    /**
+     * endTurnScore
+     * meathod to be called at the end of every turn
+     * checks to see if any areas are ready to be scored
+     * appropriately scores areas and returns followers
+     * @param gameState
+     * @param xCor
+     * @param yCor
+     */
     public void endTurnScore( CarcassonneState gameState, int xCor, int yCor)
     {
+        //loop through all the areas in this tile
         for( int i = 0; i < this.tileAreas.size(); i++ )
         {
+            //make a blank arraylist of areas
             ArrayList<Area> touchedArea = new ArrayList<Area>();
+            //check if this area is completed aka doesnt have any loose ends
+            //this also fills the array with all the connected areas
             if ( this.tileAreas.get(i).isCompleted( gameState , xCor, yCor, touchedArea ))
             {
+                //give the score of all the connected areas to the appropriate player(s)
+                //also return the follower to the player
                 this.tileAreas.get(i).score( touchedArea, gameState.getScores().size(), gameState );
             }
         }

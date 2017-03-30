@@ -213,7 +213,7 @@ public class CarcassonneLocalGame extends LocalGame
             }
 
             //place da tile
-            gameState.getBoard()[ppa.getxCor()][ppa.getyCor()] = new Tile(gameState.getCurrTile());
+            gameState.getBoard()[ppa.getxCor()][ppa.getyCor()] = gameState.getCurrTile();
             //set coordinates of tile
             gameState.setxCurrTile(ppa.getxCor());
             gameState.setyCurrTile(ppa.getyCor());
