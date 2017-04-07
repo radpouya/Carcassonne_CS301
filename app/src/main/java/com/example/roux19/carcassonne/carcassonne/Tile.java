@@ -2,8 +2,12 @@ package com.example.roux19.carcassonne.carcassonne;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
 
+import com.example.roux19.carcassonne.game.GameMainActivity;
 import com.example.roux19.carcassonne.game.infoMsg.GameState;
 
 import java.util.ArrayList;
@@ -377,6 +381,98 @@ public class Tile {
                 //give the score of all the connected areas to the appropriate player(s)
                 //also return the follower to the player
                 this.tileAreas.get(i).score( touchedArea, gameState.getScores().size(), gameState );
+            }
+        }
+    }
+
+    /**
+     * drawTile
+     * meathod to be called in surface views
+     * draws the tile and potential follower
+     * @return
+     */
+    public void drawTile( float xCor, float yCor, float size, Canvas c, GameMainActivity myActivity, Paint[] playerPaints )
+    {
+        /**
+         External Citation
+         Date: 16 February 2017
+         Problem: Rotate a bitmap
+         Resource: http://stackoverflow.com/questions/8722359/scale-rotate-bitmap-using-
+         matrix-in-android
+         Solution: Used ammended example code
+         */
+        Bitmap toBeDrawn = BitmapFactory.decodeResource(myActivity.getResources(), bitmapRes);
+        Matrix mat = new Matrix();
+        mat.postRotate(rotation);
+        toBeDrawn = Bitmap.createBitmap(toBeDrawn,0,0,toBeDrawn.getWidth(),toBeDrawn.getHeight(),mat,true);
+
+        //draw it
+        c.drawBitmap(toBeDrawn, null, new RectF(size*xCor,size*yCor,size*xCor+size,size*yCor+size),null);
+
+        //draw the possible follower
+        for( int k = 0; k < tileAreas.size(); k++) {
+            if ( tileAreas.get(k).getFollower() != null )
+            {
+                //keep track of top left and will be adjusted through zones
+                float topLeftX = 200*xCor;
+                float topLeftY = 200*yCor;
+                //the zone in which the follower is
+                int fz = tileAreas.get(k).getFollower().getPos();
+                //adjusting the x y corrdinate based on zone
+                //(note) we should 1. use a meathod in follower 2. use case notation
+                if ( fz == 0 ) {
+                    topLeftX += size*.2;
+                    topLeftY += size*.05;
+                }
+                else if ( fz == 1 ) {
+                    topLeftX += size*.05;
+                    topLeftY += size*.2;
+                }
+                else if ( fz == 2 ) {
+                    topLeftX += size*.05;
+                    topLeftY += size*.45;
+                }
+                else if ( fz == 3 ) {
+                    topLeftX += size*.05;
+                    topLeftY += size*.7;
+                }
+                else if ( fz == 4 ) {
+                    topLeftX += size*.2;
+                    topLeftY += size*.85;
+                }
+                else if ( fz == 5 ) {
+                    topLeftX += size*.45;
+                    topLeftY += size*.85;
+                }
+                else if ( fz == 6 ) {
+                    topLeftX += size*.7;
+                    topLeftY += size*.85;
+                }
+                else if ( fz == 7 ) {
+                    topLeftX += size*.85;
+                    topLeftY += size*.7;
+                }
+                else if ( fz == 8 ) {
+                    topLeftX += size*.85;
+                    topLeftY += size*.45;
+                }
+                else if ( fz == 9 ) {
+                    topLeftX += size*.85;
+                    topLeftY += size*.2;
+                }
+                else if ( fz == 10 ) {
+                    topLeftX += size*.7;
+                    topLeftY += size*.05;
+                }
+                else if ( fz == 11 ) {
+                    topLeftX += size*.45;
+                    topLeftY += size*.05;
+                }
+                else if ( fz == 12 ) {
+                    topLeftX += size*.45;
+                    topLeftY += size*.45;
+                }
+                c.drawRect(topLeftX, topLeftY, (float)(topLeftX+size*.1), (float)(topLeftY+size*.1), playerPaints[tileAreas.get(k).getFollower().getOwner()]);
             }
         }
     }

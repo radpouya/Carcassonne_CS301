@@ -2,6 +2,7 @@ package com.example.roux19.carcassonne.carcassonne;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private Button rotateLeftAndCancel;
     private Button rotateRightAndEndTurn;
     private TextView followerText;
+    private TextView scoreText;
 
     //the state we have
     private CarcassonneState state;
@@ -52,37 +54,45 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         if (info == null) return;
 
         if (!(info instanceof CarcassonneState)) return; // if we do not have a CarcassonneState, ignore
-        else {
-            this.state = (CarcassonneState)info; //set our state
-            gameBoardView.setState((CarcassonneState)info); //set the boards state
-            currTileView.setState((CarcassonneState)info); //set the current tile's state
+        this.state = (CarcassonneState)info; //set our state
+        gameBoardView.setState((CarcassonneState)info); //set the boards state
+        currTileView.setState((CarcassonneState)info); //set the current tile's state
 
-            //draw our stuff
-            gameBoardView.invalidate();
-            currTileView.invalidate();
+        //draw our stuff
+        gameBoardView.invalidate();
+        currTileView.invalidate();
 
-            //set relevant text in buttons corresponding to state
-            if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE)
-            {
-                rotateLeftAndCancel.setText("<---");
-                rotateRightAndEndTurn.setText("--->");
-            }
-            else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE)
-            {
-                rotateLeftAndCancel.setText("UNDO");
-                rotateRightAndEndTurn.setText("END TURN");
-            }
-            else if (state.getTurnPhase() == CarcassonneState.END_TURN_PHASE)
-            {
-                rotateLeftAndCancel.setText("UNDO");
-                rotateRightAndEndTurn.setText("END TURN");
-            }
-
-            //set relevant follower text
-            int playerFollowers;
-            playerFollowers = state.getRemainingFollowers().get(this.playerNum);
-            followerText.setText("Followers: "+playerFollowers+", "+state.getScores().get(playerNum));
+        //set relevant text in buttons corresponding to state
+        if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE)
+        {
+            rotateLeftAndCancel.setText("<---");
+            rotateRightAndEndTurn.setText("--->");
         }
+        else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE)
+        {
+            rotateLeftAndCancel.setText("UNDO");
+            rotateRightAndEndTurn.setText("END TURN");
+        }
+        else if (state.getTurnPhase() == CarcassonneState.END_TURN_PHASE)
+        {
+            rotateLeftAndCancel.setText("UNDO");
+            rotateRightAndEndTurn.setText("END TURN");
+        }
+
+        //set relevant follower text
+        int playerFollowers;
+        playerFollowers = state.getRemainingFollowers().get(this.playerNum);
+        followerText.setText("Followers: "+playerFollowers);
+
+        String updatedScoreText = "";
+
+        for( int i = 0; i < ((CarcassonneLocalGame)game).getPlayerNames().length; i++ )
+        {
+            updatedScoreText = updatedScoreText+((CarcassonneLocalGame)game).getPlayerNames()[i]+" | "+
+                    state.getScores().get(i)+"\n";
+        }
+
+        scoreText.setText(updatedScoreText);
     }
 
     @Override
@@ -98,6 +108,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         rotateLeftAndCancel = (Button)activity.findViewById(R.id.rotateLeft);
         rotateRightAndEndTurn = (Button)activity.findViewById(R.id.rotateRight);
         followerText = (TextView)activity.findViewById(R.id.followersText);
+        scoreText = (TextView)activity.findViewById(R.id.scoreText);
 
         //send references to activity (used fo retreiving recourses)
         gameBoardView.setMyActivity(activity);
@@ -108,6 +119,9 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         rotateLeftAndCancel.setOnClickListener(this);
         currTileView.setOnTouchListener(this);
         gameBoardView.setOnTouchListener(this);
+
+
+        gameBoardView.scrollBy(200*60, 200*60);
 
     }
 
@@ -193,7 +207,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                         curX = e.getX();
                         curY = e.getY();
                         //scroll by final movement
-                        view.scrollBy((int) (mx - curX), (int) (my - curY));
+                        view.scrollBy((int)(mx-curX),(int)(my-curY) );
+
                         isMove = false; //resent is move to false
                         return false;
                     }
@@ -204,19 +219,12 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                         int touchX = (int)(e.getX()+view.getScrollX());
                         int touchY = (int)(e.getY()+view.getScrollY());
 
-                        //some varibles to scale movement
-                        //these are here because of how rounding works in java
-                        //-100/200 = 0 insead of -200, the negatives round up while positives round down
-                        int placeX = 0;
-                        int placeY = 0;
-
-                        // set these varibles to -1 if we are placing in the negatives
-                        if (touchX<0) { placeX = -1;}
-                        if (touchY<0) { placeY = -1;}
-
-                        //send place peice action
-                        GameAction action = new PlacePieceAction( touchX/200 + placeX, touchY/200 + placeY, this);
-                        game.sendAction(action);
+                        //make sure it's in the game board
+                        if( touchX>0 && touchX<(200*128) && touchY>0 && touchY<(200*128) ) {
+                            //send place peice action
+                            GameAction action = new PlacePieceAction(touchX / 200, touchY / 200, this);
+                            game.sendAction(action);
+                        }
                         return true;
                     }
             }

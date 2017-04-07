@@ -61,7 +61,7 @@ public class CarcassonneLocalGame extends LocalGame
 
         this.gameState = new CarcassonneState( ); //makes inital game state
         this.gameState.setCurrTile(randTile()); //sets the current tile to a rand tile
-        this.gameState.getBoard()[5][5] = randTile(); //places starting tile
+        this.gameState.getBoard()[64][64] = new Tile(tileDeck.get(0)); //places starting tile
     }
 
     @Override
@@ -124,93 +124,7 @@ public class CarcassonneLocalGame extends LocalGame
             //check correct turn phase
             if(gameState.getTurnPhase() != CarcassonneState.PIECE_PHASE) return false;
 
-            //check to make sure requested square is empty
-            if(gameState.getBoard()[ppa.getxCor()][ppa.getyCor()]!= null) return false;
-
-            //get references to tiles above, below, left and right
-            Tile topTile = gameState.getBoard()[ppa.getxCor()][ppa.getyCor() - 1];
-            Tile botTile = gameState.getBoard()[ppa.getxCor()][ppa.getyCor() + 1];
-            Tile leftTile = gameState.getBoard()[ppa.getxCor() - 1][ppa.getyCor()];
-            Tile rightTile = gameState.getBoard()[ppa.getxCor() + 1][ppa.getyCor()];
-
-            //check to make sure tile borders at least tile0 tile
-            if(topTile == null && botTile == null && leftTile == null && rightTile == null)
-            {
-                return false;
-            }
-
-            if(leftTile != null) //if left tile exists
-            {
-                //make sure zones line up
-                if(leftTile.getZones()[9] != gameState.getCurrTile().getZones()[1])
-                {
-                    return false;
-                }
-                if(leftTile.getZones()[8] != gameState.getCurrTile().getZones()[2])
-                {
-                    return false;
-                }
-
-                if(leftTile.getZones()[7] != gameState.getCurrTile().getZones()[3])
-                {
-                    return false;
-                }
-
-            }
-            if(rightTile != null) //if right tile exists
-            {
-                //make sure zones line up
-                if(rightTile.getZones()[1] != gameState.getCurrTile().getZones()[9])
-                {
-                    return false;
-                }
-                if(rightTile.getZones()[2] != gameState.getCurrTile().getZones()[8])
-                {
-                    return false;
-                }
-
-                if(rightTile.getZones()[3] != gameState.getCurrTile().getZones()[7])
-                {
-                    return false;
-                }
-
-            }
-            if(topTile != null) //if top tile exists
-            {
-                //make sure zones line up
-                if(topTile.getZones()[4] != gameState.getCurrTile().getZones()[0])
-                {
-                    return false;
-                }
-                if(topTile.getZones()[5] != gameState.getCurrTile().getZones()[11])
-                {
-                    return false;
-                }
-
-                if(topTile.getZones()[6] != gameState.getCurrTile().getZones()[10])
-                {
-                    return false;
-                }
-
-            }
-            if(botTile != null) //if bot tile exists
-            {
-                //make sure zones line up
-                if(botTile.getZones()[0] != gameState.getCurrTile().getZones()[4])
-                {
-                    return false;
-                }
-                if(botTile.getZones()[11] != gameState.getCurrTile().getZones()[5])
-                {
-                    return false;
-                }
-
-                if(botTile.getZones()[10] != gameState.getCurrTile().getZones()[6])
-                {
-                    return false;
-                }
-
-            }
+            if (!gameState.isLegalMove(ppa.getxCor(), ppa.getyCor())) return false;
 
             //place da tile
             gameState.getBoard()[ppa.getxCor()][ppa.getyCor()] = gameState.getCurrTile();
@@ -341,5 +255,10 @@ public class CarcassonneLocalGame extends LocalGame
         }
 
         return false;
+    }
+
+    public String[] getPlayerNames()
+    {
+        return playerNames;
     }
 }

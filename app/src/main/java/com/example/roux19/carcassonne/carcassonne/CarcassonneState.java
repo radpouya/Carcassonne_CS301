@@ -38,10 +38,10 @@ public class CarcassonneState extends GameState
      */
     public CarcassonneState( )
     {
-        board = new Tile[128][128];
+        board = new Tile[128][128]; //good enough
         currTile = null;
         plyrTurn = 0;
-        tileRemaining = 50;
+        tileRemaining = 72;
         xCurrTile = 0;
         yCurrTile = 0;
         turnPhase = PIECE_PHASE;
@@ -140,6 +140,105 @@ public class CarcassonneState extends GameState
             scores.add(0);
             remainingFollowers.add(7);
         }
+    }
+
+    /**
+     * isLegalMove
+     * checks if curTile can be placed here
+     * @return boolean
+     */
+    public boolean isLegalMove( int xCor, int yCor )
+    {
+        //check to make sure requested square is empty
+        if(board[xCor][yCor]!= null) return false;
+
+        //get references to tiles above, below, left and right
+        Tile topTile = board[xCor][yCor - 1];
+        Tile botTile = board[xCor][yCor + 1];
+        Tile leftTile = board[xCor - 1][yCor];
+        Tile rightTile = board[xCor + 1][yCor];
+
+        //check to make sure tile borders at least tile0 tile
+        if(topTile == null && botTile == null && leftTile == null && rightTile == null)
+        {
+            return false;
+        }
+
+        if(leftTile != null) //if left tile exists
+        {
+            //make sure zones line up
+            if(leftTile.getZones()[9] != currTile.getZones()[1])
+            {
+                return false;
+            }
+            if(leftTile.getZones()[8] != currTile.getZones()[2])
+            {
+                return false;
+            }
+
+            if(leftTile.getZones()[7] != currTile.getZones()[3])
+            {
+                return false;
+            }
+
+        }
+        if(rightTile != null) //if right tile exists
+        {
+            //make sure zones line up
+            if(rightTile.getZones()[1] != currTile.getZones()[9])
+            {
+                return false;
+            }
+            if(rightTile.getZones()[2] != currTile.getZones()[8])
+            {
+                return false;
+            }
+
+            if(rightTile.getZones()[3] != currTile.getZones()[7])
+            {
+                return false;
+            }
+
+        }
+        if(topTile != null) //if top tile exists
+        {
+            //make sure zones line up
+            if(topTile.getZones()[4] != currTile.getZones()[0])
+            {
+                return false;
+            }
+            if(topTile.getZones()[5] != currTile.getZones()[11])
+            {
+                return false;
+            }
+
+            if(topTile.getZones()[6] != currTile.getZones()[10])
+            {
+                return false;
+            }
+
+        }
+        if(botTile != null) //if bot tile exists
+        {
+            //make sure zones line up
+            if(botTile.getZones()[0] != currTile.getZones()[4])
+            {
+                return false;
+            }
+            if(botTile.getZones()[11] != currTile.getZones()[5])
+            {
+                return false;
+            }
+
+            if(botTile.getZones()[10] != currTile.getZones()[6])
+            {
+                return false;
+            }
+
+        }
+
+        //we are good
+        return true;
     }
 
 

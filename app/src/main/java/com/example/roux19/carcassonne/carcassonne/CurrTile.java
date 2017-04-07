@@ -26,17 +26,30 @@ public class CurrTile extends SurfaceView
 
     private CarcassonneState gameState; //game state fed by gui player
     private GameMainActivity myActivity; //activity fed by gui player
+    private Paint[] plyrPaints = new Paint[5];
 
     public CurrTile(Context context)
     {
         super(context);
         setWillNotDraw(false);
+        for ( int i = 0; i < plyrPaints.length; i++ ) plyrPaints[i] = new Paint();
+        plyrPaints[0].setColor(0xFF000000);
+        plyrPaints[1].setColor(0xFFFF0000);
+        plyrPaints[2].setColor(0xFF00FF00);
+        plyrPaints[3].setColor(0xFF0000FF);
+        plyrPaints[4].setColor(0xFFFFFF00);
     }
 
     public CurrTile(Context context, AttributeSet attrs)
     {
         super(context,attrs);
         setWillNotDraw(false);
+        for ( int i = 0; i < plyrPaints.length; i++ ) plyrPaints[i] = new Paint();
+        plyrPaints[0].setColor(0xFF000000);
+        plyrPaints[1].setColor(0xFFFF0000);
+        plyrPaints[2].setColor(0xFF00FF00);
+        plyrPaints[3].setColor(0xFF0000FF);
+        plyrPaints[4].setColor(0xFFFFFF00);
     }
 
 
@@ -50,23 +63,7 @@ public class CurrTile extends SurfaceView
     {
         if( gameState == null ) return; //gotta have a game state
 
-        //rotate the tile appropraitle
-        /**
-         External Citation (see GameBoard)
-         Date: 16 February 2017
-         Problem: Rotate a bitmap
-         Resource: http://stackoverflow.com/questions/8722359/scale-rotate-bitmap-using-
-         matrix-in-android
-         Solution: Used ammended example code
-         */
-        Bitmap toBeDrawn = BitmapFactory.decodeResource(myActivity.getResources(), gameState.getCurrTile().getBitmapRes() );
-        Matrix mat = new Matrix();
-        float rotation = gameState.getCurrTile().getRotation();
-        mat.postRotate(rotation);
-        toBeDrawn = Bitmap.createBitmap(toBeDrawn,0,0,toBeDrawn.getWidth(),toBeDrawn.getHeight(),mat,true);
-
-        //draw da tile
-        canvas.drawBitmap(toBeDrawn, null, new RectF(0,0,400,400),null);
+        gameState.getCurrTile().drawTile(0,0,400,canvas,myActivity,plyrPaints);
     }
 
     //setters
