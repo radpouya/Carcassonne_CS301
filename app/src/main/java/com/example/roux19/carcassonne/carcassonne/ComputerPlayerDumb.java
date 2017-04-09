@@ -15,7 +15,6 @@ import java.util.TreeSet;
  */
 public class ComputerPlayerDumb extends GameComputerPlayer
 {
-    boolean needsToRotate = false;
 
     public ComputerPlayerDumb( String name )
     {
@@ -24,7 +23,6 @@ public class ComputerPlayerDumb extends GameComputerPlayer
 
     @Override
     protected void receiveInfo(GameInfo info) {
-        Random random = new Random();
 
         if( !(info instanceof CarcassonneState) ) return;
 
@@ -38,12 +36,7 @@ public class ComputerPlayerDumb extends GameComputerPlayer
             e.printStackTrace();
         }
 
-        if( needsToRotate )
-        {
-            needsToRotate = false;
-            game.sendAction(new rotateAction(true, this));
-        }
-        else if( state.getTurnPhase() == 'p' )
+        if( state.getTurnPhase() == 'p' )
         {
             ArrayList<Point> possibleMoves = new ArrayList<Point>();
             for( int i = 1; i<127; i++ )
@@ -72,25 +65,56 @@ public class ComputerPlayerDumb extends GameComputerPlayer
                 }
             }
 
-            tryToPlace(possibleMoves, state);
+            tryToPlacePeice(possibleMoves, state);
         }
-        else if( state.getTurnPhase() == 'f' || state.getTurnPhase() == 'e' )
+        else if( state.getTurnPhase() == 'f' )
+        {
+            tryToPlaceFollower(state);
+        }
+        else if( state.getTurnPhase() == 'e' )
         {
             game.sendAction(new EndTurnAction(this));
         }
     }
 
-    private boolean tryToPlace( ArrayList<Point> possibleMoves, CarcassonneState state )
+    private boolean tryToPlaceFollower( CarcassonneState state )
     {
-        for( Point move : possibleMoves ) {
+        Random r = new Random();
+        int zoneToPlace = r.nextInt(13);
+        int areaToPlace = state.getCurrTile().getAreaIndexFromZone(zoneToPlace);
+        if (state.getCurrTile().isPlaceable( areaToPlace, state.getxCurrTile(), state.getyCurrTile(), state,
+                new ArrayList<Area>()) && state.getRemainingFollowers().get( this.playerNum ) > 0 )
+        {
+            game.sendAction( new PlaceFollowerAction(zoneToPlace, this));
+            return true;
+        }
+        else
+        {
+            game.sendAction( new EndTurnAction(this) );
+            return false;
+        }
+
+
+    }
+
+    private boolean tryToPlacePeice( ArrayList<Point> possibleMoves, CarcassonneState state )
+    {
+        Random r = new Random();
+        int randStart = r.nextInt(possibleMoves.size());
+
+        for( int i = 0; i < possibleMoves.size(); i++ ) {
+            Point move = possibleMoves.get(randStart);
+
             if (state.isLegalMove(move.x, move.y) ) {
                 PlacePieceAction ppa = new PlacePieceAction(move.x,move.y,this);
                 game.sendAction(ppa);
                 return true;
             }
+
+            randStart = (randStart+1)%possibleMoves.size();
         }
 
-        needsToRotate = true;
+        game.sendAction(new rotateAction(true, this));
         return false;
     }
 }
