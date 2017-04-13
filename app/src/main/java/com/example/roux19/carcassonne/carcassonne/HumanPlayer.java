@@ -152,6 +152,15 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             backButton = (Button)theActivity.findViewById(R.id.backButton);
             backButton.setOnClickListener(this);
             helpText = (TextView)theActivity.findViewById(R.id.helpTV);
+            /** External Citation
+             * Date: 12 April 2017
+             * Problem: Difficulty getting new layout to display when button
+                        was pressed
+             * Resource: Professor Nuxoll's office hours.
+             * Solution: Nux recommended that we make sure that everything
+                         in the new layout was being initialized only after
+                         we switched to that layout.
+             */
             ruleWriter();
         } else if(view.getId() == R.id.quitButton) {
             System.exit(0);
