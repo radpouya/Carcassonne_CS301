@@ -25,7 +25,6 @@ public class CarcassonneState extends GameState
     private Tile[][] board; //array of all placed tiles
     private Tile currTile; //reference to the current tile
     private int plyrTurn; //keeps track of whomes's turn it is
-    private int tileRemaining; //amount of tiles to be placed before game ends
     private ArrayList<Integer> scores = new ArrayList<Integer>(); //score of each player
     private ArrayList<Integer> remainingFollowers = new ArrayList<Integer>(); //remaining followers for each player
     private int xCurrTile; //if curTile is already placed then saves xCor in board, -1 if not placed
@@ -41,7 +40,6 @@ public class CarcassonneState extends GameState
         board = new Tile[128][128]; //good enough
         currTile = null;
         plyrTurn = 0;
-        tileRemaining = 72;
         xCurrTile = 0;
         yCurrTile = 0;
         turnPhase = PIECE_PHASE;
@@ -87,7 +85,6 @@ public class CarcassonneState extends GameState
 
         turnPhase = initTurnPhase;
         plyrTurn = initPlyrTurn;
-        tileRemaining = initTileRemaining;
         currTile = new Tile(initCurrTile);
     }
 
@@ -121,7 +118,6 @@ public class CarcassonneState extends GameState
 
         turnPhase = initState.getTurnPhase();
         plyrTurn = initState.getPlyrTurn();
-        tileRemaining = initState.getTileRemaining();
         if (initState.currTile != null) {
             currTile = new Tile(initState.getCurrTile());
         }
@@ -241,6 +237,20 @@ public class CarcassonneState extends GameState
         return true;
     }
 
+    public void endGameScore()
+    {
+        for( int i = 0; i < 128; i++ )
+        {
+            for( int j = 0; j < 128; j++ )
+            {
+                if( board[i][j] != null )
+                {
+                    for( )
+                }
+            }
+        }
+    }
+
 
     //getters
     public Tile[][] getBoard(){ return board; }
@@ -248,8 +258,6 @@ public class CarcassonneState extends GameState
     public Tile getCurrTile(){ return currTile; }
 
     public int getPlyrTurn(){ return plyrTurn; }
-
-    public int getTileRemaining(){ return tileRemaining; }
 
     public char getTurnPhase(){ return turnPhase; }
 
@@ -267,8 +275,6 @@ public class CarcassonneState extends GameState
     public void setCurrTile( Tile newCurrTile ){ currTile = newCurrTile; }
 
     public void setPlyrTurn( int newPlyrTurn ){ plyrTurn = newPlyrTurn; }
-
-    public void setTileRemaining( int newTileRemaining ){ tileRemaining = newTileRemaining; }
 
     public void setRemainingFollowers( ArrayList<Integer> newRemainingFollowers)
     { remainingFollowers = newRemainingFollowers; }

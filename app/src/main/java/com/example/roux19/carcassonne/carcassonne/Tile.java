@@ -131,6 +131,10 @@ public class Tile {
      */
     public boolean isPlaceable(int indexOfArea, int xCor, int yCor, CarcassonneState gameState,
                                ArrayList<Area> touchedAreas){
+
+        //this is trying to place on an empty area
+        if( indexOfArea == -1 ) return false;
+
         // this is the area we are working with
         Area targetArea = tileAreas.get(indexOfArea);
 
@@ -304,7 +308,7 @@ public class Tile {
 
         }
 
-        return -1; //this should never happen...
+        return -1; //this happens if this is a empty zone
     }
 
     /**

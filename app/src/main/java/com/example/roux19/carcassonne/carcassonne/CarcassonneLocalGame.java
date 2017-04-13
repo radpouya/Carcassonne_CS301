@@ -35,27 +35,35 @@ public class CarcassonneLocalGame extends LocalGame
         {
             if ( i == 0 )
             {
-                char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'c', 'c', 'r'};
-                int[] tempAreaProp = {0, 1, 2, 3, 3, 3, 3, 3, 2, 1, 0, 0, 2};
-                tileDeck.add( new Tile( R.drawable.tile0, tempZones, tempAreaProp, 0));
+                    char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'c', 'c', 'r'};
+                    int[] tempAreaProp = {0, 1, 2, 3, 3, 3, 3, 3, 2, 1, 0, 0, 2};
+                for( int j = 0; j < 4; j++ ) {
+                    tileDeck.add(new Tile(R.drawable.tile0, tempZones, tempAreaProp, 0));
+                }
             }
             else if ( i == 1 )
             {
                 char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'c', 'c', 'f'};
                 int[] tempAreaProp = {0, 1, 2, 3, 3, 2, 1, 1, 1, 1, 0, 0, 1};
-                tileDeck.add( new Tile( R.drawable.tile1, tempZones, tempAreaProp, 0));
+                for( int j = 0; j < 4; j++ ) {
+                    tileDeck.add(new Tile(R.drawable.tile1, tempZones, tempAreaProp, 0));
+                }
             }
             else if ( i == 2 )
             {
                 char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'f', 'f', 'f', 'f', 'f', 'c', 'c', 'f'};
                 int[] tempAreaProp = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1};
-                tileDeck.add( new Tile( R.drawable.tile2, tempZones, tempAreaProp, 0));
+                for( int j = 0; j < 4; j++ ) {
+                    tileDeck.add(new Tile(R.drawable.tile2, tempZones, tempAreaProp, 0));
+                }
             }
             else if ( i == 3 )
             {
                 char[] tempZones = {'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'n'};
                 int[] tempAreaProp = {0, 0, 1, 2, 2, 3, 4, 4, 5, 0, 0, 0, -1};
-                tileDeck.add( new Tile( R.drawable.tile3, tempZones, tempAreaProp, 0));
+                for( int j = 0; j < 4; j++ ) {
+                    tileDeck.add(new Tile(R.drawable.tile3, tempZones, tempAreaProp, 0));
+                }
             }
         }
 
@@ -93,11 +101,9 @@ public class CarcassonneLocalGame extends LocalGame
 
         Random r = new Random();
         int i = r.nextInt(tileDeck.size()); //select a random tile
-
-        return new Tile(tileDeck.get(i)); //copies it
-        // (note) if we want the tile deck to diminish and not use repeats of the same tile
-        // we could not copy it and keep track of if it is used within the tile class
-        // we could not select the used tiles in this selection process
+        Tile temp = new Tile(tileDeck.get(i)); //copy it
+        tileDeck.remove(i); //remove it
+        return temp; //return it
 
     }
 
@@ -110,6 +116,22 @@ public class CarcassonneLocalGame extends LocalGame
     @Override
     protected String checkIfGameOver()
     {
+        if ( tileDeck.isEmpty() )
+        {
+            gameState.endGameScore();
+            int topScore = 0;
+            int indexOfWinner = 0;
+            for( int i = 0; i < gameState.getScores().size(); i++) {
+                if( gameState.getScores().get(i) > topScore ) {
+                    indexOfWinner = i;
+                }
+            }
+
+            String winnerString = ""+playerNames[indexOfWinner]+" has won with a score of "
+                    +gameState.getScores().get(indexOfWinner)+"!!!!!";
+            return winnerString;
+        }
+
         return null;
     }
 
@@ -142,9 +164,6 @@ public class CarcassonneLocalGame extends LocalGame
         else if ( action instanceof PlaceFollowerAction ) {
 
             PlaceFollowerAction pfa = (PlaceFollowerAction)action;
-
-            //if the tile zone is not used then return false
-            if( gameState.getCurrTile().getZones()[pfa.getZone()] == Tile.EMPTY) return false;
 
             //if we are in ther correct phase
             if(gameState.getTurnPhase() != CarcassonneState.FOLLOWER_PHASE) return false;
