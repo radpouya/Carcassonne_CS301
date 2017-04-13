@@ -1,9 +1,15 @@
 package com.example.roux19.carcassonne.carcassonne;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.graphics.pdf.PdfRenderer;
+import android.media.SoundPool;
+import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +21,8 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 import com.example.roux19.carcassonne.game.infoMsg.GameInfo;
 import com.example.roux19.carcassonne.game.infoMsg.GameState;
 
+import org.w3c.dom.Text;
+
 import java.util.Random;
 
 /**
@@ -25,12 +33,20 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     //our drawing canvases
     private CurrTile currTileView;
     private GameBoard gameBoardView;
+    private Activity theActivity;
 
     //our buttons
     private Button rotateLeftAndCancel;
     private Button rotateRightAndEndTurn;
+    private Button helpButton;
+    private Button quitButton;
+    private Button backButton;
+
     private TextView followerText;
     private TextView scoreText;
+    private TextView helpText;
+
+    private PdfRenderer pdfRenderer;
 
     //the state we have
     private CarcassonneState state;
@@ -97,32 +113,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
     @Override
     public void setAsGui(GameMainActivity activity) {
-
-        //uhhhhhh
-        //activity.onCreate(savedInstanceState);
-        activity.setContentView(R.layout.activity_main);
-
-        //attach widgets
-        currTileView = (CurrTile)activity.findViewById(R.id.curTile);
-        gameBoardView = (GameBoard)activity.findViewById(R.id.gameBoard);
-        rotateLeftAndCancel = (Button)activity.findViewById(R.id.rotateLeft);
-        rotateRightAndEndTurn = (Button)activity.findViewById(R.id.rotateRight);
-        followerText = (TextView)activity.findViewById(R.id.followersText);
-        scoreText = (TextView)activity.findViewById(R.id.scoreText);
-
-        //send references to activity (used fo retreiving recourses)
-        gameBoardView.setMyActivity(activity);
-        currTileView.setMyActivity(activity);
-
-        //set listeners, guess what they're me
-        rotateRightAndEndTurn.setOnClickListener(this);
-        rotateLeftAndCancel.setOnClickListener(this);
-        currTileView.setOnTouchListener(this);
-        gameBoardView.setOnTouchListener(this);
-
-
-        gameBoardView.scrollBy(200*60, 200*60);
-
+        this.theActivity = activity;
+        drawGUIHelper();
     }
 
 
@@ -134,25 +126,37 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         //depending on state and which button is pressed
         //send the correct action
         if( view.getId() == R.id.rotateRight) {
-            if ( state.getTurnPhase() == CarcassonneState.PIECE_PHASE) {
-                action = new rotateAction(true, this);
-            }
-            else if ( state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE ||
-                    state.getTurnPhase() == CarcassonneState.END_TURN_PHASE) {
-                action = new EndTurnAction( this );
+            if(state.getPlyrTurn() == 0) {
+                if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE) {
+                    action = new rotateAction(true, this);
+                } else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE ||
+                        state.getTurnPhase() == CarcassonneState.END_TURN_PHASE) {
+                    action = new EndTurnAction(this);
+                }
             }
         }
-        else if( view.getId() == R.id.rotateLeft )
-        {
-            if ( state.getTurnPhase() == CarcassonneState.PIECE_PHASE ) {
-                action = new rotateAction(false, this);
+        else if( view.getId() == R.id.rotateLeft ) {
+            // Make sure it's the user's turn before allowing them to access
+            // the buttons.
+            if(state.getPlyrTurn() == 0) {
+                if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE) {
+                    action = new rotateAction(false, this);
+                } else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE) {
+                    action = new returnTileAction(this);
+                } else if (state.getTurnPhase() == CarcassonneState.END_TURN_PHASE) {
+                    action = new ReturnFollowerAction(this);
+                }
             }
-            else if ( state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE ) {
-                action = new returnTileAction(this);
-            }
-            else if ( state.getTurnPhase() == CarcassonneState.END_TURN_PHASE ) {
-                action = new ReturnFollowerAction( this );
-            }
+        } else if(view.getId() == R.id.helpButton) {
+            theActivity.setContentView(R.layout.help_activity);
+            backButton = (Button)theActivity.findViewById(R.id.backButton);
+            backButton.setOnClickListener(this);
+            helpText = (TextView)theActivity.findViewById(R.id.helpTV);
+            ruleWriter();
+        } else if(view.getId() == R.id.quitButton) {
+            System.exit(0);
+        } else if(view.getId() == R.id.backButton) {
+            drawGUIHelper();
         }
 
         //we haven't done that button yet
@@ -160,6 +164,59 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             game.sendAction(action);
         }
 
+    }
+
+
+    private void drawGUIHelper() {
+        // Set up the GUI to the main gameboard layout and assign all listeners.
+        theActivity.setContentView(R.layout.activity_main);
+        currTileView = (CurrTile)theActivity.findViewById(R.id.curTile);
+        gameBoardView = (GameBoard)theActivity.findViewById(R.id.gameBoard);
+        rotateLeftAndCancel = (Button)theActivity.findViewById(R.id.rotateLeft);
+        rotateRightAndEndTurn = (Button)theActivity.findViewById(R.id.rotateRight);
+        helpButton = (Button)theActivity.findViewById(R.id.helpButton);
+        quitButton = (Button)theActivity.findViewById(R.id.quitButton);
+        followerText = (TextView)theActivity.findViewById(R.id.followersText);
+        scoreText = (TextView)theActivity.findViewById(R.id.scoreText);
+
+        //send references to activity (used fo retreiving recourses)
+        gameBoardView.setMyActivity((GameMainActivity) theActivity);
+        currTileView.setMyActivity((GameMainActivity)theActivity);
+
+        //set listeners, guess what they're me
+        rotateRightAndEndTurn.setOnClickListener(this);
+        rotateLeftAndCancel.setOnClickListener(this);
+        helpButton.setOnClickListener(this);
+        quitButton.setOnClickListener(this);
+
+        currTileView.setOnTouchListener(this);
+        gameBoardView.setOnTouchListener(this);
+
+        gameBoardView.scrollBy(200*60, 200*60);
+
+        this.receiveInfo(state);
+    }
+
+    private void ruleWriter() {
+        // Multiline string for the rules
+        String rules = "This page describes the rules for this implementation " +
+                "of Carcassonne.\nCarcassonne is an exciting tile-laying game " +
+                "for 2-4 players.\nThe game consists of 72 Land tiles, which " +
+                "indicate different road segments, crossings, castles, and " +
+                "farms.\nEach player has 7 followers in a specific color, and " +
+                "can use them as a knight, thief, or farmer. These are " +
+                "displayed as different colored squares, depending on the " +
+                "player.\nTo play, you tap the screen to indicate where you " +
+                "want to place the current drawn tile displayed in the top " +
+                "right hand corner of the screen.\nTiles must be placed " +
+                "legally such that all sections (roads, castles, etc) match " +
+                "with the tile it is being placed adjacent to (e.g. two " +
+                "roads must match up to form one road).\nAfter placing a " +
+                "tile, the player has the option of placing a follower on " +
+                "a section of the tile.\nThis is done by tapping the current " +
+                "tile on the top right hand of the screen.\n";
+
+        helpText.setText(""+rules);
     }
 
     @Override
@@ -319,6 +376,5 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
         return false;
     }
-
 
 }

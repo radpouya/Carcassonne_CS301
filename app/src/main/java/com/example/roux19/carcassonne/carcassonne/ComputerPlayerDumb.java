@@ -66,6 +66,7 @@ public class ComputerPlayerDumb extends GameComputerPlayer
             }
 
             tryToPlacePeice(possibleMoves, state);
+            possibleMoves.clear();
         }
         else if( state.getTurnPhase() == 'f' )
         {

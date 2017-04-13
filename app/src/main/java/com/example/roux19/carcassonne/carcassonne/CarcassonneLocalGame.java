@@ -31,13 +31,13 @@ public class CarcassonneLocalGame extends LocalGame
         super();
 
         //hard coded initializers for the tile deck
-        for( int i = 0; i < 4; i++ )
+        for( int i = 0; i < 16; i++ )
         {
             if ( i == 0 )
             {
                     char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'c', 'c', 'r'};
                     int[] tempAreaProp = {0, 1, 2, 3, 3, 3, 3, 3, 2, 1, 0, 0, 2};
-                for( int j = 0; j < 4; j++ ) {
+                for( int j = 0; j < 3; j++ ) {
                     tileDeck.add(new Tile(R.drawable.tile0, tempZones, tempAreaProp, 0));
                 }
             }
@@ -45,7 +45,7 @@ public class CarcassonneLocalGame extends LocalGame
             {
                 char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'c', 'c', 'f'};
                 int[] tempAreaProp = {0, 1, 2, 3, 3, 2, 1, 1, 1, 1, 0, 0, 1};
-                for( int j = 0; j < 4; j++ ) {
+                for( int j = 0; j < 3; j++ ) {
                     tileDeck.add(new Tile(R.drawable.tile1, tempZones, tempAreaProp, 0));
                 }
             }
@@ -53,7 +53,7 @@ public class CarcassonneLocalGame extends LocalGame
             {
                 char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'f', 'f', 'f', 'f', 'f', 'c', 'c', 'f'};
                 int[] tempAreaProp = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1};
-                for( int j = 0; j < 4; j++ ) {
+                for( int j = 0; j < 3; j++ ) {
                     tileDeck.add(new Tile(R.drawable.tile2, tempZones, tempAreaProp, 0));
                 }
             }
@@ -63,6 +63,90 @@ public class CarcassonneLocalGame extends LocalGame
                 int[] tempAreaProp = {0, 0, 1, 2, 2, 3, 4, 4, 5, 0, 0, 0, -1};
                 for( int j = 0; j < 4; j++ ) {
                     tileDeck.add(new Tile(R.drawable.tile3, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 4) {
+                char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'f', 'f', 'c', 'c', 'c', 'c', 'c', 'c'};
+                int[] tempAreaProp = {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
+                for(int j = 0; j < 3; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile4, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 5) {
+                char[] tempZones = {'f', 'c', 'c', 'c', 'f', 'f', 'f', 'c', 'c', 'c', 'f', 'f', 'c'};
+                int[] tempAreaProp = {0, 1, 1, 1, 2, 2, 2, 1, 1, 1, 0, 0, 1};
+                for(int j = 0; j < 1; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile5, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 6) {
+                char[] tempZones = {'c', 'f', 'f', 'f', 'f', 'f', 'f', 'c', 'c', 'c', 'c', 'c', 'f'};
+                int[] tempAreaProp = {0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 1};
+                for(int j = 0; j < 2; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile6, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 7) {
+                char[] tempZones = {'f', 'c', 'c', 'c', 'f', 'f', 'f', 'c', 'c', 'c', 'f', 'f', 'f'};
+                int[] tempAreaProp = {0, 1, 1, 1, 0, 0, 0, 2, 2, 2, 0, 0, 0};
+                for(int j = 0; j < 3; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile7, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 8) {
+                char[] tempZones = {'c', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'c', 'c', 'f'};
+                int[] tempAreaProp = {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1};
+                for(int j = 0; j < 5; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile8, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 9) {
+                char[] tempZones = {'c', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'r', 'f', 'c', 'c', 'f'};
+                int[] tempAreaProp = {0, 1, 1, 1, 1, 2, 3, 3, 2, 1, 0, 0, 1};
+                for(int j = 0; j < 3; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile9, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 10) {
+                char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'r', 'f', 'c', 'c', 'f'};
+                int[] tempAreaProp = {0, 1, 2, 3, 3, 4, 5, 5, 6, 1, 0, 0, 1};
+                for(int j = 0; j < 3; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile10, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 11) {
+                char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'r', 'f', 'f', 'r', 'f', 'c', 'c', 'f'};
+                int[] tempAreaProp = {0, 0, 0, 0, 1, 2, 3, 3, 2, 1, 0, 0, 1};
+                for(int j = 0; j < 3; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile11, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 12) {
+                char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'r', 'f', 'c', 'c', 'c', 'c', 'c', 'c'};
+                int[] tempAreaProp = {0, 0, 0, 0, 1, 2, 3, 0, 0, 0, 0, 0, 0};
+                for(int j = 0; j < 1; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile12, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 13) {
+                char[] tempZones = {'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'r', 'n'};
+                int[] tempAreaProp = {0, 0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, -1};
+                for(int j = 0; j < 1; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile13, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 14) {
+                char[] tempZones = {'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'f', 'r', 'r'};
+                int[] tempAreaProp = {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 1, 1};
+                for(int j = 0; j < 8; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile14, tempZones, tempAreaProp, 0));
+                }
+            }
+            else if(i == 15) {
+                char[] tempZones = {'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'f', 'f', 'r'};
+                int[] tempAreaProp = {0, 0, 1, 2, 2, 1, 0, 0, 0, 0, 0, 0, 1};
+                for(int j = 0; j < 9; j++) {
+                    tileDeck.add(new Tile(R.drawable.tile15, tempZones, tempAreaProp, 0));
                 }
             }
         }

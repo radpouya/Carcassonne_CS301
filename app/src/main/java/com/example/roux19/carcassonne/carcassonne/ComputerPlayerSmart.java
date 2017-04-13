@@ -15,6 +15,18 @@ public class ComputerPlayerSmart extends GameComputerPlayer {
 
     @Override
     protected void receiveInfo(GameInfo info) {
+        if( !(info instanceof CarcassonneState) ) return;
+
+        CarcassonneState state = (CarcassonneState)info;
+
+        if ( state.getPlyrTurn() != this.playerNum) return;
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
