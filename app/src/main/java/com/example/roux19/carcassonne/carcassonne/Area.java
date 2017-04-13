@@ -271,89 +271,113 @@ public class Area {
                 //have our roam be to the top
                 roamTile = gameState.getBoard()[xCor][yCor - 1];
                 //0 goes to 4 so find the index of area that we are roaming to
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(4);
-                //recursive call on that area
-                roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor,
-                        yCor - 1, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(4);
+                    //recursive call on that area
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor,
+                            yCor - 1, touchedAreas);
+                }
             }
             //find which zone we are in
             else if ( this.occZones.get(i) == 1 ) {
                 //roam to the tile this zone borders
                 roamTile = gameState.getBoard()[xCor - 1][yCor];
                 //roam to the area this zone borders
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(9);
-                //call this meathod on the area this zone borders
-                roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor - 1,
-                        yCor, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(9);
+                    //call this meathod on the area this zone borders
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor - 1,
+                            yCor, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 2 ) {
                 roamTile = gameState.getBoard()[xCor - 1][yCor];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(8);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor - 1,
-                        yCor, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(8);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor - 1,
+                            yCor, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 3 )
             {
                 roamTile = gameState.getBoard()[xCor - 1][yCor];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(7);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor - 1,
-                        yCor, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(7);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor - 1,
+                            yCor, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 4 )
             {
                 roamTile = gameState.getBoard()[xCor][yCor+1];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(0);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor,
-                        yCor+1, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(0);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor,
+                            yCor + 1, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 5 )
             {
                 roamTile = gameState.getBoard()[xCor][yCor+1];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(11);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor,
-                        yCor+1, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(11);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor,
+                            yCor + 1, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 6 )
             {
                 roamTile = gameState.getBoard()[xCor][yCor+1];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(10);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor,
-                        yCor+1, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(10);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor,
+                            yCor + 1, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 7 )
             {
                 roamTile = gameState.getBoard()[xCor + 1][yCor];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(3);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor + 1,
-                        yCor, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(3);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor + 1,
+                            yCor, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 8 )
             {
                 roamTile = gameState.getBoard()[xCor + 1][yCor];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(2);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor + 1,
-                        yCor, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(2);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor + 1,
+                            yCor, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 9 )
             {
                 roamTile = gameState.getBoard()[xCor + 1][yCor];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(1);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor + 1,
-                        yCor, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(1);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor + 1,
+                            yCor, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 10 )
             {
                 roamTile = gameState.getBoard()[xCor][yCor - 1];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(6);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor,
-                        yCor - 1, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(6);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor,
+                            yCor - 1, touchedAreas);
+                }
             }
             else if ( this.occZones.get(i) == 11 )
             {
                 roamTile = gameState.getBoard()[xCor][yCor - 1];
-                roamTileAreaIndex = roamTile.getAreaIndexFromZone(5);
-                roamTile.getTileAreas().get(roamTileAreaIndex).isCompleted(gameState, xCor,
-                        yCor - 1, touchedAreas);
+                if (roamTile!=null) {
+                    roamTileAreaIndex = roamTile.getAreaIndexFromZone(5);
+                    roamTile.getTileAreas().get(roamTileAreaIndex).createPropigation(gameState, xCor,
+                            yCor - 1, touchedAreas);
+                }
             }
         }
 
