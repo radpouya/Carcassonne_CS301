@@ -53,7 +53,7 @@ public class CarcassonneLocalGame extends LocalGame
             {
                 char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'f', 'f', 'f', 'f', 'f', 'c', 'c', 'f'};
                 int[] tempAreaProp = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1};
-                for( int j = 0; j < 3; j++ ) {
+                for( int j = 0; j < 5; j++ ) {
                     tileDeck.add(new Tile(R.drawable.tile2, tempZones, tempAreaProp, 0));
                 }
             }
@@ -68,14 +68,14 @@ public class CarcassonneLocalGame extends LocalGame
             else if(i == 4) {
                 char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'f', 'f', 'c', 'c', 'c', 'c', 'c', 'c'};
                 int[] tempAreaProp = {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
-                for(int j = 0; j < 3; j++) {
+                for(int j = 0; j < 4; j++) {
                     tileDeck.add(new Tile(R.drawable.tile4, tempZones, tempAreaProp, 0));
                 }
             }
             else if(i == 5) {
                 char[] tempZones = {'f', 'c', 'c', 'c', 'f', 'f', 'f', 'c', 'c', 'c', 'f', 'f', 'c'};
                 int[] tempAreaProp = {0, 1, 1, 1, 2, 2, 2, 1, 1, 1, 0, 0, 1};
-                for(int j = 0; j < 1; j++) {
+                for(int j = 0; j < 3; j++) {
                     tileDeck.add(new Tile(R.drawable.tile5, tempZones, tempAreaProp, 0));
                 }
             }
@@ -117,21 +117,21 @@ public class CarcassonneLocalGame extends LocalGame
             else if(i == 11) {
                 char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'r', 'f', 'f', 'r', 'f', 'c', 'c', 'f'};
                 int[] tempAreaProp = {0, 0, 0, 0, 1, 2, 3, 3, 2, 1, 0, 0, 1};
-                for(int j = 0; j < 3; j++) {
+                for(int j = 0; j < 5; j++) {
                     tileDeck.add(new Tile(R.drawable.tile11, tempZones, tempAreaProp, 0));
                 }
             }
             else if(i == 12) {
                 char[] tempZones = {'c', 'c', 'c', 'c', 'f', 'r', 'f', 'c', 'c', 'c', 'c', 'c', 'c'};
                 int[] tempAreaProp = {0, 0, 0, 0, 1, 2, 3, 0, 0, 0, 0, 0, 0};
-                for(int j = 0; j < 1; j++) {
+                for(int j = 0; j < 3; j++) {
                     tileDeck.add(new Tile(R.drawable.tile12, tempZones, tempAreaProp, 0));
                 }
             }
             else if(i == 13) {
                 char[] tempZones = {'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'r', 'f', 'f', 'r', 'n'};
                 int[] tempAreaProp = {0, 0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, -1};
-                for(int j = 0; j < 1; j++) {
+                for(int j = 0; j < 2; j++) {
                     tileDeck.add(new Tile(R.drawable.tile13, tempZones, tempAreaProp, 0));
                 }
             }
@@ -207,12 +207,18 @@ public class CarcassonneLocalGame extends LocalGame
             int indexOfWinner = 0;
             for( int i = 0; i < gameState.getScores().size(); i++) {
                 if( gameState.getScores().get(i) > topScore ) {
+                    topScore = gameState.getScores().get(i);
                     indexOfWinner = i;
                 }
             }
 
-            String winnerString = ""+playerNames[indexOfWinner]+" has won with a score of "
-                    +gameState.getScores().get(indexOfWinner)+"!!!!!";
+            String winnerString = ""+playerNames[indexOfWinner]+" has won!!!!!\n";
+            for( int i = 0; i < playerNames.length; i++) {
+                winnerString += ""+playerNames[i]+" | "+gameState.getScores().get(i)+"\n";
+            }
+
+            this.sendAllUpdatedState();
+
             return winnerString;
         }
 
