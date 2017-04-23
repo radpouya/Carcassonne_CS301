@@ -32,6 +32,7 @@ public class CarcassonneState extends GameState
     private int xCurrTile; //if curTile is already placed then saves xCor in board, -1 if not placed
     private int yCurrTile; //same as xCurrTile but with y coordinate
     private char turnPhase;
+    private ArrayList<String> plyrNames;
 
     /**
      * CarcassonneState
@@ -112,6 +113,7 @@ public class CarcassonneState extends GameState
             for (int i = 0; i < initState.scores.size(); i++) {
                 scores.add(initState.getScores().get(i));
                 remainingFollowers.add(initState.getRemainingFollowers().get(i));
+                plyrNames.add(initState.plyrNames.get(i));
             }
         }
 
@@ -276,7 +278,15 @@ public class CarcassonneState extends GameState
 
     public int getyCurrTile() { return yCurrTile; }
 
+    public ArrayList<String> getPlyrNames() { return plyrNames; }
+
     //setters
+    public void setPlyrNames( String[] newPlyrNames) {
+        for( String name : newPlyrNames ) {
+            plyrNames.add(name);
+        }
+    }
+
     public void setBoard( Tile[][] newBoard ){ board = newBoard; }
 
     public void setCurrTile( Tile newCurrTile ){ currTile = newCurrTile; }
