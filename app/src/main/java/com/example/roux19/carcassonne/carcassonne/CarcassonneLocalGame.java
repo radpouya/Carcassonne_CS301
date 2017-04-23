@@ -1,6 +1,7 @@
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.graphics.BitmapFactory;
+import android.os.Message;
 
 import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GamePlayer;
@@ -118,7 +119,6 @@ public class CarcassonneLocalGame extends LocalGame
         this.gameState = new CarcassonneState( ); //makes inital game state
         this.gameState.setCurrTile(randTile()); //sets the current tile to a rand tile
         this.gameState.getBoard()[64][64] = new Tile(tileDeck.get(0)); //places starting tile
-        this.gameState.setPlyrNames(playerNames);
     }
 
     @Override
@@ -193,6 +193,7 @@ public class CarcassonneLocalGame extends LocalGame
     @Override
     protected boolean makeMove(GameAction action)
     {
+        gameState.setPlyrNames(playerNames);
         if ( action instanceof PlacePieceAction ){
 
             //retrieve action
@@ -329,10 +330,5 @@ public class CarcassonneLocalGame extends LocalGame
         }
 
         return false;
-    }
-
-    public String[] getPlayerNames()
-    {
-        return playerNames;
     }
 }
