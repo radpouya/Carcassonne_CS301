@@ -4,6 +4,7 @@ import com.example.roux19.carcassonne.game.GamePlayer;
 import com.example.roux19.carcassonne.game.infoMsg.GameState;
 import com.example.roux19.carcassonne.game.infoMsg.TimerInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +15,7 @@ import java.util.ArrayList;
  */
 public class CarcassonneState extends GameState
 {
+    public static final long serialVersionUID = 69694206969420L;
 
     //keep track of what phase of the turn we are in
     //useful and responsible static final variables

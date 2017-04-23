@@ -11,6 +11,8 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 public class EndTurnAction extends GameAction
 {
 
+    public static final long serialVersionUID = 800858008580085L;
+
     public EndTurnAction(GamePlayer player)
     {
         super(player);

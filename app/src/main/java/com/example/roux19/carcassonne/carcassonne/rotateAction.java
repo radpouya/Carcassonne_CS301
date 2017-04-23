@@ -13,6 +13,8 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 public class rotateAction extends GameAction
 {
 
+    public static final long serialVersionUID = 1337133713371337L;
+
     private boolean isClockwise; //keeps track of direction
 
     /**

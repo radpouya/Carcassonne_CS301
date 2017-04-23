@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class CarcassonneMainActivity extends GameMainActivity
 {
 
-    private static final int PORT_NUMBER = 3420;
+    private static final int PORT_NUMBER = 6969;
 
     private ArrayList<Tile> tileDeck = new ArrayList<Tile>();
 

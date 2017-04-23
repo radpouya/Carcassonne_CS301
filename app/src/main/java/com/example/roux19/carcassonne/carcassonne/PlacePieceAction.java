@@ -10,6 +10,8 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
  */
 public class PlacePieceAction extends GameAction {
 
+    public static final long serialVersionUID = 8008513580085135L;
+
     //board coordinates
     private int xCor;
     private int yCor;

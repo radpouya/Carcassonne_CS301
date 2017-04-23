@@ -1,5 +1,6 @@
 package com.example.roux19.carcassonne.carcassonne;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,10 @@ import java.util.ArrayList;
  * the area class will hold the follower and its occupied zones
  * areas handle how they are connected and how they are scored
  */
-public class Area {
+public class Area implements Serializable{
+
+
+    public static final long serialVersionUID = 42069694206969L;
 
     private char type; //see Tile for chars
 

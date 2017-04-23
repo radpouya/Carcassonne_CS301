@@ -11,6 +11,8 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 public class ReturnFollowerAction extends GameAction
 {
 
+    public static final long serialVersionUID = 6969696969696969L;
+
     public ReturnFollowerAction(GamePlayer player)
     {
         super(player);

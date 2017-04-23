@@ -10,12 +10,16 @@ import android.graphics.RectF;
 import com.example.roux19.carcassonne.game.GameMainActivity;
 import com.example.roux19.carcassonne.game.infoMsg.GameState;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by roux19 on 2/20/2017.
  */
-public class Tile {
+public class Tile implements Serializable {
+
+
+    public static final long serialVersionUID = 69420696942069L;
 
     //different types of terrain
     public static final char FARM = 'f';

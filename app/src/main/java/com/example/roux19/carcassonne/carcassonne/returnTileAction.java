@@ -13,6 +13,8 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 public class returnTileAction  extends GameAction
 {
 
+    public static final long serialVersionUID = 420420420420420L;
+
     public returnTileAction(GamePlayer player)
     {
         super(player);

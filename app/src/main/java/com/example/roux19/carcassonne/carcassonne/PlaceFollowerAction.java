@@ -11,6 +11,8 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 public class PlaceFollowerAction extends GameAction
 {
 
+    public static final long serialVersionUID = 011340113401134L;
+
     private int zone; //the touch event corresponds to a specific zone
 
     /**
