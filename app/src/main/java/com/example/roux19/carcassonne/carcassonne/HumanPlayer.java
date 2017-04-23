@@ -127,7 +127,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         //depending on state and which button is pressed
         //send the correct action
         if( view.getId() == R.id.rotateRight) {
-            if(state.getPlyrTurn() == 0) {
+            if(state.getPlyrTurn() == playerNum) {
                 if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE) {
                     action = new rotateAction(true, this);
                 } else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE ||
@@ -139,7 +139,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         else if( view.getId() == R.id.rotateLeft ) {
             // Make sure it's the user's turn before allowing them to access
             // the buttons.
-            if(state.getPlyrTurn() == 0) {
+            if(state.getPlyrTurn() == playerNum) {
                 if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE) {
                     action = new rotateAction(false, this);
                 } else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE) {

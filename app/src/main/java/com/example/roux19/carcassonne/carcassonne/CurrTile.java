@@ -16,14 +16,17 @@ import android.view.View;
 import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GameMainActivity;
 
+import java.io.Serializable;
+
 /**
  * @author Pouya Rad, Malcolm Roux, Sean Tan, Jake Galves
  *
  * Used to draw top right cur tile
  */
-public class CurrTile extends SurfaceView
+public class CurrTile extends SurfaceView implements Serializable
 {
 
+    private static final long serialVersionUID = 533712345696969L;
     private CarcassonneState gameState; //game state fed by gui player
     private GameMainActivity myActivity; //activity fed by gui player
     private Paint[] plyrPaints = new Paint[5];
