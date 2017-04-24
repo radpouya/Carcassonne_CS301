@@ -128,20 +128,6 @@ public class CarcassonneLocalGame extends LocalGame
         super.start(players);
         gameState.addPlayers(players); //so that the game state knows how many players there are
         // only needed to initialize arrays of scores and follower counts
-        final CarcassonneLocalGame me = this;
-        Thread namesThread = new Thread( new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                gameState.setPlyrNames(playerNames);
-                me.sendAllUpdatedState();
-            }
-        });
-        namesThread.start();
     }
 
     @Override

@@ -105,11 +105,9 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
         String updatedScoreText = "";
 
-        if( state.getPlyrNames() != null ) {
-            for (int i = 0; i < state.getPlyrNames().size(); i++) {
-                updatedScoreText = updatedScoreText + state.getPlyrNames().get(i) + " | " +
-                        state.getScores().get(i) + "\n";
-            }
+        for (int i = 0; i < state.getScores().size(); i++) {
+            updatedScoreText = updatedScoreText + allPlayerNames[i] + " | " +
+                    state.getScores().get(i) + "\n";
         }
 
         scoreText.setText(updatedScoreText);
