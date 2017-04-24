@@ -45,6 +45,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private TextView followerText;
     private TextView scoreText;
     private TextView helpText;
+    private TextView remainingTiles;
 
     private PdfRenderer pdfRenderer;
 
@@ -110,6 +111,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         }
 
         scoreText.setText(updatedScoreText);
+        remainingTiles.setText("Tiles Remaining: " + state.getRemainingTilesNum());
     }
 
     @Override
@@ -188,6 +190,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         quitButton = (Button)theActivity.findViewById(R.id.quitButton);
         followerText = (TextView)theActivity.findViewById(R.id.followersText);
         scoreText = (TextView)theActivity.findViewById(R.id.scoreText);
+        remainingTiles = (TextView)theActivity.findViewById(R.id.tileRemainingTV);
 
         //send references to activity (used fo retreiving recourses)
         gameBoardView.setMyActivity((GameMainActivity) theActivity);

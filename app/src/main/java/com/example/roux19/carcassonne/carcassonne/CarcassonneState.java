@@ -33,6 +33,7 @@ public class CarcassonneState extends GameState
     private int yCurrTile; //same as xCurrTile but with y coordinate
     private char turnPhase;
     private ArrayList<String> plyrNames = new ArrayList<String>();
+    private int remTiles;
 
     /**
      * CarcassonneState
@@ -311,4 +312,16 @@ public class CarcassonneState extends GameState
     public void setyCurrTile(int yCurrTile) { this.yCurrTile = yCurrTile; }
 
     public void setTurnPhase(char turnPhase) { this.turnPhase = turnPhase; }
+
+    public int getRemainingTilesNum() {
+        int count = 0;
+        for(int i = 0; i < board.length; i++) {
+            for(int j = 0; j < board.length; j++) {
+                if(board[i][j] != null) {
+                    count++;
+                }
+            }
+        }
+        return 66 - count;
+    }
 }
