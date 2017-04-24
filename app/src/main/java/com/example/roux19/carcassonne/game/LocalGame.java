@@ -215,6 +215,7 @@ public abstract class LocalGame implements Game, Tickable {
 				// if all players are ready, set the game stage to "during game", and
 				// send each player the initial state
 				if (playerReadyCount >= playerNames.length) {
+
 					gameStage = GameStage.DURING_GAME;
 					Log.i("LocalGame", "broadcasting initial state");
 					// send each player the initial state of the game

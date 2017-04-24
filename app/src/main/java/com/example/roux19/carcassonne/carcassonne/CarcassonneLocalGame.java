@@ -3,6 +3,7 @@ package com.example.roux19.carcassonne.carcassonne;
 import android.graphics.BitmapFactory;
 import android.os.Message;
 
+
 import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GamePlayer;
 import com.example.roux19.carcassonne.game.LocalGame;
@@ -127,6 +128,20 @@ public class CarcassonneLocalGame extends LocalGame
         super.start(players);
         gameState.addPlayers(players); //so that the game state knows how many players there are
         // only needed to initialize arrays of scores and follower counts
+        final CarcassonneLocalGame me = this;
+        Thread namesThread = new Thread( new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                gameState.setPlyrNames(playerNames);
+                me.sendAllUpdatedState();
+            }
+        });
+        namesThread.start();
     }
 
     @Override
@@ -193,7 +208,6 @@ public class CarcassonneLocalGame extends LocalGame
     @Override
     protected boolean makeMove(GameAction action)
     {
-        gameState.setPlyrNames(playerNames);
         if ( action instanceof PlacePieceAction ){
 
             //retrieve action
