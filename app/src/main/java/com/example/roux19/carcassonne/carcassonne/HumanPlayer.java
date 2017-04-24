@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.pdf.PdfRenderer;
 import android.media.SoundPool;
 import android.support.v4.view.ViewPager;
@@ -48,8 +49,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private TextView helpText;
     private TextView remainingTiles;
     private TextView turnIn;
-
-    private PdfRenderer pdfRenderer;
+    private TextView scoreHeading;
+    private TextView scoreLine;
 
     //the state we have
     private CarcassonneState state;
@@ -81,6 +82,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         gameBoardView.invalidate();
         currTileView.invalidate();
 
+
+
         //set relevant text in buttons corresponding to state
         if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE)
         {
@@ -109,6 +112,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             updatedScoreText = updatedScoreText + allPlayerNames[i] + " | " +
                     state.getScores().get(i) + "\n";
         }
+
 
         scoreText.setText(updatedScoreText);
         remainingTiles.setText("Tiles Remaining: " + state.getRemainingTilesNum());
@@ -181,18 +185,38 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
 
     private void drawGUIHelper() {
-        // Set up the GUI to the main gameboard layout and assign all listeners.
+        // Set up the GUI to the main gameboard layout and assign all
+        // listeners.
         theActivity.setContentView(R.layout.activity_main);
         currTileView = (CurrTile)theActivity.findViewById(R.id.curTile);
         gameBoardView = (GameBoard)theActivity.findViewById(R.id.gameBoard);
+
+        Typeface carcassonneFont = Typeface.createFromAsset(theActivity.
+                 getAssets(), "fonts/ufonts.com_lindsay-becker.ttf");
+
         rotateLeftAndCancel = (Button)theActivity.findViewById(R.id.rotateLeft);
         rotateRightAndEndTurn = (Button)theActivity.findViewById(R.id.rotateRight);
         helpButton = (Button)theActivity.findViewById(R.id.helpButton);
         quitButton = (Button)theActivity.findViewById(R.id.quitButton);
+        rotateLeftAndCancel.setTypeface(carcassonneFont);
+        rotateRightAndEndTurn.setTypeface(carcassonneFont);
+        helpButton.setTypeface(carcassonneFont);
+        quitButton.setTypeface(carcassonneFont);
+
         followerText = (TextView)theActivity.findViewById(R.id.followersText);
         scoreText = (TextView)theActivity.findViewById(R.id.scoreText);
         remainingTiles = (TextView)theActivity.findViewById(R.id.tileRemainingTV);
         turnIn = (TextView)theActivity.findViewById(R.id.turnIndicatorTV);
+        scoreHeading = (TextView)theActivity.findViewById(R.id.scoreHeading);
+        scoreLine = (TextView)theActivity.findViewById(R.id.scoreLine);
+        followerText.setTypeface(carcassonneFont);
+        scoreText.setTypeface(carcassonneFont);
+        remainingTiles.setTypeface(carcassonneFont);
+        turnIn.setTypeface(carcassonneFont);
+        scoreHeading.setTypeface(carcassonneFont);
+        scoreLine.setTypeface(carcassonneFont);
+        scoreHeading.setText("Player | Score");
+        scoreLine.setText("-------------------------------------------------");
 
         //send references to activity (used fo retreiving recourses)
         gameBoardView.setMyActivity((GameMainActivity) theActivity);
@@ -228,8 +252,11 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 "with the tile it is being placed adjacent to (e.g. two " +
                 "roads must match up to form one road).\nAfter placing a " +
                 "tile, the player has the option of placing a follower on " +
-                "a section of the tile.\nThis is done by tapping the current " +
-                "tile on the top right hand of the screen.\n";
+                "a section of the tile.\nThis is done by tapping the desired " +
+                "area on the current tile in the top right hand of the screen." +
+                "\nIf you place a follower in an area that becomes completed " +
+                "upon the end of your turn, \nthen that area is scored " +
+                "immediately";
 
         helpText.setText(""+rules);
     }
