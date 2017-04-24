@@ -26,9 +26,9 @@
 
         <TextView
             android:id="@+id/tileRemainingTV"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="28dp"
+            android:layout_gravity="center"
             android:text="Tiles Remaining: "
             android:textColor="@android:color/background_light"
             android:textSize="18sp" />
@@ -60,31 +60,33 @@
                 android:layout_height="20px"
                 android:layout_weight="1" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/rotateLeft"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="@android:color/holo_purple"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="&lt;---"
-                android:textSize="20dp" />
+                android:gravity="center"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                 />
 
             <Space
                 android:layout_width="20dp"
                 android:layout_height="fill_parent" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/rotateRight"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="@android:color/holo_purple"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="--->"
-                android:textSize="20dp" />
+                android:gravity="center"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                 />
 
             <Space
                 android:layout_width="20px"
@@ -98,9 +100,9 @@
 
         <TextView
             android:id="@+id/turnIndicatorTV"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="28dp"
+            android:layout_gravity="center"
             android:text="Turn Indicator"
             android:textColor="@android:color/background_light"
             android:textSize="24sp" />

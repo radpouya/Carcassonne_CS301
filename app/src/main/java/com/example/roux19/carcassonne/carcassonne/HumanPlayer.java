@@ -14,6 +14,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.roux19.carcassonne.R;
@@ -38,8 +39,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private Activity theActivity;
 
     //our buttons
-    private Button rotateLeftAndCancel;
-    private Button rotateRightAndEndTurn;
+    private ImageButton rotateLeftAndCancel;
+    private ImageButton rotateRightAndEndTurn;
     private Button helpButton;
     private Button quitButton;
     private Button backButton;
@@ -87,18 +88,18 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         //set relevant text in buttons corresponding to state
         if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE)
         {
-            rotateLeftAndCancel.setText("<---");
-            rotateRightAndEndTurn.setText("--->");
+            rotateLeftAndCancel.setImageResource(R.drawable.rotateleft);
+            rotateRightAndEndTurn.setImageResource(R.drawable.rotateright);
         }
         else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE)
         {
-            rotateLeftAndCancel.setText("UNDO");
-            rotateRightAndEndTurn.setText("END TURN");
+            rotateLeftAndCancel.setImageResource(R.drawable.undo);
+            rotateRightAndEndTurn.setImageResource(R.drawable.end_turn);
         }
         else if (state.getTurnPhase() == CarcassonneState.END_TURN_PHASE)
         {
-            rotateLeftAndCancel.setText("UNDO");
-            rotateRightAndEndTurn.setText("END TURN");
+            rotateLeftAndCancel.setImageResource(R.drawable.undo);
+            rotateRightAndEndTurn.setImageResource(R.drawable.end_turn);
         }
 
         //set relevant follower text
@@ -194,12 +195,10 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         Typeface carcassonneFont = Typeface.createFromAsset(theActivity.
                  getAssets(), "fonts/ufonts.com_lindsay-becker.ttf");
 
-        rotateLeftAndCancel = (Button)theActivity.findViewById(R.id.rotateLeft);
-        rotateRightAndEndTurn = (Button)theActivity.findViewById(R.id.rotateRight);
+        rotateLeftAndCancel = (ImageButton)theActivity.findViewById(R.id.rotateLeft);
+        rotateRightAndEndTurn = (ImageButton)theActivity.findViewById(R.id.rotateRight);
         helpButton = (Button)theActivity.findViewById(R.id.helpButton);
         quitButton = (Button)theActivity.findViewById(R.id.quitButton);
-        rotateLeftAndCancel.setTypeface(carcassonneFont);
-        rotateRightAndEndTurn.setTypeface(carcassonneFont);
         helpButton.setTypeface(carcassonneFont);
         quitButton.setTypeface(carcassonneFont);
 
