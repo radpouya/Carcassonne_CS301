@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private TextView scoreText;
     private TextView helpText;
     private TextView remainingTiles;
+    private TextView turnIn;
 
     private PdfRenderer pdfRenderer;
 
@@ -112,6 +114,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
         scoreText.setText(updatedScoreText);
         remainingTiles.setText("Tiles Remaining: " + state.getRemainingTilesNum());
+        turnIn.setText("" + allPlayerNames[state.getPlyrTurn()] + "'s Turn");
     }
 
     @Override
@@ -191,6 +194,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         followerText = (TextView)theActivity.findViewById(R.id.followersText);
         scoreText = (TextView)theActivity.findViewById(R.id.scoreText);
         remainingTiles = (TextView)theActivity.findViewById(R.id.tileRemainingTV);
+        turnIn = (TextView)theActivity.findViewById(R.id.turnIndicatorTV);
 
         //send references to activity (used fo retreiving recourses)
         gameBoardView.setMyActivity((GameMainActivity) theActivity);
