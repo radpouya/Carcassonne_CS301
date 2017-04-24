@@ -8,18 +8,20 @@
         android:id="@+id/backButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green"
+        android:background="@android:color/holo_purple"
         android:text="Go Back to Game"
-        android:textColor="@color/black"
+        android:textColor="@android:color/background_light"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/helpTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:inputType="textMultiLine"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:text="TextView"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp" />
 
 
 </LinearLayout>

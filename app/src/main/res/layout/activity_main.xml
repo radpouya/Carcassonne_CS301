@@ -70,6 +70,10 @@
                 android:gravity="center"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                  />
 
             <Space
@@ -86,6 +90,10 @@
                 android:gravity="center"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                  />
 
             <Space

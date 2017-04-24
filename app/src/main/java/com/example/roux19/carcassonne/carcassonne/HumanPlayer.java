@@ -53,6 +53,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private TextView scoreHeading;
     private TextView scoreLine;
 
+    private Typeface carcassonneFont;
+
     //the state we have
     private CarcassonneState state;
 
@@ -88,17 +90,17 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         //set relevant text in buttons corresponding to state
         if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE)
         {
-            rotateLeftAndCancel.setImageResource(R.drawable.rotateleft);
-            rotateRightAndEndTurn.setImageResource(R.drawable.rotateright);
+            rotateLeftAndCancel.setImageResource(R.drawable.leftrot);
+            rotateRightAndEndTurn.setImageResource(R.drawable.rightrot);
         }
         else if (state.getTurnPhase() == CarcassonneState.FOLLOWER_PHASE)
         {
-            rotateLeftAndCancel.setImageResource(R.drawable.undo);
+            rotateLeftAndCancel.setImageResource(R.drawable.undo1);
             rotateRightAndEndTurn.setImageResource(R.drawable.end_turn);
         }
         else if (state.getTurnPhase() == CarcassonneState.END_TURN_PHASE)
         {
-            rotateLeftAndCancel.setImageResource(R.drawable.undo);
+            rotateLeftAndCancel.setImageResource(R.drawable.undo1);
             rotateRightAndEndTurn.setImageResource(R.drawable.end_turn);
         }
 
@@ -157,8 +159,11 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 }
             }
         } else if(view.getId() == R.id.helpButton) {
+            carcassonneFont = Typeface.createFromAsset(theActivity.getAssets(),
+                              "fonts/ufonts.com_lindsay-becker.ttf");
             theActivity.setContentView(R.layout.help_activity);
             backButton = (Button)theActivity.findViewById(R.id.backButton);
+            backButton.setTypeface(carcassonneFont);
             backButton.setOnClickListener(this);
             helpText = (TextView)theActivity.findViewById(R.id.helpTV);
             /** External Citation
@@ -192,8 +197,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         currTileView = (CurrTile)theActivity.findViewById(R.id.curTile);
         gameBoardView = (GameBoard)theActivity.findViewById(R.id.gameBoard);
 
-        Typeface carcassonneFont = Typeface.createFromAsset(theActivity.
-                 getAssets(), "fonts/ufonts.com_lindsay-becker.ttf");
+        carcassonneFont = Typeface.createFromAsset(theActivity.getAssets(),
+                          "fonts/ufonts.com_lindsay-becker.ttf");
 
         rotateLeftAndCancel = (ImageButton)theActivity.findViewById(R.id.rotateLeft);
         rotateRightAndEndTurn = (ImageButton)theActivity.findViewById(R.id.rotateRight);
@@ -239,10 +244,10 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         // Multiline string for the rules
         String rules = "This page describes the rules for this implementation " +
                 "of Carcassonne.\nCarcassonne is an exciting tile-laying game " +
-                "for 2-4 players.\nThe game consists of 72 Land tiles, which " +
+                "for 2-5 players.\nThe game consists of 66 Land tiles, which " +
                 "indicate different road segments, crossings, castles, and " +
-                "farms.\nEach player has 7 followers in a specific color, and " +
-                "can use them as a knight, thief, or farmer. These are " +
+                "farms.Each player has 7 followers in a specific color, and " +
+                "can use them as a knight, thief, or farmer.\nThese are " +
                 "displayed as different colored squares, depending on the " +
                 "player.\nTo play, you tap the screen to indicate where you " +
                 "want to place the current drawn tile displayed in the top " +
@@ -255,7 +260,11 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 "area on the current tile in the top right hand of the screen." +
                 "\nIf you place a follower in an area that becomes completed " +
                 "upon the end of your turn, \nthen that area is scored " +
-                "immediately";
+                "immediately and your follower is returned to you.\nIt is " +
+                "important to note that a section that already has a follower " +
+                "on it already is not a valid area to place a new follower. " +
+                "For example, a road that is incomplete and has a follower on " +
+                "is not a legal area for a new follower to be placed.";
 
         helpText.setText(""+rules);
     }
