@@ -105,7 +105,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         //set relevant follower text
         int playerFollowers;
         playerFollowers = state.getRemainingFollowers().get(this.playerNum);
-        followerText.setText("Followers: "+playerFollowers);
+        followerText.setText("Followers: " + playerFollowers);
 
         String updatedScoreText = "";
 
