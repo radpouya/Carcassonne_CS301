@@ -14,6 +14,9 @@ import java.util.TreeMap;
  */
 public class ComputerPlayerSmart extends GameComputerPlayer {
 
+    int numRotations = 0;
+    int tryingFreq = 4;
+
     public ComputerPlayerSmart( String name )
     {
         super(name);
@@ -71,7 +74,7 @@ public class ComputerPlayerSmart extends GameComputerPlayer {
                     freqMoves.put(p, 1);
                 }
             }
-            tryToPlacePeice(possibleMoves, state);
+            loopThroughFrequencies(freqMoves, state);
             possibleMoves.clear();
         }
         else if( state.getTurnPhase() == 'f' )
@@ -104,24 +107,52 @@ public class ComputerPlayerSmart extends GameComputerPlayer {
 
     }
 
-    private boolean tryToPlacePeice( ArrayList<Point> possibleMoves, CarcassonneState state )
+    private boolean loopThroughFrequencies( TreeMap<Point, Integer> freqMoves, CarcassonneState state )
     {
         Random r = new Random();
-        int randStart = r.nextInt(possibleMoves.size());
 
-        for( int i = 0; i < possibleMoves.size(); i++ ) {
-            Point move = possibleMoves.get(randStart);
-
-            if (state.isLegalMove(move.x, move.y) ) {
-                PlacePieceAction ppa = new PlacePieceAction(move.x,move.y,this);
-                game.sendAction(ppa);
+        if( tryingFreq == 4 )
+        {
+            if( !freqMoves.containsValue(4) )
+            {
+                tryingFreq--;
+            }
+            else
+            {
+                tryToPlacePiece(freqMoves, state);
                 return true;
             }
-
-            randStart = (randStart+1)%possibleMoves.size();
         }
 
         game.sendAction(new rotateAction(true, this));
         return false;
+    }
+
+    private boolean tryToPlacePiece( TreeMap<Point, Integer> freqMoves, CarcassonneState state )
+    {
+        for( Point move : freqMoves.keySet()) {
+            if( freqMoves.get(move) == tryingFreq )
+            {
+                if (state.isLegalMove(move.x, move.y) ) {
+                    PlacePieceAction ppa = new PlacePieceAction(move.x,move.y,this);
+                    tryingFreq = 4;
+                    numRotations = 0;
+                    game.sendAction(ppa);
+                    return true;
+                }
+            }
+        }
+
+
+        if( numRotations == 3 ) {
+            tryingFreq--;
+            numRotations=0;
+        }
+        else
+        {
+            numRotations++;
+        }
+        game.sendAction(new rotateAction(true, this));
+        return true;
     }
 }

@@ -9,14 +9,15 @@
         android:id="@+id/gameBoard"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight=".25" />
+        android:layout_weight=".25"
+        android:background="@android:color/holo_purple" />
 
     <LinearLayout
         android:id="@+id/sideBar"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_weight=".75"
-        android:background="@android:color/darker_gray"
+        android:background="?attr/colorButtonNormal"
         android:orientation="vertical"
         android:weightSum="1">
 
@@ -66,15 +67,14 @@
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:adjustViewBounds="true"
                 android:background="@android:color/holo_purple"
                 android:gravity="center"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                 />
+                android:paddingTop="4dp"
+                android:scaleType="fitCenter" />
 
             <Space
                 android:layout_width="20dp"
@@ -86,15 +86,14 @@
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:adjustViewBounds="true"
                 android:background="@android:color/holo_purple"
                 android:gravity="center"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                 />
+                android:paddingTop="4dp"
+                android:scaleType="fitCenter" />
 
             <Space
                 android:layout_width="20px"
@@ -132,35 +131,147 @@
             android:layout_width="fill_parent"
             android:layout_height="13dp" />
 
-        <TextView
-            android:id="@+id/scoreHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Player | Score"
-            android:textColor="#ffffff"
-            android:textSize="30dp"
-            android:typeface="normal" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/scoreLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="--------------------------------"
-            android:textColor="#ffffff" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="4">
 
-        <TextView
-            android:id="@+id/scoreText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="#ffffff"
-            android:textSize="20dp" />
+                <TextView
+                    android:id="@+id/nameHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="Name"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/scoreHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="Score"
+                    android:textSize="30sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="7">
+
+                <TextView
+                    android:id="@+id/p1Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/p1Score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/p2Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/p2Score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/p3Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/p3Score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="7">
+
+                <TextView
+                    android:id="@+id/p4Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/p4Score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/p5Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/p5Score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:textSize="24sp" />
+            </TableRow>
+        </TableLayout>
 
         <Space
             android:layout_width="fill_parent"
-            android:layout_height="15dp" />
+            android:layout_height="48dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

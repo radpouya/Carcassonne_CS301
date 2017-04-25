@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfRenderer;
@@ -26,6 +27,7 @@ import com.example.roux19.carcassonne.game.infoMsg.GameState;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -46,12 +48,13 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private Button backButton;
 
     private TextView followerText;
-    private TextView scoreText;
     private TextView helpText;
     private TextView remainingTiles;
     private TextView turnIn;
-    private TextView scoreHeading;
-    private TextView scoreLine;
+    private TextView nameHead;
+    private TextView scoreHead;
+    private ArrayList<TextView> names = new ArrayList<TextView>();
+    private ArrayList<TextView> scores = new ArrayList<TextView>();
 
     private Typeface carcassonneFont;
 
@@ -85,8 +88,6 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         gameBoardView.invalidate();
         currTileView.invalidate();
 
-
-
         //set relevant text in buttons corresponding to state
         if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE)
         {
@@ -109,17 +110,17 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         playerFollowers = state.getRemainingFollowers().get(this.playerNum);
         followerText.setText("Followers: " + playerFollowers);
 
-        String updatedScoreText = "";
+
 
         for (int i = 0; i < state.getScores().size(); i++) {
-            updatedScoreText = updatedScoreText + allPlayerNames[i] + " | " +
-                    state.getScores().get(i) + "\n";
+            scores.get(i).setText("" + state.getScores().get(i));
         }
 
 
-        scoreText.setText(updatedScoreText);
+
         remainingTiles.setText("Tiles Remaining: " + state.getRemainingTilesNum());
         turnIn.setText("" + allPlayerNames[state.getPlyrTurn()] + "'s Turn");
+
     }
 
     @Override
@@ -166,6 +167,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             backButton.setTypeface(carcassonneFont);
             backButton.setOnClickListener(this);
             helpText = (TextView)theActivity.findViewById(R.id.helpTV);
+            helpText.setTypeface(carcassonneFont);
             /** External Citation
              * Date: 12 April 2017
              * Problem: Difficulty getting new layout to display when button
@@ -199,6 +201,15 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
         carcassonneFont = Typeface.createFromAsset(theActivity.getAssets(),
                           "fonts/ufonts.com_lindsay-becker.ttf");
+        /** External Citation
+         * Date: 24 April 2017
+         * Problem: Wanted to get a custom font to be similar to that of the
+                    Carcassonne game.
+         * Resource: http://stackoverflow.com/questions/27588965/how-to-use-
+                     custom-font-in-android-studio
+         * Solution: Used code provided on site as an example for our own
+                     usage.
+         */
 
         rotateLeftAndCancel = (ImageButton)theActivity.findViewById(R.id.rotateLeft);
         rotateRightAndEndTurn = (ImageButton)theActivity.findViewById(R.id.rotateRight);
@@ -208,19 +219,18 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         quitButton.setTypeface(carcassonneFont);
 
         followerText = (TextView)theActivity.findViewById(R.id.followersText);
-        scoreText = (TextView)theActivity.findViewById(R.id.scoreText);
         remainingTiles = (TextView)theActivity.findViewById(R.id.tileRemainingTV);
         turnIn = (TextView)theActivity.findViewById(R.id.turnIndicatorTV);
-        scoreHeading = (TextView)theActivity.findViewById(R.id.scoreHeading);
-        scoreLine = (TextView)theActivity.findViewById(R.id.scoreLine);
+        nameHead = (TextView)theActivity.findViewById(R.id.nameHead);
+        scoreHead = (TextView)theActivity.findViewById(R.id.scoreHead);
+
+
         followerText.setTypeface(carcassonneFont);
-        scoreText.setTypeface(carcassonneFont);
         remainingTiles.setTypeface(carcassonneFont);
         turnIn.setTypeface(carcassonneFont);
-        scoreHeading.setTypeface(carcassonneFont);
-        scoreLine.setTypeface(carcassonneFont);
-        scoreHeading.setText("Player | Score");
-        scoreLine.setText("-------------------------------------------------");
+        nameHead.setTypeface(carcassonneFont);
+        scoreHead.setTypeface(carcassonneFont);
+
 
         //send references to activity (used fo retreiving recourses)
         gameBoardView.setMyActivity((GameMainActivity) theActivity);
@@ -237,6 +247,29 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
         gameBoardView.scrollBy(200*60, 200*60);
 
+
+        names.add((TextView)theActivity.findViewById(R.id.p1Name));
+        names.add((TextView)theActivity.findViewById(R.id.p2Name));
+        names.add((TextView)theActivity.findViewById(R.id.p3Name));
+        names.add((TextView)theActivity.findViewById(R.id.p4Name));
+        names.add((TextView)theActivity.findViewById(R.id.p5Name));
+
+        names.get(0).setTextColor(Color.BLACK);
+        names.get(1).setTextColor(Color.RED);
+        names.get(2).setTextColor(Color.GREEN);
+        names.get(3).setTextColor(Color.BLUE);
+        names.get(4).setTextColor(Color.YELLOW);
+
+        scores.add((TextView)theActivity.findViewById(R.id.p1Score));
+        scores.add((TextView)theActivity.findViewById(R.id.p2Score));
+        scores.add((TextView)theActivity.findViewById(R.id.p3Score));
+        scores.add((TextView)theActivity.findViewById(R.id.p4Score));
+        scores.add((TextView)theActivity.findViewById(R.id.p5Score));
+
+
+
+
+
         this.receiveInfo(state);
     }
 
@@ -246,7 +279,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 "of Carcassonne.\nCarcassonne is an exciting tile-laying game " +
                 "for 2-5 players.\nThe game consists of 66 Land tiles, which " +
                 "indicate different road segments, crossings, castles, and " +
-                "farms.Each player has 7 followers in a specific color, and " +
+                "farms. Each player has 7 followers in a specific color, and " +
                 "can use them as a knight, thief, or farmer.\nThese are " +
                 "displayed as different colored squares, depending on the " +
                 "player.\nTo play, you tap the screen to indicate where you " +
@@ -264,7 +297,18 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 "important to note that a section that already has a follower " +
                 "on it already is not a valid area to place a new follower. " +
                 "For example, a road that is incomplete and has a follower on " +
-                "is not a legal area for a new follower to be placed.";
+                "is not a legal area for a new follower to be placed.\n " +
+                "Score is added as follows when followers are present on the area:\n" +
+                "\t\t\tA road is completed when both ends connect two cities\\castles or " +
+                "the road forms a loop.\t\t\tEach tile in a completed road is worth " +
+                "1 point.\n" +
+                "\t\t\tA castle is completed when it is surrounded by walls and there " +
+                "are no gaps in the city.\t\t\tEach tile in a completed city is worth " +
+                "2 points.\n" +
+                "\t\t\tAt the end of the game, any incomplete road is worth 1 point per" +
+                "tile, each incomplete city is worth 1 point per tile, and each " +
+                "connected field is worth 1 point per tile.\nRemember, the game " +
+                "ends when all the tiles are used!";
 
         helpText.setText(""+rules);
     }
@@ -425,6 +469,18 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         }
 
         return false;
+    }
+
+    @Override
+    protected void initAfterReady() {
+        for(int i = 0; i < allPlayerNames.length; i++) {
+
+            names.get(i).setTypeface(carcassonneFont);
+            names.get(i).setText(allPlayerNames[i]);
+
+            scores.get(i).setTypeface(carcassonneFont);
+            scores.get(i).setText("" + 0);
+        }
     }
 
 }
