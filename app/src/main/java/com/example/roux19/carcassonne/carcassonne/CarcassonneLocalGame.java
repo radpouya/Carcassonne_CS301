@@ -1,7 +1,9 @@
 package com.example.roux19.carcassonne.carcassonne;
 
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Message;
+import android.os.Vibrator;
 
 
 import com.example.roux19.carcassonne.R;
@@ -28,9 +30,15 @@ public class CarcassonneLocalGame extends LocalGame
 
     private ArrayList<Tile> tileDeck = new ArrayList<Tile>(); //list of possible tiles of the game
 
-    public CarcassonneLocalGame( )
+    private Context context;
+
+    public CarcassonneLocalGame( Context theContext )
     {
         super();
+
+        // getting the context of the activity
+        context = theContext;
+
 
         //hard coded initializers for the tile deck
 
@@ -202,7 +210,12 @@ public class CarcassonneLocalGame extends LocalGame
             //check correct turn phase
             if(gameState.getTurnPhase() != CarcassonneState.PIECE_PHASE) return false;
 
-            if (!gameState.isLegalMove(ppa.getxCor(), ppa.getyCor())) return false;
+            if (!gameState.isLegalMove(ppa.getxCor(), ppa.getyCor())) {
+                // let the user know they suck at the game
+                Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(250);
+                return false;
+            }
 
             //place da tile
             gameState.getBoard()[ppa.getxCor()][ppa.getyCor()] = gameState.getCurrTile();

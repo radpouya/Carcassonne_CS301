@@ -182,6 +182,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             System.exit(0);
         } else if(view.getId() == R.id.backButton) {
             drawGUIHelper();
+
         }
 
         //we haven't done that button yet
