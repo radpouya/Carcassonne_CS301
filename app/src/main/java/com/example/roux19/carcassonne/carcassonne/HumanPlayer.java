@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.roux19.carcassonne.R;
@@ -316,7 +317,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private void ruleWriter() {
         // Multiline string for the rules
         String rules = "This page describes the rules for this implementation " +
-                "of Carcassonne.\nCarcassonne is an exciting tile-laying game " +
+                "of Carcassonne.\n\nCarcassonne is an exciting tile-laying game " +
                 "for 2-5 players.\nThe game consists of 66 Land tiles, which " +
                 "indicate different road segments, crossings, castles, and " +
                 "farms. Each player has 7 followers in a specific color, and " +
@@ -327,7 +328,10 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 "right hand corner of the screen.\nTiles must be placed " +
                 "legally such that all sections (roads, castles, etc) match " +
                 "with the tile it is being placed adjacent to (e.g. two " +
-                "roads must match up to form one road).\nAfter placing a " +
+                "roads must match up to form one road).\nIf the tile is " +
+                "attempted to be placed in an illegal spot, the device will " +
+                "vibrate to let the user know that the move was illegal.\n" +
+                "\nAfter placing a " +
                 "tile, the player has the option of placing a follower on " +
                 "a section of the tile.\nThis is done by tapping the desired " +
                 "area on the current tile in the top right hand of the screen." +
@@ -337,17 +341,17 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 "important to note that a section that already has a follower " +
                 "on it already is not a valid area to place a new follower. " +
                 "For example, a road that is incomplete and has a follower on " +
-                "is not a legal area for a new follower to be placed.\n " +
+                "is not a legal area for a new follower to be placed.\n\n" +
                 "Score is added as follows when followers are present on the area:\n" +
-                "\t\t\tA road is completed when both ends connect two cities\\castles or " +
-                "the road forms a loop.\t\t\tEach tile in a completed road is worth " +
+                "A road is completed when both ends connect two cities\\castles or " +
+                "the road forms a loop.Each tile in a completed road is worth " +
                 "1 point.\n" +
-                "\t\t\tA castle is completed when it is surrounded by walls and there " +
-                "are no gaps in the city.\t\t\tEach tile in a completed city is worth " +
+                "A castle is completed when it is surrounded by walls and there " +
+                "are no gaps in the city.Each tile in a completed city is worth " +
                 "2 points.\n" +
-                "\t\t\tAt the end of the game, any incomplete road is worth 1 point per" +
+                "At the end of the game, any incomplete road is worth 1 point per" +
                 "tile, each incomplete city is worth 1 point per tile, and each " +
-                "connected field is worth 1 point per tile.\nRemember, the game " +
+                "connected field is worth 1 point per tile.\n\nRemember, the game " +
                 "ends when all the tiles are used!";
 
         helpText.setText(""+rules);

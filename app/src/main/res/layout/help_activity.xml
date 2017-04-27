@@ -13,6 +13,21 @@
         android:textColor="@android:color/background_light"
         android:textSize="24sp" />
 
+    <ScrollView android:id="@+id/textAreaScroller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+        <!--
+             External Citation
+             * Date: 25 April 2017
+             * Problem: Too much text for a TextView to handle, so needed it
+                        to be scrollable.
+             * Resource: http://stackoverflow.com/questions/14434433/
+                         androidtextview-with-vertical-scrolling-text
+             * Solution: Used the first commenter's solution and added a
+                         scrollbar in the XML
+        -->
+
     <TextView
         android:id="@+id/helpTV"
         android:layout_width="match_parent"
@@ -23,5 +38,6 @@
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
         />
+    </ScrollView>
 
 </LinearLayout>
