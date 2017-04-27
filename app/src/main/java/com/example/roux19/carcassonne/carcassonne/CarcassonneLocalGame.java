@@ -30,10 +30,13 @@ public class CarcassonneLocalGame extends LocalGame
 
     private ArrayList<Tile> tileDeck = new ArrayList<Tile>(); //list of possible tiles of the game
 
-    public CarcassonneLocalGame()
+    private Context theContext;
+
+    public CarcassonneLocalGame(Context context)
     {
         super();
 
+        theContext = context;
 
 
 
@@ -207,7 +210,12 @@ public class CarcassonneLocalGame extends LocalGame
             //check correct turn phase
             if(gameState.getTurnPhase() != CarcassonneState.PIECE_PHASE) return false;
 
-            if (!gameState.isLegalMove(ppa.getxCor(), ppa.getyCor())) return false;
+            if (!gameState.isLegalMove(ppa.getxCor(), ppa.getyCor())) {
+                // let the user know they suck at the game
+                Vibrator v = (Vibrator) theContext.getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(250);
+                return false;
+            }
 
             //place da tile
             gameState.getBoard()[ppa.getxCor()][ppa.getyCor()] = gameState.getCurrTile();

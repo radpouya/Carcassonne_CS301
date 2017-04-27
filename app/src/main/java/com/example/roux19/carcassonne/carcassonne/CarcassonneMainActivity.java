@@ -3,7 +3,7 @@ package com.example.roux19.carcassonne.carcassonne;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Vibrator;
+
 
 import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GameMainActivity;
@@ -79,6 +79,6 @@ public class CarcassonneMainActivity extends GameMainActivity
 
     @Override
     public LocalGame createLocalGame() {
-        return new CarcassonneLocalGame();
+        return new CarcassonneLocalGame(this);
     }
 }
