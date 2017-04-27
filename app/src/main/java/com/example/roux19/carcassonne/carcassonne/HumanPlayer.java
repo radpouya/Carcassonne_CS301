@@ -1,6 +1,7 @@
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfRenderer;
 import android.media.SoundPool;
+import android.os.Vibrator;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -24,6 +26,7 @@ import com.example.roux19.carcassonne.game.GameMainActivity;
 import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 import com.example.roux19.carcassonne.game.infoMsg.GameInfo;
 import com.example.roux19.carcassonne.game.infoMsg.GameState;
+import com.example.roux19.carcassonne.game.infoMsg.IllegalMoveInfo;
 
 import org.w3c.dom.Text;
 
@@ -58,6 +61,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
     private Typeface carcassonneFont;
 
+    private Context myContext;
+
     //the state we have
     private CarcassonneState state;
 
@@ -78,6 +83,13 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     @Override
     public void receiveInfo(GameInfo info) {
         if (info == null) return;
+
+        //extra feature
+        if( info instanceof IllegalMoveInfo)
+        {
+            Vibrator v = (Vibrator) myContext.getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(250);
+        }
 
         if (!(info instanceof CarcassonneState)) return; // if we do not have a CarcassonneState, ignore
         this.state = (CarcassonneState)info; //set our state
@@ -126,6 +138,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     @Override
     public void setAsGui(GameMainActivity activity) {
         this.theActivity = activity;
+        myContext = activity;
         drawGUIHelper();
     }
 
@@ -182,6 +195,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             System.exit(0);
         } else if(view.getId() == R.id.backButton) {
             drawGUIHelper();
+            initAfterReady();
 
         }
 
@@ -248,12 +262,30 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
         gameBoardView.scrollBy(200*60, 200*60);
 
-
-        names.add((TextView)theActivity.findViewById(R.id.p1Name));
-        names.add((TextView)theActivity.findViewById(R.id.p2Name));
-        names.add((TextView)theActivity.findViewById(R.id.p3Name));
-        names.add((TextView)theActivity.findViewById(R.id.p4Name));
-        names.add((TextView)theActivity.findViewById(R.id.p5Name));
+        if( names.isEmpty() ) {
+            names.add((TextView) theActivity.findViewById(R.id.p1Name));
+            names.add((TextView) theActivity.findViewById(R.id.p2Name));
+            names.add((TextView) theActivity.findViewById(R.id.p3Name));
+            names.add((TextView) theActivity.findViewById(R.id.p4Name));
+            names.add((TextView) theActivity.findViewById(R.id.p5Name));
+            scores.add((TextView)theActivity.findViewById(R.id.p1Score));
+            scores.add((TextView)theActivity.findViewById(R.id.p2Score));
+            scores.add((TextView)theActivity.findViewById(R.id.p3Score));
+            scores.add((TextView)theActivity.findViewById(R.id.p4Score));
+            scores.add((TextView)theActivity.findViewById(R.id.p5Score));
+        }
+        else {
+            names.set(0,(TextView) theActivity.findViewById(R.id.p1Name));
+            names.set(1,(TextView) theActivity.findViewById(R.id.p2Name));
+            names.set(2,(TextView) theActivity.findViewById(R.id.p3Name));
+            names.set(3,(TextView) theActivity.findViewById(R.id.p4Name));
+            names.set(4,(TextView) theActivity.findViewById(R.id.p5Name));
+            scores.set(0,(TextView)theActivity.findViewById(R.id.p1Score));
+            scores.set(1,(TextView)theActivity.findViewById(R.id.p2Score));
+            scores.set(2,(TextView)theActivity.findViewById(R.id.p3Score));
+            scores.set(3,(TextView)theActivity.findViewById(R.id.p4Score));
+            scores.set(4,(TextView)theActivity.findViewById(R.id.p5Score));
+        }
 
         names.get(0).setTextColor(Color.BLACK);
         names.get(1).setTextColor(Color.RED);
@@ -261,11 +293,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         names.get(3).setTextColor(Color.BLUE);
         names.get(4).setTextColor(Color.YELLOW);
 
-        scores.add((TextView)theActivity.findViewById(R.id.p1Score));
-        scores.add((TextView)theActivity.findViewById(R.id.p2Score));
-        scores.add((TextView)theActivity.findViewById(R.id.p3Score));
-        scores.add((TextView)theActivity.findViewById(R.id.p4Score));
-        scores.add((TextView)theActivity.findViewById(R.id.p5Score));
+
 
 
 
@@ -480,7 +508,13 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             names.get(i).setText(allPlayerNames[i]);
 
             scores.get(i).setTypeface(carcassonneFont);
-            scores.get(i).setText("" + 0);
+            if( state == null ) {
+                scores.get(i).setText("" + 0);
+            }
+            else {
+                scores.get(i).setText(""+state.getScores().get(i));
+            }
+
         }
     }
 

@@ -12,7 +12,8 @@
         android:label="Carcassonne"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
-        <activity android:name=".carcassonne.CarcassonneMainActivity">
+        <activity android:name=".carcassonne.CarcassonneMainActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

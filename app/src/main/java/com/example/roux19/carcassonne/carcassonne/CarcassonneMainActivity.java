@@ -79,6 +79,6 @@ public class CarcassonneMainActivity extends GameMainActivity
 
     @Override
     public LocalGame createLocalGame() {
-        return new CarcassonneLocalGame(this);
+        return new CarcassonneLocalGame();
     }
 }

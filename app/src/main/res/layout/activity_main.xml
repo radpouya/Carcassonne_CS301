@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".carcassonne.MainActivity">
+    tools:context=".carcassonne.MainActivity"
+    >
 
     <com.example.roux19.carcassonne.carcassonne.GameBoard
         android:id="@+id/gameBoard"

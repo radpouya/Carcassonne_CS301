@@ -448,6 +448,15 @@ public class Area implements Serializable{
         }
     }
 
+    public int getScore( ArrayList<Area> areasToScore) {
+        int score = 0;
+        for( int i = 0; i < areasToScore.size(); i++)
+        {
+            score += areasToScore.get(i).points;
+        }
+        return score;
+    }
+
     //getters
     public ArrayList<Integer> getOccZones() {
         return occZones;
