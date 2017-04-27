@@ -211,9 +211,6 @@ public class CarcassonneLocalGame extends LocalGame
             if(gameState.getTurnPhase() != CarcassonneState.PIECE_PHASE) return false;
 
             if (!gameState.isLegalMove(ppa.getxCor(), ppa.getyCor())) {
-                // let the user know they suck at the game
-                Vibrator v = (Vibrator) theContext.getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(250);
                 return false;
             }
 

@@ -84,11 +84,22 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     public void receiveInfo(GameInfo info) {
         if (info == null) return;
 
-        //extra feature
+        // Extra feature, vibrates to let user know that they were illegally
+        // trying to place a tile.
         if( info instanceof IllegalMoveInfo)
         {
             Vibrator v = (Vibrator) myContext.getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(250);
+            /** External Citation
+             * Date: 25 April 2017
+             * Problem: Wanted to figure out how to invoke haptic feedback from
+                        device.
+             * Resource: http://stackoverflow.com/questions/13950338/how-to-
+                         make-an-android-device-vibrate
+             * Solution: Used the code provided by the first commenter and
+                         modified it for our own usage.
+             */
+
         }
 
         if (!(info instanceof CarcassonneState)) return; // if we do not have a CarcassonneState, ignore
