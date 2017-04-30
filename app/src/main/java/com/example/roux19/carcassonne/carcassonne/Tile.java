@@ -1,3 +1,10 @@
+// Jake Galves, Pouya Rad, Malcolm Roux, Sean Tan
+// CS 301 A - Spring 2017
+// Dr. Andrew Nuxoll
+// Team Project - Carcassonne
+// HW Assignment 4 Final Release
+// 1 May 2017
+
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.graphics.Bitmap;
@@ -6,59 +13,23 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
-
 import com.example.roux19.carcassonne.game.GameMainActivity;
-import com.example.roux19.carcassonne.game.infoMsg.GameState;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by roux19 on 2/20/2017.
  */
+
 public class Tile implements Serializable {
 
 
     public static final long serialVersionUID = 69420696942069L;
 
-    //different types of terrain
-    public static final char FARM = 'f';
-    public static final char ROAD = 'r';
-    public static final char CASTLE = 'c';
-    public static final char EMPTY = 'n'; //rare but sometimes the middle zone is not used
-
-    private int bitmapRes; //keeps the address of the needed bitmap, does this work with network play???
-    private int rotation; //rotation of tile
-    private char[] zones = new char[13]; //stores the terrain on tile
-
-    private ArrayList<Area> tileAreas = new ArrayList<Area>(); //all the areas in the tile
-
-
-    /**
-     * Tile
-     * creates a tile from scratch
-     * idk if we ever need this
-     * @param initBitmapRes
-     * @param initZones
-     * @param initTileAreas
-     * @param initRotation
-     *
-     */
-    public Tile( int initBitmapRes, char[] initZones,  ArrayList<Area>
-            initTileAreas, int initRotation )
-    {
-
-        bitmapRes = initBitmapRes;
-        rotation = initRotation;
-        for( int i = 0; i<13; i++)
-        {
-            this.zones[i] = initZones[i];
-        }
-        for( int i = 0; i<initTileAreas.size(); i++)
-        {
-            tileAreas.add( new Area(initTileAreas.get(i)));
-        }
-    }
+    private int bitmapRes; // keeps the address of the needed bitmap
+    private int rotation; // rotation of tile
+    private char[] zones = new char[13]; // stores the terrain on tile
+    private ArrayList<Area> tileAreas = new ArrayList<>(); //all the areas in the tile
 
     /**
      * Tile
@@ -73,25 +44,28 @@ public class Tile implements Serializable {
      * @param initArrayPropigation
      * @param initRotation
      */
-    public Tile( int initBitmapRes, char[] initZones, int[] initArrayPropigation, int initRotation )
+    public Tile(int initBitmapRes, char[] initZones,
+                int[] initArrayPropigation, int initRotation)
     {
         bitmapRes = initBitmapRes;
         rotation = initRotation;
-        for( int i = 0; i<13; i++)
+        for( int i = 0; i < 13; i++)
         {
             this.zones[i] = initZones[i];
         }
 
-        for( int i = 0; i<13; i++) //loop through all the zones
+        for( int i = 0; i < 13; i++) //loop through all the zones
         {
             //negative 1 means skip this zone (it is an empty zone)
             if( initArrayPropigation[i] != -1 ) {
-                if (tileAreas.size() == initArrayPropigation[i]) //if we have not created this area yet
+                //if we have not created this area yet
+                if (tileAreas.size() == initArrayPropigation[i])
                 {
                     int score = 2; //the score is 2 per tile
-                    if (initZones[i] == Tile.FARM) score = 1; //unless farm then 1
-                    //make a new area and add it, it has this indexes type no owner no tile and no zones yet
-                    tileAreas.add(new Area(initZones[i], score, -1, null, null));
+                    if (initZones[i] == 'f') score = 1; //unless farm then 1
+                    // make a new area and add it, it has this indexes
+                    // type no owner no tile and no zones yet
+                    tileAreas.add(new Area(initZones[i], score, null, null));
                 }
 
                 //add this zone to this areas occupied zones
@@ -105,19 +79,21 @@ public class Tile implements Serializable {
      * deep copy of Tile class above
      * @param tile
      */
-    public Tile( Tile tile)
+    public Tile(Tile tile)
     {
         if( tile == null ){ return; }
+
         this.bitmapRes = tile.bitmapRes;
         this.rotation = tile.rotation;
-        for( int i = 0; i<13; i++)
+
+        for(int i = 0; i < 13; i++)
         {
             this.zones[i] = tile.zones[i];
         }
 
-        for( int i = 0; i<tile.tileAreas.size(); i++)
+        for( int i = 0; i < tile.tileAreas.size(); i++)
         {
-            tileAreas.add( new Area(tile.tileAreas.get(i)));
+            tileAreas.add(new Area(tile.tileAreas.get(i)));
         }
     }
 
@@ -133,8 +109,9 @@ public class Tile implements Serializable {
      * @param touchedAreas
      * @return
      */
-    public boolean isPlaceable(int indexOfArea, int xCor, int yCor, CarcassonneState gameState,
-                               ArrayList<Area> touchedAreas){
+    public boolean isPlaceable(int indexOfArea, int xCor, int yCor,
+                               CarcassonneState gameState, ArrayList<Area>
+                               touchedAreas){
 
         //this is trying to place on an empty area
         if( indexOfArea == -1 ) return false;
@@ -157,8 +134,8 @@ public class Tile implements Serializable {
         Tile roamTile; //the tile we will roam to (up, down, left, right)
         int roamTileAreaIndex; //the index of the are we will roam to within the roam tile
 
-        //yes we know this is a lot of IF statements but that was the only way that we could think
-        //of the match the appropriate zones together
+        //yes we know this is a lot of IF statements but that was the only
+        //way that we could think of the match the appropriate zones together
 
         //for all of our zones
         for( int i = 0; i < targetArea.getOccZones().size(); i++ ){
@@ -171,7 +148,8 @@ public class Tile implements Serializable {
                 if( roamTile != null ) {
                     //0 goes to 4 so find the index of area that we are roaming to
                     roamTileAreaIndex = roamTile.getAreaIndexFromZone(4);
-                    //recursive call on that area, if it evaluates as false then return false
+                    //recursive call on that area, if it evaluates as false
+                    // then return false
                     //if it is true we still gotta search everywhere else
                     if (!roamTile.isPlaceable(roamTileAreaIndex, xCor,
                             yCor - 1, gameState, touchedAreas)) return false;
@@ -303,15 +281,11 @@ public class Tile implements Serializable {
             for( int j = 0; j < this.getTileAreas().get(i).getOccZones().size(); j++) {
                 //if the area has the zone we are looking at
                 if( zoneIndex == this.getTileAreas().get(i).getOccZones().get(j) ) {
-
                     return i; //return the index of that area
 
                 }
-
             }
-
         }
-
         return -1; //this happens if this is a empty zone
     }
 
@@ -333,15 +307,16 @@ public class Tile implements Serializable {
         char[] newZones = new char[13];
 
         //this will be how much the index of the zones switch
-        //if we are conter clockwise everything goes forward 9 spaces (or backwards 3 spaces
-        // buut negative numbers are bad)
+        //if we are conter clockwise everything goes forward 9 spaces
+        // (or backwards 3 spaces but negative numbers are bad)
         int rotateScalar = 9;
+
         //if we are clockwise everything goes forward 3 spaces
         if(isClockwise) rotateScalar = 3;
 
         for( int i = 0; i<12; i++) {
             //for all the zones 0-11 adjust the index, mod 12 to keep it in the array
-            newZones[i] = zones[(i+rotateScalar)%12];
+            newZones[i] = zones[(i + rotateScalar) % 12];
         }
 
         //zone 12 will always be the same, the joys of being the middle zone
@@ -359,8 +334,9 @@ public class Tile implements Serializable {
             {
                 if( tileAreas.get(i).getOccZones().get(j) != 12 ) //if we aren't zone 12
                 {
-                    tileAreas.get(i).getOccZones().set(j, (tileAreas.get(i).getOccZones().get(j)
-                            + rotateScalar) % 12); //get adjusted by the scalar and get back to array bounds
+                    //get adjusted by the scalar and get back to array bounds
+                    tileAreas.get(i).getOccZones().set(j, (tileAreas.get(i)
+                                .getOccZones().get(j) + rotateScalar) % 12);
                 }
             }
         }
@@ -399,7 +375,8 @@ public class Tile implements Serializable {
      * draws the tile and potential follower
      * @return
      */
-    public void drawTile( float xCor, float yCor, float size, Canvas c, GameMainActivity myActivity, Paint[] playerPaints )
+    public void drawTile( float xCor, float yCor, float size, Canvas c,
+                          GameMainActivity myActivity, Paint[] playerPaints )
     {
         /**
          External Citation
@@ -412,13 +389,15 @@ public class Tile implements Serializable {
         Bitmap toBeDrawn = BitmapFactory.decodeResource(myActivity.getResources(), bitmapRes);
         Matrix mat = new Matrix();
         mat.postRotate(rotation);
-        toBeDrawn = Bitmap.createBitmap(toBeDrawn,0,0,toBeDrawn.getWidth(),toBeDrawn.getHeight(),mat,true);
+        toBeDrawn = Bitmap.createBitmap(toBeDrawn, 0, 0, toBeDrawn.getWidth(),
+                                        toBeDrawn.getHeight(), mat, true);
 
         //draw it
-        c.drawBitmap(toBeDrawn, null, new RectF(size*xCor,size*yCor,size*xCor+size,size*yCor+size),null);
+        c.drawBitmap(toBeDrawn, null, new RectF(size * xCor, size * yCor,
+                     size * xCor + size, size * yCor + size), null);
 
         //draw the possible follower
-        for( int k = 0; k < tileAreas.size(); k++) {
+        for(int k = 0; k < tileAreas.size(); k++) {
             if ( tileAreas.get(k).getFollower() != null )
             {
                 //keep track of top left and will be adjusted through zones
@@ -480,21 +459,14 @@ public class Tile implements Serializable {
                     topLeftX += size*.45;
                     topLeftY += size*.45;
                 }
-                c.drawRect(topLeftX, topLeftY, (float)(topLeftX+size*.1), (float)(topLeftY+size*.1), playerPaints[tileAreas.get(k).getFollower().getOwner()]);
+                c.drawRect(topLeftX, topLeftY, (float)(topLeftX+size*.1),
+                           (float)(topLeftY+size*.1), playerPaints[tileAreas.get(k)
+                            .getFollower().getOwner()]);
             }
         }
     }
 
-    //getters
     public char[] getZones() { return zones; }
-
-    public int getRotation() {
-        return rotation;
-    }
-
-    public int getBitmapRes() {
-        return bitmapRes;
-    }
 
     public ArrayList<Area> getTileAreas() {
         return tileAreas;

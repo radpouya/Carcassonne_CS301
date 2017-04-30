@@ -123,8 +123,6 @@ public class CarcassonneLocalGame extends LocalGame
             tileDeck.add(new Tile(R.drawable.tile15, temp15Zones, temp15AreaProp, 0));
         }
 
-
-
         this.gameState = new CarcassonneState( ); //makes inital game state
         this.gameState.setCurrTile(randTile()); //sets the current tile to a rand tile
         this.gameState.getBoard()[64][64] = new Tile(tileDeck.get(0)); //places starting tile
