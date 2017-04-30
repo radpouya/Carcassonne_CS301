@@ -1,3 +1,4 @@
+
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.graphics.Point;
@@ -99,8 +100,10 @@ public class ComputerPlayerDumb extends GameComputerPlayer
         int zoneToPlace = r.nextInt(13);
         int areaToPlace = state.getCurrTile().getAreaIndexFromZone(zoneToPlace);
         //if it is a legal move and we have follwers remaining
-        if (state.getCurrTile().isPlaceable( areaToPlace, state.getxCurrTile(), state.getyCurrTile(), state,
-                new ArrayList<Area>()) && state.getRemainingFollowers().get( this.playerNum ) > 0 )
+        if (state.getCurrTile().isPlaceable( areaToPlace,
+                state.getxCurrTile(), state.getyCurrTile(), state,
+                new ArrayList<Area>()) &&
+                state.getRemainingFollowers().get( this.playerNum ) > 0 )
         {
             //send a PlaceFollwerAction
             game.sendAction( new PlaceFollowerAction(zoneToPlace, this));
@@ -122,7 +125,8 @@ public class ComputerPlayerDumb extends GameComputerPlayer
      * @param state
      * @return
      */
-    private boolean tryToPlacePeice( ArrayList<Point> possibleMoves, CarcassonneState state )
+    private boolean tryToPlacePeice( ArrayList<Point> possibleMoves,
+                                     CarcassonneState state )
     {
         //find a ramdon start point
         Random r = new Random();

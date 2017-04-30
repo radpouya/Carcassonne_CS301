@@ -27,10 +27,14 @@ public class CarcassonneState extends GameState
     private Tile[][] board; //array of all placed tiles
     private Tile currTile; //reference to the current tile
     private int plyrTurn; //keeps track of whomes's turn it is
-    private ArrayList<Integer> scores = new ArrayList<Integer>(); //score of each player
-    private ArrayList<Integer> remainingFollowers = new ArrayList<Integer>(); //remaining followers for each player
-    private int xCurrTile; //if curTile is already placed then saves xCor in board, -1 if not placed
-    private int yCurrTile; //same as xCurrTile but with y coordinate
+    //score of each player
+    private ArrayList<Integer> scores = new ArrayList<Integer>();
+    //remaining followers for each player
+    private ArrayList<Integer> remainingFollowers = new ArrayList<Integer>();
+    //if curTile is already placed then saves xCor in board, -1 if not placed
+    private int xCurrTile;
+    //same as xCurrTile but with y coordinate
+    private int yCurrTile;
     private char turnPhase;
 
     /**
@@ -256,9 +260,11 @@ public class CarcassonneState extends GameState
                     {
                         //creates array list of connected areas
                         ArrayList<Area> connectedAreas = new ArrayList<Area>();
-                        board[i][j].getTileAreas().get(k).createPropigation(this,i,j,connectedAreas);
+                        board[i][j].getTileAreas().get(k)
+                                .createPropagation(this,i,j,connectedAreas);
                         //scores the array list areas
-                        board[i][j].getTileAreas().get(k).score(connectedAreas,scores.size(),this);
+                        board[i][j].getTileAreas().get(k)
+                                .score(connectedAreas,scores.size(),this);
                     }
                 }
             }

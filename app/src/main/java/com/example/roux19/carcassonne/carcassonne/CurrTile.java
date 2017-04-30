@@ -66,15 +66,18 @@ public class CurrTile extends SurfaceView implements Serializable
     {
         if( gameState == null ) return; //gotta have a game state
 
-        gameState.getCurrTile().drawTile(0,0,400,canvas,myActivity,plyrPaints);
+        gameState.getCurrTile().drawTile
+                (0,0,400,canvas,myActivity,plyrPaints);
     }
 
     //setters
-    public void setState(CarcassonneState newGameState) {
+    public void setState(CarcassonneState newGameState)
+    {
         this.gameState = newGameState;
     }
 
-    public void setMyActivity(GameMainActivity myActivity) {
+    public void setMyActivity(GameMainActivity myActivity)
+    {
         this.myActivity = myActivity;
     }
 }
