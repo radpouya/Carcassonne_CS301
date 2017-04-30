@@ -1,6 +1,11 @@
-package com.example.roux19.carcassonne.carcassonne;
+// Jake Galves, Pouya Rad, Malcolm Roux, Sean Tan
+// CS 301 A - Spring 2017
+// Dr. Andrew Nuxoll
+// Team Project - Carcassonne
+// HW Assignment 4 Final Release
+// 1 May 2017
 
-import com.example.roux19.carcassonne.game.GamePlayer;
+package com.example.roux19.carcassonne.carcassonne;
 
 import java.io.Serializable;
 
@@ -10,7 +15,6 @@ import java.io.Serializable;
  * used to represent a follower on an area
  */
 public class Follower implements Serializable {
-
 
     public static final long serialVersionUID = 4206942042069420L;
 
@@ -50,4 +54,5 @@ public class Follower implements Serializable {
     public int getPos() {
         return pos;
     }
+
 }

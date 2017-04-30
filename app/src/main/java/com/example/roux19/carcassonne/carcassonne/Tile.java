@@ -364,7 +364,7 @@ public class Tile implements Serializable {
             {
                 //give the score of all the connected areas to the appropriate player(s)
                 //also return the follower to the player
-                this.tileAreas.get(i).score( touchedArea, gameState.getScores().size(), gameState );
+                this.tileAreas.get(i).score( touchedArea, gameState.getScores().size(), gameState, false );
             }
         }
     }

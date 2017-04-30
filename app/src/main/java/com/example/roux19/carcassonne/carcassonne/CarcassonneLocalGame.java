@@ -1,18 +1,18 @@
+// Jake Galves, Pouya Rad, Malcolm Roux, Sean Tan
+// CS 301 A - Spring 2017
+// Dr. Andrew Nuxoll
+// Team Project - Carcassonne
+// HW Assignment 4 Final Release
+// 1 May 2017
+
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.os.Message;
-import android.os.Vibrator;
-
-
 import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GamePlayer;
 import com.example.roux19.carcassonne.game.LocalGame;
 import com.example.roux19.carcassonne.game.actionMsg.GameAction;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -35,13 +35,9 @@ public class CarcassonneLocalGame extends LocalGame
     public CarcassonneLocalGame(Context context)
     {
         super();
-
         theContext = context;
 
-
-
         //hard coded initializers for the tile deck
-
         char[] tempZones = {'c', 'f', 'r', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'c', 'c', 'r'};
         int[] tempAreaProp = {0, 1, 2, 3, 3, 3, 3, 3, 2, 1, 0, 0, 2};
         for( int j = 0; j < 3; j++ ) {
@@ -195,7 +191,6 @@ public class CarcassonneLocalGame extends LocalGame
 
             return winnerString;
         }
-
         return null;
     }
 
@@ -203,7 +198,6 @@ public class CarcassonneLocalGame extends LocalGame
     protected boolean makeMove(GameAction action)
     {
         if ( action instanceof PlacePieceAction ){
-
             //retrieve action
             PlacePieceAction ppa = (PlacePieceAction)action;
 
@@ -224,7 +218,6 @@ public class CarcassonneLocalGame extends LocalGame
 
             //action completed
             return true;
-
         }
         //allows you to enter follower phase and place a follower
         else if ( action instanceof PlaceFollowerAction ) {

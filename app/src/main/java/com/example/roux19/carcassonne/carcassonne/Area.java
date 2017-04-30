@@ -434,7 +434,7 @@ public class Area implements Serializable {
      * @param gameState
      */
     public void score(ArrayList<Area> areasToScore, int numPlayers,
-                      CarcassonneState gameState)
+                      CarcassonneState gameState, boolean isEndGame)
     {
         // variable for total score
         int score = 0;
@@ -442,7 +442,12 @@ public class Area implements Serializable {
         // add up all the scores in the arraylist of area
         for(int i = 0; i < areasToScore.size(); i++)
         {
-            score += areasToScore.get(i).points;
+            if (isEndGame) {
+                score+= 1;
+            }
+            else {
+                score += areasToScore.get(i).points;
+            }
         }
 
         // keeps track of how many followers each player has on this area string

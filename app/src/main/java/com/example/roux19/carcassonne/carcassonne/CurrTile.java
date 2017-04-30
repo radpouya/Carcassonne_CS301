@@ -1,21 +1,18 @@
+// Jake Galves, Pouya Rad, Malcolm Roux, Sean Tan
+// CS 301 A - Spring 2017
+// Dr. Andrew Nuxoll
+// Team Project - Carcassonne
+// HW Assignment 4 Final Release
+// 1 May 2017
+
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.view.View;
-
-import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GameMainActivity;
-
 import java.io.Serializable;
 
 /**
@@ -80,4 +77,5 @@ public class CurrTile extends SurfaceView implements Serializable
     {
         this.myActivity = myActivity;
     }
+
 }

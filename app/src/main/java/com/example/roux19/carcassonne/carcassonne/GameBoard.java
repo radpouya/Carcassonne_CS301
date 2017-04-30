@@ -4,19 +4,14 @@
 // Team Project - Carcassonne
 // HW Assignment 4 Final Release
 // 1 May 2017
+
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
-
-import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GameMainActivity;
 
 /**
@@ -87,8 +82,6 @@ public class GameBoard extends SurfaceView
 
                 }
             }
-
-
         }
     }
 
@@ -98,4 +91,5 @@ public class GameBoard extends SurfaceView
 
     public void setMyActivity(GameMainActivity myActivity)
     {this.myActivity = myActivity;}
+
 }

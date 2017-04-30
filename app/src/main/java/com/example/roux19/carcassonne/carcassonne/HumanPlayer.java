@@ -1,43 +1,36 @@
+// Jake Galves, Pouya Rad, Malcolm Roux, Sean Tan
+// CS 301 A - Spring 2017
+// Dr. Andrew Nuxoll
+// Team Project - Carcassonne
+// HW Assignment 4 Final Release
+// 1 May 2017
+
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.pdf.PdfRenderer;
-import android.media.SoundPool;
 import android.os.Vibrator;
-import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.example.roux19.carcassonne.R;
 import com.example.roux19.carcassonne.game.GameHumanPlayer;
 import com.example.roux19.carcassonne.game.GameMainActivity;
 import com.example.roux19.carcassonne.game.actionMsg.GameAction;
 import com.example.roux19.carcassonne.game.infoMsg.GameInfo;
-import com.example.roux19.carcassonne.game.infoMsg.GameState;
 import com.example.roux19.carcassonne.game.infoMsg.IllegalMoveInfo;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * Created by roux19 on 2/27/2017.
  */
-public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener, View.OnTouchListener
+public class HumanPlayer extends GameHumanPlayer implements
+             View.OnClickListener, View.OnTouchListener
 {
     //our drawing canvases
     private CurrTile currTileView;
@@ -51,23 +44,26 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
     private Button quitButton;
     private Button backButton;
 
+    // all of our textviews
     private TextView followerText;
     private TextView helpText;
     private TextView remainingTiles;
     private TextView turnIn;
     private TextView nameHead;
     private TextView scoreHead;
-    private ArrayList<TextView> names = new ArrayList<TextView>();
-    private ArrayList<TextView> scores = new ArrayList<TextView>();
+    private ArrayList<TextView> names = new ArrayList<>();
+    private ArrayList<TextView> scores = new ArrayList<>();
 
+    // our custom Carcassonne font
     private Typeface carcassonneFont;
 
+    // context of the game
     private Context myContext;
 
-    //the state we have
+    // the state we have
     private CarcassonneState state;
 
-    //used in our on touch stuff to diferentiate tap from drag
+    // used in our on touch stuff to diferentiate tap from drag
     private float mx, my, origX, origY;
     boolean isMove = false;
 
@@ -103,7 +99,9 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
         }
 
-        if (!(info instanceof CarcassonneState)) return; // if we do not have a CarcassonneState, ignore
+        // if we do not have a CarcassonneState, ignore
+        if (!(info instanceof CarcassonneState)) return;
+
         this.state = (CarcassonneState)info; //set our state
         gameBoardView.setState((CarcassonneState)info); //set the boards state
         currTileView.setState((CarcassonneState)info); //set the current tile's state
@@ -112,7 +110,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         gameBoardView.invalidate();
         currTileView.invalidate();
 
-        //set relevant text in buttons corresponding to state
+        //set relevant image for buttons corresponding to state
         if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE)
         {
             rotateLeftAndCancel.setImageResource(R.drawable.leftrot);
@@ -134,18 +132,18 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         playerFollowers = state.getRemainingFollowers().get(this.playerNum);
         followerText.setText("Followers: " + playerFollowers);
 
-
-
         for (int i = 0; i < state.getScores().size(); i++) {
             scores.get(i).setText("" + state.getScores().get(i));
         }
 
-
-
+        // set text for remaining number of tiles (aka how long until the
+        // game ends
         remainingTiles.setText("Tiles Remaining: " + state.getRemainingTilesNum());
-        turnIn.setText("" + allPlayerNames[state.getPlyrTurn()] + "'s Turn");
 
+        // set text for whose turn it is
+        turnIn.setText("" + allPlayerNames[state.getPlyrTurn()] + "'s Turn");
     }
+
 
     @Override
     public void setAsGui(GameMainActivity activity) {
@@ -157,12 +155,11 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
     @Override //button presses
     public void onClick(View view) {
-
         GameAction action = null;
 
         //depending on state and which button is pressed
         //send the correct action
-        if( view.getId() == R.id.rotateRight) {
+        if(view.getId() == R.id.rotateRight) {
             if(state.getPlyrTurn() == playerNum) {
                 if (state.getTurnPhase() == CarcassonneState.PIECE_PHASE) {
                     action = new rotateAction(true, this);
@@ -172,7 +169,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 }
             }
         }
-        else if( view.getId() == R.id.rotateLeft ) {
+        else if(view.getId() == R.id.rotateLeft) {
             // Make sure it's the user's turn before allowing them to access
             // the buttons.
             if(state.getPlyrTurn() == playerNum) {
@@ -216,9 +213,11 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             game.sendAction(action);
         }
 
+
     }
 
-
+    // Simple helper method to draw the GUI for the main  gameboard whenever we
+    // are in that view. Helps avoid
     private void drawGUIHelper() {
         // Set up the GUI to the main gameboard layout and assign all
         // listeners.
@@ -238,6 +237,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                      usage.
          */
 
+        // find the buttons
         rotateLeftAndCancel = (ImageButton)theActivity.findViewById(R.id.rotateLeft);
         rotateRightAndEndTurn = (ImageButton)theActivity.findViewById(R.id.rotateRight);
         helpButton = (Button)theActivity.findViewById(R.id.helpButton);
@@ -245,19 +245,19 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
         helpButton.setTypeface(carcassonneFont);
         quitButton.setTypeface(carcassonneFont);
 
+        // find the text views
         followerText = (TextView)theActivity.findViewById(R.id.followersText);
         remainingTiles = (TextView)theActivity.findViewById(R.id.tileRemainingTV);
         turnIn = (TextView)theActivity.findViewById(R.id.turnIndicatorTV);
         nameHead = (TextView)theActivity.findViewById(R.id.nameHead);
         scoreHead = (TextView)theActivity.findViewById(R.id.scoreHead);
 
-
+        // set the fonts for our textviews
         followerText.setTypeface(carcassonneFont);
         remainingTiles.setTypeface(carcassonneFont);
         turnIn.setTypeface(carcassonneFont);
         nameHead.setTypeface(carcassonneFont);
         scoreHead.setTypeface(carcassonneFont);
-
 
         //send references to activity (used fo retreiving recourses)
         gameBoardView.setMyActivity((GameMainActivity) theActivity);
@@ -274,7 +274,8 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
         gameBoardView.scrollBy(200*60, 200*60);
 
-        if( names.isEmpty() ) {
+        // Adds the scoreboard texts to our arraylist
+        if(names.isEmpty()) {
             names.add((TextView) theActivity.findViewById(R.id.p1Name));
             names.add((TextView) theActivity.findViewById(R.id.p2Name));
             names.add((TextView) theActivity.findViewById(R.id.p3Name));
@@ -299,21 +300,18 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
             scores.set(4,(TextView)theActivity.findViewById(R.id.p5Score));
         }
 
+        // set colors to each player name so players know who owns which
+        // followers on the gameboard
         names.get(0).setTextColor(Color.BLACK);
         names.get(1).setTextColor(Color.RED);
         names.get(2).setTextColor(Color.GREEN);
         names.get(3).setTextColor(Color.BLUE);
         names.get(4).setTextColor(Color.YELLOW);
 
-
-
-
-
-
-
         this.receiveInfo(state);
     }
 
+    // Helper method to write the rules on the help page
     private void ruleWriter() {
         // Multiline string for the rules
         String rules = "This page describes the rules for this implementation " +
@@ -345,15 +343,14 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
                 "Score is added as follows when followers are present on the area:\n" +
                 "A road is completed when both ends connect two cities\\castles or " +
                 "the road forms a loop.Each tile in a completed road is worth " +
-                "1 point.\n" +
+                "2 points.\n" +
                 "A castle is completed when it is surrounded by walls and there " +
-                "are no gaps in the city.Each tile in a completed city is worth " +
+                "are no gaps in the city. Each tile in a completed city is worth " +
                 "2 points.\n" +
                 "At the end of the game, any incomplete road is worth 1 point per" +
                 "tile, each incomplete city is worth 1 point per tile, and each " +
                 "connected field is worth 1 point per tile.\n\nRemember, the game " +
                 "ends when all the tiles are used!";
-
         helpText.setText(""+rules);
     }
 
@@ -374,6 +371,7 @@ public class HumanPlayer extends GameHumanPlayer implements View.OnClickListener
 
             //mx,my are previous values
             //origX, origY are the original values
+            // Check the cases of actions for motion activities
             switch (e.getAction())
             {
                 case MotionEvent.ACTION_DOWN: //if we are first touching the screen

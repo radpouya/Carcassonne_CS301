@@ -1,3 +1,10 @@
+// Jake Galves, Pouya Rad, Malcolm Roux, Sean Tan
+// CS 301 A - Spring 2017
+// Dr. Andrew Nuxoll
+// Team Project - Carcassonne
+// HW Assignment 4 Final Release
+// 1 May 2017
+
 package com.example.roux19.carcassonne.carcassonne;
 
 import com.example.roux19.carcassonne.game.GamePlayer;
@@ -17,4 +24,5 @@ public class ReturnFollowerAction extends GameAction
     {
         super(player);
     }
+
 }

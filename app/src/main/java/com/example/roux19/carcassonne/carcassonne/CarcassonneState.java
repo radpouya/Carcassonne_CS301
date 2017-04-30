@@ -1,10 +1,14 @@
+// Jake Galves, Pouya Rad, Malcolm Roux, Sean Tan
+// CS 301 A - Spring 2017
+// Dr. Andrew Nuxoll
+// Team Project - Carcassonne
+// HW Assignment 4 Final Release
+// 1 May 2017
+
 package com.example.roux19.carcassonne.carcassonne;
 
 import com.example.roux19.carcassonne.game.GamePlayer;
 import com.example.roux19.carcassonne.game.infoMsg.GameState;
-import com.example.roux19.carcassonne.game.infoMsg.TimerInfo;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +19,7 @@ import java.util.ArrayList;
  */
 public class CarcassonneState extends GameState
 {
+
     public static final long serialVersionUID = 69694206969420L;
 
     //keep track of what phase of the turn we are in
@@ -236,9 +241,7 @@ public class CarcassonneState extends GameState
             {
                 return false;
             }
-
         }
-
         //we are good
         return true;
     }
@@ -264,15 +267,13 @@ public class CarcassonneState extends GameState
                                 .createPropagation(this,i,j,connectedAreas);
                         //scores the array list areas
                         board[i][j].getTileAreas().get(k)
-                                .score(connectedAreas,scores.size(),this);
+                                .score(connectedAreas, scores.size(), this, true);
                     }
                 }
             }
         }
     }
 
-
-    //getters
     public Tile[][] getBoard(){ return board; }
 
     public Tile getCurrTile(){ return currTile; }
@@ -289,19 +290,9 @@ public class CarcassonneState extends GameState
 
     public int getyCurrTile() { return yCurrTile; }
 
-    //setters
-
-
-    public void setBoard( Tile[][] newBoard ){ board = newBoard; }
-
     public void setCurrTile( Tile newCurrTile ){ currTile = newCurrTile; }
 
     public void setPlyrTurn( int newPlyrTurn ){ plyrTurn = newPlyrTurn; }
-
-    public void setRemainingFollowers( ArrayList<Integer> newRemainingFollowers)
-    { remainingFollowers = newRemainingFollowers; }
-
-    public void setScores( ArrayList<Integer> newScores ){ scores = newScores; }
 
     public void setxCurrTile(int xCurrTile) { this.xCurrTile = xCurrTile; }
 

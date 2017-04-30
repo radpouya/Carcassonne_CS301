@@ -1,11 +1,15 @@
+// Jake Galves, Pouya Rad, Malcolm Roux, Sean Tan
+// CS 301 A - Spring 2017
+// Dr. Andrew Nuxoll
+// Team Project - Carcassonne
+// HW Assignment 4 Final Release
+// 1 May 2017
 
 package com.example.roux19.carcassonne.carcassonne;
 
 import android.graphics.Point;
-
 import com.example.roux19.carcassonne.game.GameComputerPlayer;
 import com.example.roux19.carcassonne.game.infoMsg.GameInfo;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -115,8 +119,6 @@ public class ComputerPlayerDumb extends GameComputerPlayer
             game.sendAction( new EndTurnAction(this) );
             return false;
         }
-
-
     }
 
     /**
