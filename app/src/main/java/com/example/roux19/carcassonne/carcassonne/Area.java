@@ -44,8 +44,7 @@ public class Area implements Serializable {
      * @param initOccZones
      * @param initFollower
      */
-    public Area(char initType, int initPoints, int initOwnership,
-                ArrayList<Integer> initOccZones, Follower initFollower)
+    public Area(char initType, int initPoints, ArrayList<Integer> initOccZones, Follower initFollower)
     {
         type = initType;
         points = initPoints;
@@ -93,7 +92,7 @@ public class Area implements Serializable {
                                ArrayList<Area> touchedAreas)
     {
         // Farms are never completed
-        if (this.type == Tile.FARM) return false;
+        if (this.type == 'f') return false;
 
         // If this area has already been touched return true
         // (aka, base case to not double back)
@@ -511,5 +510,4 @@ public class Area implements Serializable {
     public void setFollower(Follower follower) {
         this.follower = follower;
     }
-
 }

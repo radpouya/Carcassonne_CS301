@@ -256,7 +256,7 @@ public class CarcassonneState extends GameState
                     {
                         //creates array list of connected areas
                         ArrayList<Area> connectedAreas = new ArrayList<Area>();
-                        board[i][j].getTileAreas().get(k).createPropigation(this,i,j,connectedAreas);
+                        board[i][j].getTileAreas().get(k).createPropagation(this,i,j,connectedAreas);
                         //scores the array list areas
                         board[i][j].getTileAreas().get(k).score(connectedAreas,scores.size(),this);
                     }
