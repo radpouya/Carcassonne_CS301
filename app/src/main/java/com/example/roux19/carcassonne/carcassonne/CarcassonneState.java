@@ -239,18 +239,25 @@ public class CarcassonneState extends GameState
         return true;
     }
 
+    /**
+     * end game score based on carrcasonne rules
+     */
     public void endGameScore()
     {
+        // loops through all the tiles
         for( int i = 0; i < 128; i++ )
         {
             for( int j = 0; j < 128; j++ )
             {
                 if( board[i][j] != null )
                 {
+                  //loops through all the areas in that tile
                     for( int k = 0; k < board[i][j].getTileAreas().size(); k++ )
                     {
+                        //creates array list of connected areas
                         ArrayList<Area> connectedAreas = new ArrayList<Area>();
-                        board[i][j].getTileAreas().get(k).createPropagation(this,i,j,connectedAreas);
+                        board[i][j].getTileAreas().get(k).createPropigation(this,i,j,connectedAreas);
+                        //scores the array list areas
                         board[i][j].getTileAreas().get(k).score(connectedAreas,scores.size(),this);
                     }
                 }

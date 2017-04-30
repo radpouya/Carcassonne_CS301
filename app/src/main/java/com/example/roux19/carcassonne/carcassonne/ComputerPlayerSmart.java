@@ -15,7 +15,9 @@ import java.util.TreeMap;
  */
 public class ComputerPlayerSmart extends GameComputerPlayer {
 
+   //keeps track of rotations
     int numRotations;
+   //keeps track of what frequency we are at
     int tryingFreq;
 
     public ComputerPlayerSmart( String name )
@@ -42,6 +44,7 @@ public class ComputerPlayerSmart extends GameComputerPlayer {
 
         if( state.getTurnPhase() == 'p' )
         {
+            //get an array of all possible moves
             ArrayList<Point> possibleMoves = new ArrayList<Point>();
             for( int i = 1; i<127; i++ )
             {
@@ -68,49 +71,57 @@ public class ComputerPlayerSmart extends GameComputerPlayer {
                     }
                 }
             }
+            //HashMap to keep track of how often a specific move is in PossibleMoves
             HashMap<Point, Integer> freqMoves = new HashMap<Point, Integer>();
+            //transpose PossibleMoves into FreqMoves keeping track of frequency
             for(Point p : possibleMoves) {
+               //if this move is in FreqMoves
                 if(!freqMoves.isEmpty() && freqMoves.containsKey(p)) {
+                   //Increment the frequency stored for this move
                     int freq = freqMoves.get(p);
                     freq++;
                     freqMoves.put(p, freq);
                 } else {
+                    //otherwise add the move with a frequency of 1
                     freqMoves.put(p, 1);
                 }
             }
+            //try to place piece with respect to frequency
             loopThroughFrequencies(freqMoves, state);
             possibleMoves.clear();
         }
         else if( state.getTurnPhase() == 'f' )
         {
+            //try to place best follower
             tryToPlaceFollower(state);
         }
         else if( state.getTurnPhase() == 'e' )
         {
+            //end turn
             game.sendAction(new EndTurnAction(this));
         }
     }
 
+    /**
+     * try to place a follower in a completed area
+     * if not possible, try to place a follower that would yield best score
+     * if not possible, end turn
+     * @param state
+     * @return
+     */
     private boolean tryToPlaceFollower( CarcassonneState state )
     {
-//        Random r = new Random();
-//        int zoneToPlace = r.nextInt(13);
-//        int areaToPlace = state.getCurrTile().getAreaIndexFromZone(zoneToPlace);
-//        if (state.getCurrTile().isPlaceable( areaToPlace, state.getxCurrTile(), state.getyCurrTile(), state,
-//                new ArrayList<Area>()) && state.getRemainingFollowers().get( this.playerNum ) > 0 )
-//        {
-//            game.sendAction( new PlaceFollowerAction(zoneToPlace, this));
-//            return true;
-//        }
-//        else
-//        {
-//            game.sendAction( new EndTurnAction(this) );
-//            return false;
-//        }
+
+        if( state.getRemainingFollowers().get(this.playerNum) < 1 )
+        {
+            game.sendAction(new EndTurnAction(this));
+            return false;
+        }
 
         if( !tryToPlaceFollowerCompleted( state ) ) {
             if ( !tryToPlaceFollowerScore(state) ) {
                 game.sendAction(new EndTurnAction(this));
+                return false;
             }
         }
 
@@ -118,6 +129,12 @@ public class ComputerPlayerSmart extends GameComputerPlayer {
 
     }
 
+    /**
+     *
+     * @param freqMoves
+     * @param state
+     * @return
+     */
     private boolean loopThroughFrequencies( HashMap<Point, Integer> freqMoves, CarcassonneState state )
     {
         if( !freqMoves.containsValue(tryingFreq) ) {

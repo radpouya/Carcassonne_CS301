@@ -174,18 +174,20 @@ public class CarcassonneLocalGame extends LocalGame
     @Override
     protected String checkIfGameOver()
     {
+        //if there is no mo tiles in da tile deck den game ovah
         if ( tileDeck.isEmpty() )
         {
             gameState.endGameScore();
             int topScore = 0;
             int indexOfWinner = 0;
+           //loops through player scores and determines the winner
             for( int i = 0; i < gameState.getScores().size(); i++) {
                 if( gameState.getScores().get(i) > topScore ) {
                     topScore = gameState.getScores().get(i);
                     indexOfWinner = i;
                 }
             }
-
+            // creates end game string
             String winnerString = ""+playerNames[indexOfWinner]+" has won!!!!!\n";
             for( int i = 0; i < playerNames.length; i++) {
                 winnerString += ""+playerNames[i]+" | "+gameState.getScores().get(i)+"\n";
