@@ -250,7 +250,7 @@ public class CarcassonneState extends GameState
                     for( int k = 0; k < board[i][j].getTileAreas().size(); k++ )
                     {
                         ArrayList<Area> connectedAreas = new ArrayList<Area>();
-                        board[i][j].getTileAreas().get(k).createPropigation(this,i,j,connectedAreas);
+                        board[i][j].getTileAreas().get(k).createPropagation(this,i,j,connectedAreas);
                         board[i][j].getTileAreas().get(k).score(connectedAreas,scores.size(),this);
                     }
                 }

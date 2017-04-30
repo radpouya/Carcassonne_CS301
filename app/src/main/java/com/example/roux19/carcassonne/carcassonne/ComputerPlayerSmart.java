@@ -187,7 +187,7 @@ public class ComputerPlayerSmart extends GameComputerPlayer {
         int i = 0;
         for( Area area: state.getCurrTile().getTileAreas()) {
             ArrayList<Area> areasToScore = new ArrayList<Area>();
-            area.createPropigation(state,state.getxCurrTile(),state.getyCurrTile(),areasToScore);
+            area.createPropagation(state,state.getxCurrTile(),state.getyCurrTile(),areasToScore);
             scoresOfAreas[i] = area.getScore(areasToScore);
             i++;
         }

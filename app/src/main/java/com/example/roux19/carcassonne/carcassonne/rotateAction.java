@@ -8,7 +8,7 @@ import com.example.roux19.carcassonne.game.actionMsg.GameAction;
  *
  * rotate action
  * we know the naming convention is off
- * refactoring makes comminting impossible
+ * refactoring makes committing impossible
  */
 public class rotateAction extends GameAction
 {

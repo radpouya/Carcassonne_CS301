@@ -23,3 +23,18 @@
     </application>
 
 </manifest>
+
+<!--
+    NOTE: This should be below "android:icon" but it was giving us a weird
+    error when we tried to put it there so it is now here.
+    /** External Citation
+         * Date: 27 April 2017
+         * Problem: Wanted to add a custom app icon for a more pleasant
+                    user experience.
+         * Resource: http://stackoverflow.com/questions/26615889/
+                     how-to-change-the-launcher-logo-of-an-app-in-android-
+                     studio
+         * Solution: Followed instructions for using the "Image Asset"
+                     option under the "New" menu.
+         */
+-->
